@@ -3,8 +3,9 @@ import QtQuick.Controls 2.12
 
 Label {
     property int value: 0
+    property int offset: 0
 
-    text: (value / 1000).toFixed(3).padStart(9)
+    text: ((value - offset) / 1000).toFixed(3).padStart(9)
 
     color: '#0d0'
 

@@ -20,12 +20,14 @@ ApplicationWindow {
             Item {
                 Layout.fillWidth: true
             }
-            Button {
+            BaseButton {
                 text: 'DRO'
+                highlighted: view.currentIndex == 0
                 onClicked: view.currentIndex = 0
             }
-            Button {
+            BaseButton {
                 text: 'Vision'
+                highlighted: view.currentIndex == 1
                 onClicked: view.currentIndex = 1
             }
         }
@@ -40,35 +42,41 @@ ApplicationWindow {
 
                 /* X-axis */
                 AxisValue {
-                    value: AxisReader.x - AxisReader.x_offset
+                    id: axis_value_x
+                    value: AxisReader.x
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
                 AxisLabel {
                     text: 'X'
+                    target: axis_value_x
                 }
 
                 /* Y-axis */
                 AxisValue {
-                    value: AxisReader.y - AxisReader.y_offset
+                    id: axis_value_y
+                    value: AxisReader.y
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
                 AxisLabel {
                     text: 'Y'
+                    target: axis_value_y
                 }
 
                 /* Z-axis */
                 AxisValue {
-                    value: AxisReader.z - AxisReader.z_offset
+                    id: axis_value_z
+                    value: AxisReader.z
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
                 AxisLabel {
                     text: 'Z'
+                    target: axis_value_z
                 }
             }
 

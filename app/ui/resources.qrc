@@ -4,6 +4,7 @@
         <file>App.qml</file>
         <file>AxisLabel.qml</file>
         <file>AxisValue.qml</file>
+        <file>BaseButton.qml</file>
         <file>Vision.qml</file>
         <file>Vision.js</file>
     </qresource>
