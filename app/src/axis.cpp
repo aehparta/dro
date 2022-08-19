@@ -31,16 +31,22 @@ void Axis::readyRead()
 		if (n == 2) {
 			switch (axis) {
 			case 'X':
-				m_x = value;
-				emit xChanged();
+				if (m_x != value) {
+					m_x = value;
+					emit xChanged();
+				}
 				break;
 			case 'Y':
-				m_y = value;
-				emit yChanged();
+				if (m_y != value) {
+					m_y = value;
+					emit yChanged();
+				}
 				break;
 			case 'Z':
-				m_z = value;
-				emit zChanged();
+				if (m_z != value) {
+					m_z = value;
+					emit zChanged();
+				}
 				break;
 			}
 		}

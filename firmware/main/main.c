@@ -10,6 +10,7 @@
 #define PCNT_HIGH_LIMIT 10000
 
 
+/* triggers when low or high limit is reached */
 static bool on_reach(pcnt_unit_handle_t unit,
                      const pcnt_watch_event_data_t *edata,
                      void *user_ctx)
@@ -20,7 +21,8 @@ static bool on_reach(pcnt_unit_handle_t unit,
 	return (high_task_wakeup == pdTRUE);
 }
 
-void init_channel(pcnt_unit_handle_t *pcnt_unit,
+/* initialize single quadrature encoder */
+void qenc_init(pcnt_unit_handle_t *pcnt_unit,
                   QueueHandle_t queue,
                   uint8_t gpio_a,
                   uint8_t gpio_b)
@@ -81,8 +83,8 @@ void app_main(void)
 	pcnt_unit_handle_t pcnt_y = NULL;
 	QueueHandle_t queue_y = xQueueCreate(10, sizeof(int));
 
-	init_channel(&pcnt_x, queue_x, 26, 27);
-	init_channel(&pcnt_y, queue_y, 25, 33);
+	qenc_init(&pcnt_x, queue_x, 26, 27);
+	qenc_init(&pcnt_y, queue_y, 25, 33);
 
 	while (1) {
 		static int reach_counter_x = 0;
@@ -90,15 +92,19 @@ void app_main(void)
 		int v = 0;
 
 		if (xQueueReceive(queue_x, &v, 0)) {
+			/* x-axis reached its min/max value */
 			reach_counter_x += v;
 		} else if (xQueueReceive(queue_y, &v, 0)) {
+			/* y-axis reached its min/max value */
 			reach_counter_y += v;
 		} else {
+			/* output readings through serial port */
 			pcnt_unit_get_count(pcnt_x, &v);
 			printf("X:%d\r\n", v + reach_counter_x);
 			pcnt_unit_get_count(pcnt_y, &v);
 			printf("Y:%d\r\n", v + reach_counter_y);
-			vTaskDelay(pdMS_TO_TICKS(100));
+
+			vTaskDelay(pdMS_TO_TICKS(10));
 		}
 	}
 }
