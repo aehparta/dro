@@ -1,5 +1,5 @@
 import QtQuick 2.5
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
@@ -40,7 +40,8 @@ ApplicationWindow {
 
                 /* X-axis */
                 AxisValue {
-                    text: Axis.x.toFixed(3).padStart(9)
+                    value: Axis.x
+
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
@@ -50,7 +51,7 @@ ApplicationWindow {
 
                 /* Y-axis */
                 AxisValue {
-                    text: Axis.y.toFixed(3).padStart(9)
+                    value: Axis.y
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
@@ -61,7 +62,7 @@ ApplicationWindow {
 
                 /* Z-axis */
                 AxisValue {
-                    text: Axis.z.toFixed(3).padStart(9)
+                    value: Axis.z
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true

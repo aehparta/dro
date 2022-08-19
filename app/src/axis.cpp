@@ -6,8 +6,8 @@
 Axis::Axis(QObject *parent) : QObject(parent)
 {
 	m_x = 0;
-	m_y = 1;
-	m_z = 2;
+	m_y = 0;
+	m_z = 0;
 
 	port.setPortName("/dev/ttyUSB0");
 	port.setBaudRate(115200);

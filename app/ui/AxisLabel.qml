@@ -1,5 +1,5 @@
 import QtQuick 2.5
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.12
 
 Label {
     color: '#090'
@@ -8,6 +8,9 @@ Label {
     verticalAlignment: Text.AlignVCenter
 
     fontSizeMode: Text.Fit
-    font.pointSize: 32
+    font.pointSize: 72
     font.bold: true
+
+    leftPadding: 20
+    rightPadding: 20
 }
