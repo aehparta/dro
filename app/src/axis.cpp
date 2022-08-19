@@ -6,8 +6,11 @@
 Axis::Axis(QObject *parent) : QObject(parent)
 {
 	m_x = 0;
+	m_x_offset = 0;
 	m_y = 0;
+	m_y_offset = 0;
 	m_z = 0;
+	m_z_offset = 0;
 
 	port.setPortName("/dev/ttyUSB0");
 	port.setBaudRate(115200);
@@ -28,15 +31,15 @@ void Axis::readyRead()
 		if (n == 2) {
 			switch (axis) {
 			case 'X':
-				m_x = (double)value / 1000.0L;
+				m_x = value;
 				emit xChanged();
 				break;
 			case 'Y':
-				m_y = (double)value / 1000.0L;
+				m_y = value;
 				emit yChanged();
 				break;
 			case 'Z':
-				m_z = (double)value / 1000.0L;
+				m_z = value;
 				emit zChanged();
 				break;
 			}

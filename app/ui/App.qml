@@ -40,7 +40,7 @@ ApplicationWindow {
 
                 /* X-axis */
                 AxisValue {
-                    value: Axis.x
+                    value: AxisReader.x - AxisReader.x_offset
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
@@ -51,7 +51,7 @@ ApplicationWindow {
 
                 /* Y-axis */
                 AxisValue {
-                    value: Axis.y
+                    value: AxisReader.y - AxisReader.y_offset
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
@@ -62,7 +62,7 @@ ApplicationWindow {
 
                 /* Z-axis */
                 AxisValue {
-                    value: Axis.z
+                    value: AxisReader.z - AxisReader.z_offset
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true

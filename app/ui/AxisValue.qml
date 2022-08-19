@@ -2,10 +2,9 @@ import QtQuick 2.5
 import QtQuick.Controls 2.12
 
 Label {
-    property double value: 0
-    property double offset: 0
+    property int value: 0
 
-    text: (value - offset).toFixed(3).padStart(9)
+    text: (value / 1000).toFixed(3).padStart(9)
 
     color: '#0d0'
 
@@ -18,12 +17,5 @@ Label {
 
     background: Rectangle {
         color: '#050'
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            offset = value
-        }
     }
 }

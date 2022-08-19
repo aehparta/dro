@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 	/* export axis to qml */
 	Axis axis;
-	engine.rootContext()->setContextProperty("Axis", &axis);
+	engine.rootContext()->setContextProperty("AxisReader", &axis);
 
 	/* load main view and run it */
 	engine.load(QUrl(QStringLiteral("qrc:/App.qml")));
