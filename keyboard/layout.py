@@ -1,5 +1,4 @@
 
-import sys
 import yaml
 
 
@@ -39,7 +38,7 @@ if __name__ == "__main__":
         if rotate_180:
             row.reverse()
         rows.append('\t{ ' + ', '.join(row) + ' }')
-    
+
     if rotate_180:
         rows.reverse()
 
