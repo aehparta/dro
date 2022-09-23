@@ -28,9 +28,6 @@ if __name__ == "__main__":
     with open("layout.txt", "r") as f:
         lines = f.readlines()
         f.close()
-    # with open("usb-hid-keymap.h") as f:
-    #     pass
-    f = sys.stdout
 
     rotate_180 = 'ROTATE_180\n' in lines
 
@@ -46,7 +43,11 @@ if __name__ == "__main__":
     if rotate_180:
         rows.reverse()
 
-    f.write('\n#ifndef _USB_HID_KEYMAP_\n#define _USB_HID_KEYMAP_\n\n')
-    f.write('uint8_t usb_hid_keymap[6][10][2] = {\n')
-    f.write(',\n'.join(rows))
-    f.write('\n};\n\n#endif\n\n')
+    with open("usb-hid-keymap.h", "w") as f:
+        f.write('\n#ifndef _USB_HID_KEYMAP_\n#define _USB_HID_KEYMAP_\n\n')
+        f.write('uint8_t usb_hid_keymap[6][10][2] = {\n')
+        f.write(',\n'.join(rows))
+        f.write('\n};\n\n#endif\n\n')
+        f.close()
+
+    print("USB HID keymap header file generated")
