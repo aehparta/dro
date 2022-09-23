@@ -2,27 +2,23 @@ import QtQuick 2.5
 import QtMultimedia 5.12
 import 'Vision.js' as VisionJs
 
-Item {
-    focus: true
-    
-    Camera {
-        id: camera
-    }
+Rectangle {
+    color: '#040'
 
-    VideoOutput {
-        source: camera
-        anchors.fill: parent
-        // orientation: 90
-        Keys.onPressed: console.log('vressed')
-    }
+    // Camera {
+    //     id: camera
+    // }
 
-    Canvas {
-        id: canvas
-        anchors.fill: parent
-        onPaint: VisionJs.update(getContext('2d'))
-        Keys.onPressed: console.log('cressed')
-    }
+    // VideoOutput {
+    //     source: camera
+    //     anchors.fill: parent
+    //     // orientation: 90
+    // }
 
-    Keys.onPressed: console.log('ressed')
+    // Canvas {
+    //     id: canvas
+    //     anchors.fill: parent
+    //     onPaint: VisionJs.update(getContext('2d'))
+    // }
 }
 

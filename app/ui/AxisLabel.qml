@@ -18,6 +18,6 @@ Label {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: target.offset = target.value
+        onClicked: target.zero()
     }
 }
