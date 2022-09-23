@@ -17,7 +17,7 @@ def key_to_code(value):
         if mod in keycodes['modifiers']:
             modcode |= keycodes['modifiers'][mod]
 
-    return '{ ' + hex(modcode) + ', ' + hex(keycode) + ' }'
+    return '{ 0x' + format(modcode, '02x') + ', 0x' + format(keycode, '02x') + ' }'
 
 
 if __name__ == "__main__":
@@ -37,14 +37,14 @@ if __name__ == "__main__":
             continue
         if rotate_180:
             row.reverse()
-        rows.append('\t{ ' + ', '.join(row) + ' }')
+        rows.append('\t' + ', '.join(row))
 
     if rotate_180:
         rows.reverse()
 
     with open("usb-hid-keymap.h", "w") as f:
         f.write('\n#ifndef _USB_HID_KEYMAP_\n#define _USB_HID_KEYMAP_\n\n')
-        f.write('uint8_t usb_hid_keymap[6][10][2] = {\n')
+        f.write('const uint8_t usb_hid_keymap[61][2] PROGMEM = {\n\t{ 0x00, 0x00},\n')
         f.write(',\n'.join(rows))
         f.write('\n};\n\n#endif\n\n')
         f.close()
