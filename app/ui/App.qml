@@ -3,8 +3,10 @@ import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
+import QtQuick.Window 2.11
 import "."
 import 'Keys.js' as KeysJs
+
 
 ApplicationWindow {
     id: window
@@ -23,7 +25,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
             BaseButton {
-                text: 'Vision'
+                text: 'Cam'
                 highlighted: view.currentIndex == 0
                 onClicked: () => view.currentIndex = 0
             }
@@ -40,7 +42,7 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Vision {
+            Cam {
                 id: vision
             }
 
@@ -53,7 +55,11 @@ ApplicationWindow {
     Item {
         focus: true
         anchors.fill: parent
-        Keys.onPressed: (event) => KeysJs.main(event)
-        Keys.forwardTo: [dro, vision]
+        Keys.onPressed: (event) => KeysJs.common(event)
+        Keys.forwardTo: [view.currentItem]
+    }
+
+    Component.onCompleted: {
+        window.visibility = fullscreen ? Window.FullScreen : Window.AutomaticVisibility
     }
 }

@@ -5,9 +5,10 @@
         <file>AxisLabel.qml</file>
         <file>AxisValue.qml</file>
         <file>BaseButton.qml</file>
+        <file>Cam.qml</file>
+        <file>Cam.js</file>
         <file>Dro.qml</file>
+        <file>Dro.js</file>
         <file>Keys.js</file>
-        <file>Vision.qml</file>
-        <file>Vision.js</file>
     </qresource>
 </RCC>

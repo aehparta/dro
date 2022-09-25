@@ -1,9 +1,13 @@
 import QtQuick 2.5
 import QtMultimedia 5.12
-import 'Vision.js' as VisionJs
+import 'Cam.js' as CamJs
+import 'Keys.js' as KeysJs
+
 
 Rectangle {
     color: '#040'
+
+    Keys.onPressed: (event) => KeysJs.cam(event)
 
     // Camera {
     //     id: camera
