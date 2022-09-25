@@ -7,8 +7,6 @@ import 'Keys.js' as KeysJs
 Rectangle {
     color: '#040'
 
-    Keys.onPressed: (event) => KeysJs.dro(event)
-
     GridLayout {
         columns: 2
         anchors.fill: parent
@@ -53,4 +51,7 @@ Rectangle {
             target: axis_value_z
         }
     }
+
+    Keys.onPressed: (event) => KeysJs.dro(event)
+    Keys.forwardTo: [axis_value_x, axis_value_y, axis_value_z].filter(value => value.mode == 'edit')
 }

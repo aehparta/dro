@@ -7,8 +7,6 @@ import 'Keys.js' as KeysJs
 Rectangle {
     color: '#040'
 
-    Keys.onPressed: (event) => KeysJs.cam(event)
-
     // Camera {
     //     id: camera
     // }
@@ -24,5 +22,7 @@ Rectangle {
     //     anchors.fill: parent
     //     onPaint: VisionJs.update(getContext('2d'))
     // }
+
+    Keys.onPressed: (event) => KeysJs.cam(event)
 }
 
