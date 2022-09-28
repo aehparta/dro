@@ -5,14 +5,27 @@ import 'Keys.js' as KeysJs
 
 
 Rectangle {
+    property var name: ''
     property int value: 0
     property int offset: 0
+    property string mode: 'edit'
     property var zero: () => offset = value
-    property string mode: 'view'
+    property var setMode: (v = 'view') => {
+        if (v == 'edit') {
+            editor.text = (value - offset) / 1000;
+            editor.cursorVisible = true;
+            mode = 'edit';
+        } else {
+            mode = v;
+        }
+    }
+    property var onClicked: () => axisEdit(this)
 
     color: '#050'
     border.color: '#010'
     border.width: 1
+    Layout.fillHeight: true
+    Layout.fillWidth: true
 
     BaseValue {
         anchors.fill: parent
@@ -20,19 +33,14 @@ Rectangle {
 
         text: ((value - offset) / 1000).toFixed(3).padStart(9)
         color: '#0d0'
-
-        onClicked: () => {
-            editor.text = (value - offset) / 1000;
-            editor.cursorVisible = true;
-            mode = 'edit';
-        }
     }
 
     ColumnLayout {
         anchors.fill: parent
+        spacing: -1
         visible: mode == 'edit'
 
-        TextInput {
+        TextField {
             id: editor
             text: ''
             color: '#cfc'
@@ -40,18 +48,24 @@ Rectangle {
             Layout.fillWidth: true
             activeFocusOnPress: false
 
-            // background: Rectangle {
-            //     color: '#373'
-            //     border.color: '#010'
-            //     border.width: 1
-            // }
+            horizontalAlignment: Text.AlignRight
+            font.pointSize: 0.4 * parent.height || 1
+            font.bold: true
+
+            background: Rectangle {
+                color: '#373'
+                border.color: '#010'
+                border.width: 1
+            }
         }
         BaseValue {
             id: result
             text: '= ' + (eval(editor.text) || '0')
-            color: '#7a7'
+            color: '#0d0'
             Layout.fillHeight: true
             Layout.fillWidth: true
+
+            font.pointSize: 0.3 * parent.height || 1
 
             background: Rectangle {
                 color: '#050'
@@ -61,6 +75,11 @@ Rectangle {
         }
     }
 
-    Keys.onPressed: (event) => KeysJs.values(event)
+    MouseArea {
+        anchors.fill: parent
+        onClicked: parent.onClicked()
+    }
+
+    Keys.onPressed: (event) => KeysJs.axis(event)
     Keys.forwardTo: [editor]
 }

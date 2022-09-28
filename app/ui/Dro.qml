@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.0
+import "."
 import 'Dro.js' as DroJs
 import 'Keys.js' as KeysJs
 
@@ -7,51 +8,39 @@ import 'Keys.js' as KeysJs
 Rectangle {
     color: '#040'
 
+    property var axisEdit: (axis) => {
+        x.setMode();
+        y.setMode();
+        z.setMode();
+        a.setMode();
+        b.setMode();
+        axis.setMode('edit');
+    }
+
     GridLayout {
         columns: 2
         anchors.fill: parent
         anchors.margins: 10
-
-        /* X-axis */
-        AxisValue {
-            id: axis_value_x
-            value: AxisReader.x
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+        Repeater {
+            model: instrumentation.instruments
+            AxisValue {
+                Layout.row: index
+                Layout.column: 0
+                // id: modelData.id
+                value: modelData.value
+            }
         }
-        AxisLabel {
-            text: 'X'
-            target: axis_value_x
-        }
-
-        /* Y-axis */
-        AxisValue {
-            id: axis_value_y
-            value: AxisReader.y
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-        AxisLabel {
-            text: 'Y'
-            target: axis_value_y
-        }
-
-        /* Z-axis */
-        AxisValue {
-            id: axis_value_z
-            value: AxisReader.z
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-        AxisLabel {
-            text: 'Z'
-            target: axis_value_z
+        Repeater {
+            model: instrumentation.instruments
+            AxisLabel {
+                Layout.row: index
+                Layout.column: 1
+                text: modelData.id
+                // target: modelData.id
+            }
         }
     }
 
     Keys.onPressed: (event) => KeysJs.dro(event)
-    Keys.forwardTo: [axis_value_x, axis_value_y, axis_value_z].filter(value => value.mode == 'edit')
+    // Keys.forwardTo: [x, y, z, a, b].filter(e => e.mode == 'edit')
 }

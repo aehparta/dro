@@ -1,19 +1,24 @@
 function dro(event) {
-  console.log('dro keys')
   switch (event.key) {
     case Qt.Key_X:
-      axis_value_x.zero();
+      axisEdit(x);
       break;
     case Qt.Key_Y:
-      axis_value_y.zero();
+      axisEdit(y);
       break;
     case Qt.Key_Z:
-      axis_value_z.zero();
+      axisEdit(z);
+      break;
+    case Qt.Key_A:
+      axisEdit(a);
+      break;
+    case Qt.Key_B:
+      axisEdit(b);
       break;
   }
 }
 
-function values(event) {
+function axis(event) {
   switch (event.key) {
     case Qt.Key_Delete:
       editor.text = '';

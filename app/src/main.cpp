@@ -4,7 +4,10 @@
 #include <QQmlContext>
 #include <QFont>
 #include <QCommandLineParser>
-#include "axis.h"
+#include "instrumentation.h"
+
+#include <QDebug>
+#include <QSerialPortInfo>
 
 
 QCommandLineOption opt_fullscreen("f", "Start in fullscreen");
@@ -18,7 +21,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("DRO");
 	QCoreApplication::setApplicationVersion("1.0.0");
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-	
+
 	/* basic app creation */
 	QApplication app(argc, argv);
 	QQmlApplicationEngine engine;
@@ -39,9 +42,28 @@ int main(int argc, char *argv[])
 	/* export options to qml */
 	engine.rootContext()->setContextProperty("fullscreen", parser.isSet(opt_fullscreen));
 
-	/* export axis to qml */
-	Axis axis;
-	engine.rootContext()->setContextProperty("AxisReader", &axis);
+	/* export instrumentation to qml */
+	Instrumentation instrumentation;
+	Instrument *instrument;
+	instrument = new Instrument("X");
+	instrumentation += instrument;
+	instrument = new Instrument("Y");
+	instrumentation += instrument;
+	instrument = new Instrument("Z");
+	instrumentation += instrument;
+	engine.rootContext()->setContextProperty("instrumentation", &instrumentation);
+
+	QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
+	for (int i = 0; i < ports.length(); i++) {
+		qDebug() << ports[i].portName();
+		qDebug() << ports[i].description();
+		qDebug() << ports[i].serialNumber();
+	}
+
+	QList<qint32> baudRates = QSerialPortInfo::standardBaudRates();
+	for (int i = 0; i < baudRates.length(); i++) {
+		qDebug() << baudRates[i];
+	}
 
 	/* load main view and run it */
 	engine.load(QUrl(QStringLiteral("qrc:/App.qml")));

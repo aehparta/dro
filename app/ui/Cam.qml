@@ -20,7 +20,7 @@ Rectangle {
     // Canvas {
     //     id: canvas
     //     anchors.fill: parent
-    //     onPaint: VisionJs.update(getContext('2d'))
+    //     onPaint: CamJs.update(getContext('2d'))
     // }
 
     Keys.onPressed: (event) => KeysJs.cam(event)
