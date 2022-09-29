@@ -8,9 +8,9 @@ Rectangle {
     property var name: ''
     property int value: 0
     property int offset: 0
-    property string mode: 'edit'
+    property string mode: 'view'
     property var zero: () => offset = value
-    property var setMode: (v = 'view') => {
+    property var setMode: (v) => {
         if (v == 'edit') {
             editor.text = (value - offset) / 1000;
             editor.cursorVisible = true;
@@ -19,13 +19,25 @@ Rectangle {
             mode = v;
         }
     }
-    property var onClicked: () => axisEdit(this)
+    property var onClicked: () => axisMode(this, 'edit')
 
     color: '#050'
     border.color: '#010'
     border.width: 1
     Layout.fillHeight: true
     Layout.fillWidth: true
+
+    BaseValue {
+        text: name
+        color: '#090'
+        verticalAlignment: Text.AlignTop
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        font.pointSize: 96
+        leftPadding: 20
+        rightPadding: 20
+    }
 
     BaseValue {
         anchors.fill: parent

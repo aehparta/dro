@@ -7,40 +7,35 @@ import 'Keys.js' as KeysJs
 
 Rectangle {
     color: '#040'
+    property var keyForwards: []
 
-    property var axisEdit: (axis) => {
-        x.setMode();
-        y.setMode();
-        z.setMode();
-        a.setMode();
-        b.setMode();
-        axis.setMode('edit');
+    property var axisMode: (axis, mode) => {
+        for (let i = 0; i < axes.count; i++) {
+            axes.itemAt(i).setMode('view')
+        }
+
+        if (typeof axis == 'number') {
+            axis = axes.itemAt(axis);
+        }
+        if (axis) {
+            axis.setMode(mode);
+            keyForwards = mode != 'view' ? [axis] : [];
+        }
     }
 
-    GridLayout {
-        columns: 2
+    ColumnLayout {
         anchors.fill: parent
         anchors.margins: 10
         Repeater {
+            id: axes
             model: instrumentation.instruments
             AxisValue {
-                Layout.row: index
-                Layout.column: 0
-                // id: modelData.id
+                name: modelData.id
                 value: modelData.value
-            }
-        }
-        Repeater {
-            model: instrumentation.instruments
-            AxisLabel {
-                Layout.row: index
-                Layout.column: 1
-                text: modelData.id
-                // target: modelData.id
             }
         }
     }
 
     Keys.onPressed: (event) => KeysJs.dro(event)
-    // Keys.forwardTo: [x, y, z, a, b].filter(e => e.mode == 'edit')
+    Keys.forwardTo: keyForwards
 }

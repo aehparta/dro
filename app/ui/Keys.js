@@ -1,19 +1,19 @@
 function dro(event) {
   switch (event.key) {
     case Qt.Key_X:
-      axisEdit(x);
+      axisMode(0, 'edit');
       break;
     case Qt.Key_Y:
-      axisEdit(y);
+      axisMode(1, 'edit');
       break;
     case Qt.Key_Z:
-      axisEdit(z);
+      axisMode(2, 'edit');
       break;
     case Qt.Key_A:
-      axisEdit(a);
+      axisMode(3, 'edit');
       break;
     case Qt.Key_B:
-      axisEdit(b);
+      axisMode(4, 'edit');
       break;
   }
 }
