@@ -10,6 +10,8 @@
         <file>Cam.js</file>
         <file>Config.qml</file>
         <file>Config.js</file>
+        <file>ConfigControllers.qml</file>
+        <file>ConfigDro.qml</file>
         <file>Dro.qml</file>
         <file>Dro.js</file>
         <file>Value.qml</file>

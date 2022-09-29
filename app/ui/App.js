@@ -8,16 +8,16 @@ function keys(event) {
           : Window.AutomaticVisibility;
       break;
     case Qt.Key_F7:
-      view.currentIndex = view.count - 4;
+      // viewName = '';
       break;
     case Qt.Key_F8:
-      view.currentIndex = view.count - 3;
+      viewName = 'Config';
       break;
     case Qt.Key_F9:
-      view.currentIndex = view.count - 2;
+      viewName = 'Cam';
       break;
     case Qt.Key_F10:
-      view.currentIndex = view.count - 1;
+      viewName = 'DRO';
       break;
   }
 }

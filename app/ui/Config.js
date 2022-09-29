@@ -10,6 +10,22 @@ function keys(event) {
         selectedController++;
       }
       break;
+    case Qt.Key_Left:
+      if (selectedController < 0 && tabIndex > 0) {
+        tabIndex--;
+      }
+      break;
+    case Qt.Key_Right:
+      if (selectedController < 0 && tabIndex < settings.dros.length + 1) {
+        tabIndex++;
+      }
+      break;
+    case Qt.Key_Enter:
+    case Qt.Key_Return:
+      if (selectedController < 0 && tabIndex == settings.dros.length + 1) {
+        settings.dros = settings.dros.concat([Date.now()]);
+      }
+      break;
   }
 
   if (

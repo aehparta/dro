@@ -9,6 +9,7 @@ import 'App.js' as Appjs
 
 
 ApplicationWindow {
+    property string viewName: 'Config'
     id: window
     visible: true
     width: 1024
@@ -29,27 +30,29 @@ ApplicationWindow {
                 model: ['Config', 'Cam', 'DRO']
                 BaseButton {
                     text: modelData
-                    highlighted: view.currentIndex == model.index
-                    onClicked: () => view.currentIndex = model.index
+                    highlighted: viewName == modelData
+                    onClicked: () => viewName = modelData
                 }
             }
         }
 
-        SwipeView {
-            id: view
-            currentIndex: 0 //count - 1
-            Layout.fillHeight: true
+        Config {
+            id: config
+            visible: viewName == 'Config'
             Layout.fillWidth: true
-
-            Config {
-                id: config
-            }
-            Cam {
-                id: vision
-            }
-            Dro {
-                id: dro
-            }
+            Layout.fillHeight: true
+        }
+        Cam {
+            id: vision
+            visible: viewName == 'Cam'
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+        Dro {
+            id: dro
+            visible: viewName == 'DRO'
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
     }
 
@@ -57,7 +60,7 @@ ApplicationWindow {
         focus: true
         anchors.fill: parent
         Keys.onPressed: (event) => Appjs.keys(event)
-        Keys.forwardTo: [view.currentItem]
+        Keys.forwardTo: [dro, vision, config].filter(e => e.visible)
     }
 
     Component.onCompleted: {

@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include <QFont>
 #include <QCommandLineParser>
+#include <QStyleFactory>
 #include "instrumentation.h"
 
 
@@ -19,7 +20,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("DRO");
 	QCoreApplication::setApplicationVersion("1.0.0");
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
+	
 	/* basic app creation */
 	QApplication app(argc, argv);
 	QQmlApplicationEngine engine;

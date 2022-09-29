@@ -73,6 +73,7 @@ bool Controller::start()
 		port.setBaudRate(m_speed);
 		if (!port.open(QIODevice::ReadOnly)) {
 			qDebug() << "failed to open serial port: " << m_device << ", error: " << port.errorString();
+			setEnabled(false);
 			return false;
 		}
 		connect(&port, SIGNAL(readyRead()), this, SLOT(serialPortReadyRead()));
