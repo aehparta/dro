@@ -6,11 +6,9 @@
 #include <QCommandLineParser>
 #include "instrumentation.h"
 
-#include <QDebug>
-#include <QSerialPortInfo>
-
 
 QCommandLineOption opt_fullscreen("f", "Start in fullscreen");
+QCommandLineOption opt_demo("d", "Run in demo mode");
 
 
 int main(int argc, char *argv[])
@@ -32,6 +30,7 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 	parser.addOption(opt_fullscreen);
+	parser.addOption(opt_demo);
 	parser.process(app);
 
 	/* set fonts */
@@ -41,29 +40,20 @@ int main(int argc, char *argv[])
 
 	/* export options to qml */
 	engine.rootContext()->setContextProperty("fullscreen", parser.isSet(opt_fullscreen));
+	engine.rootContext()->setContextProperty("demo", parser.isSet(opt_demo));
 
 	/* export instrumentation to qml */
 	Instrumentation instrumentation;
-	Instrument *instrument;
-	instrument = new Instrument("X");
-	instrumentation += instrument;
-	instrument = new Instrument("Y");
-	instrumentation += instrument;
-	instrument = new Instrument("Z");
-	instrumentation += instrument;
+	if (parser.isSet(opt_demo)) {
+		// Instrument *instrument;
+		// instrument = new Instrument("ttyUSB99 0");
+		// instrumentation += instrument;
+		// instrument = new Instrument("ttyUSB99 1");
+		// instrumentation += instrument;
+		// instrument = new Instrument("ttyUSB99 2");
+		// instrumentation += instrument;
+	}
 	engine.rootContext()->setContextProperty("instrumentation", &instrumentation);
-
-	QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
-	for (int i = 0; i < ports.length(); i++) {
-		qDebug() << ports[i].portName();
-		qDebug() << ports[i].description();
-		qDebug() << ports[i].serialNumber();
-	}
-
-	QList<qint32> baudRates = QSerialPortInfo::standardBaudRates();
-	for (int i = 0; i < baudRates.length(); i++) {
-		qDebug() << baudRates[i];
-	}
 
 	/* load main view and run it */
 	engine.load(QUrl(QStringLiteral("qrc:/App.qml")));

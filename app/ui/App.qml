@@ -24,28 +24,48 @@ ApplicationWindow {
             Item {
                 Layout.fillWidth: true
             }
+
             BaseButton {
-                text: 'Cam'
-                highlighted: view.currentIndex == 0
-                onClicked: () => view.currentIndex = 0
+                text: 'Scan'
+                onClicked: () => {
+                instrumentation.scan();
+                console.log(instrumentation.controllers);
+                }
             }
+
             BaseButton {
-                text: 'DRO'
-                highlighted: view.currentIndex == 1
-                onClicked: () => view.currentIndex = 1
+                text: 'Start all'
+                onClicked: () => {
+                    for (let i = 0; i < instrumentation.controllers.length; i++) {
+                        console.log('start', instrumentation.controllers[i]);
+                        instrumentation.controllers[i].speed = 115200;
+                        instrumentation.controllers[i].enabled = true;
+                    }
+                }
+            }
+
+            Repeater {
+                model: ['Config', 'Cam', 'DRO']
+                BaseButton {
+                    text: modelData
+                    highlighted: view.currentIndex == model.index
+                    onClicked: () => view.currentIndex = model.index
+                }
             }
         }
 
         SwipeView {
             id: view
-            currentIndex: 1
+            currentIndex: 0 //count - 1
             Layout.fillHeight: true
             Layout.fillWidth: true
 
+            Config {
+                id: config
+            }
             Cam {
                 id: vision
             }
-
             Dro {
                 id: dro
             }
@@ -60,6 +80,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        window.visibility = fullscreen ? Window.FullScreen : Window.AutomaticVisibility
+        window.visibility = fullscreen ? Window.FullScreen : Window.AutomaticVisibility;
+        instrumentation.scan();
     }
 }

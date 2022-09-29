@@ -5,8 +5,6 @@
 #include "esp_log.h"
 #include "driver/pulse_cnt.h"
 
-#include "x.h"
-
 struct pcnt_unit {
 	char *name;
 	uint8_t gpio_a;
@@ -17,8 +15,14 @@ struct pcnt_unit {
 };
 
 struct pcnt_unit units[] = {
-	{ "x", 26, 27, NULL, NULL, 0 },
-	{ "y", 26, 27, NULL, NULL, 0 }
+	{ "0", 16, 17, NULL, NULL, 0 },
+	{ "1", 18, 19, NULL, NULL, 0 },
+	{ "2", 21, 22, NULL, NULL, 0 },
+	{ "3", 23, 25, NULL, NULL, 0 },
+	{ "4", 26, 27, NULL, NULL, 0 },
+	{ "5", 32, 33, NULL, NULL, 0 },
+	{ "6", 34, 35, NULL, NULL, 0 },
+	{ "7", 36, 39, NULL, NULL, 0 }
 };
 
 #define UNITS_COUNT (sizeof(units) / sizeof(struct pcnt_unit))
@@ -113,7 +117,7 @@ void app_main(void)
 		for (int i = 0; i < UNITS_COUNT; i++) {
 			int v = 0;
 			pcnt_unit_get_count(units[i].unit, &v);
-			printf("%s=%d\r\n", units[i].name, v + units[i].reach_counter);
+			printf("%s:%d\n", units[i].name, v + units[i].reach_counter);
 		}
 
 		vTaskDelay(pdMS_TO_TICKS(10));

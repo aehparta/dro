@@ -9,7 +9,7 @@ Instrument::Instrument(QString id, int defaultValue, QObject *parent) : QObject(
 	m_value = defaultValue;
 }
 
-void Instrument::operator=(int value)
+void Instrument::setValue(int value)
 {
 	if (m_value != value) {
 		m_value = value;
@@ -20,4 +20,9 @@ void Instrument::operator=(int value)
 bool Instrument::operator==(const Instrument &other)
 {
 	return m_id == other.m_id;
+}
+
+QString Instrument::getId()
+{
+	return m_id;
 }

@@ -1,61 +1,70 @@
 
+#include <QSerialPortInfo>
+#include "controller.h"
 #include "instrumentation.h"
+
+#include <QDebug>
 
 
 Instrumentation::Instrumentation(QObject *parent) : QObject(parent)
 {
-	// port.setPortName("/dev/ttyUSB0");
-	// port.setBaudRate(115200);
-	// if (!port.open(QIODevice::ReadOnly)) {
-	// 	qDebug() << "failed to open serial port: " << port.errorString() << "\n";
-	// }
-
-	// connect(&port, SIGNAL(readyRead()), this, SLOT(readyRead()));
 }
 
-void Instrumentation::operator+=(Instrument *instrument)
+void Instrumentation::scan()
 {
-	if (!m_instruments.contains(instrument)) {
-		m_instruments += instrument;
+	QList<Controller *> scanned = Controller::scan();
+	bool changed = controllers != scanned;
+
+	for (int i = 0; i < scanned.length(); i++) {
+		if (!hasController(scanned[i])) {
+			controllers += scanned[i];
+			connect(scanned[i], SIGNAL(instrumentsChanged()), this, SLOT(instrumentsUpdate()));
+		}
+		qDebug() << scanned[i]->getId();
+	}
+
+	if (changed) {
+		emit controllersChanged();
 		emit instrumentsChanged();
 	}
 }
 
-void Instrumentation::operator-=(Instrument *instrument)
+bool Instrumentation::hasController(Controller *controller)
 {
-	if (m_instruments.removeAll(instrument) > 0) {
-		emit instrumentsChanged();
-	}
-}
-
-void Instrumentation::readyRead()
-{
-	if (port.canReadLine()) {
-		char *data = port.readLine().data();
-		int value;
-		char axis;
-		int n = sscanf(data, "%c:%d", &axis, &value);
-		if (n == 2) {
-			// switch (axis) {
-			// case 'X':
-			// 	if (m_x != value) {
-			// 		m_x = value;
-			// 		emit xChanged();
-			// 	}
-			// 	break;
-			// case 'Y':
-			// 	if (m_y != value) {
-			// 		m_y = value;
-			// 		emit yChanged();
-			// 	}
-			// 	break;
-			// case 'Z':
-			// 	if (m_z != value) {
-			// 		m_z = value;
-			// 		emit zChanged();
-			// 	}
-			// 	break;
-			// }
+	for (int i = 0; i < controllers.length(); i++) {
+		if (*controllers[i] == *controller) {
+			return true;
 		}
 	}
+	return false;
+}
+
+QList<QObject *> Instrumentation::getControllers()
+{
+	QList<QObject *> list;
+
+	for (int i = 0; i < controllers.length(); i++) {
+		list += controllers[i];
+	}
+
+	return list;
+}
+
+QList<QObject *> Instrumentation::getInstruments()
+{
+	QList<QObject *> list;
+
+	for (int i = 0; i < controllers.length(); i++) {
+		QList<Instrument *> instruments = controllers[i]->getInstruments();
+		for (int j = 0; j < instruments.length(); j++) {
+			list += instruments[j];
+		}
+	}
+
+	return list;
+}
+
+void Instrumentation::instrumentsUpdate()
+{
+	emit instrumentsChanged();
 }

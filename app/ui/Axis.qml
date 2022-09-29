@@ -1,22 +1,23 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.0
-import 'Keys.js' as KeysJs
+import 'Axis.js' as Axisjs
 
 
 Rectangle {
-    property var name: ''
+    property int index: 0
     property int value: 0
     property int offset: 0
     property string mode: 'view'
     property var zero: () => offset = value
-    property var setMode: (v) => {
-        if (v == 'edit') {
-            editor.text = (value - offset) / 1000;
+    property var setMode: (newMode) => {
+        if (newMode == 'edit') {
+            let v = (value - offset) / 1000
+            editor.text = v == 0 ? '' : v;
             editor.cursorVisible = true;
             mode = 'edit';
         } else {
-            mode = v;
+            mode = newMode;
         }
     }
     property var onClicked: () => axisMode(this, 'edit')
@@ -27,8 +28,8 @@ Rectangle {
     Layout.fillHeight: true
     Layout.fillWidth: true
 
-    BaseValue {
-        text: name
+    Value {
+        text: ['X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E', 'F'][index]
         color: '#090'
         verticalAlignment: Text.AlignTop
         anchors.top: parent.top
@@ -39,7 +40,7 @@ Rectangle {
         rightPadding: 20
     }
 
-    BaseValue {
+    Value {
         anchors.fill: parent
         visible: mode == 'view'
 
@@ -69,8 +70,10 @@ Rectangle {
                 border.color: '#010'
                 border.width: 1
             }
+
+            Keys.onPressed: (event) => Axisjs.keypress_editor(event)
         }
-        BaseValue {
+        Value {
             id: result
             text: '= ' + (eval(editor.text) || '0')
             color: '#0d0'
@@ -92,6 +95,6 @@ Rectangle {
         onClicked: parent.onClicked()
     }
 
-    Keys.onPressed: (event) => KeysJs.axis(event)
+    Keys.onPressed: (event) => Axisjs.keypress(event)
     Keys.forwardTo: [editor]
 }

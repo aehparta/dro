@@ -29,8 +29,8 @@ Rectangle {
         Repeater {
             id: axes
             model: instrumentation.instruments
-            AxisValue {
-                name: modelData.id
+            Axis {
+                index: model.index
                 value: modelData.value
             }
         }

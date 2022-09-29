@@ -18,23 +18,6 @@ function dro(event) {
   }
 }
 
-function axis(event) {
-  switch (event.key) {
-    case Qt.Key_Delete:
-      editor.text = '';
-      break;
-    case Qt.Key_Return:
-    case Qt.Key_Enter:
-      offset = value - (eval(editor.text) || '0') * 1000;
-      mode = 'view';
-      break;
-    case Qt.Key_Escape:
-      editor.focus = false;
-      mode = 'view';
-      break;
-  }
-}
-
 function cam(event) {
   console.log('cam keys');
   switch (event.key) {

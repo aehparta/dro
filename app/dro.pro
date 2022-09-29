@@ -2,8 +2,13 @@ TEMPLATE = app
 
 QT += core qml quick widgets serialport
 
-SOURCES += src/main.cpp src/instrument.cpp src/instrumentation.cpp
-HEADERS += src/instrument.h src/instrumentation.h
+SOURCES += src/main.cpp \
+           src/instrument.cpp \
+           src/instrumentation.cpp \
+           src/controller.cpp
+HEADERS += src/instrument.h \
+           src/instrumentation.h \
+           src/controller.h
 RESOURCES += ui/resources.qrc
 
 CONFIG(debug, debug|release) {

@@ -13,8 +13,10 @@ class Instrument : public QObject
   public:
 	Instrument(QString id, int defaultValue = 0, QObject *parent = NULL);
 
-	void operator=(int value);
 	bool operator==(const Instrument &other);
+
+	QString getId();
+	void setValue(int value);
 
   signals:
 	void valueChanged();
