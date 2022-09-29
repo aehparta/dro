@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QList>
+#include <QSettings>
 #include "instrument.h"
 
 
@@ -51,6 +52,7 @@ class Controller : public QObject
 	int m_speed;
 	QList<Instrument *> m_instruments;
 
+	QSettings settings;
 	QSerialPort port;
 
 	bool start();

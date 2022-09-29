@@ -2,15 +2,16 @@
     <qresource prefix="/">
         <file>qmldir</file>
         <file>App.qml</file>
+        <file>App.js</file>
         <file>Axis.qml</file>
         <file>Axis.js</file>
         <file>BaseButton.qml</file>
         <file>Cam.qml</file>
         <file>Cam.js</file>
         <file>Config.qml</file>
+        <file>Config.js</file>
         <file>Dro.qml</file>
         <file>Dro.js</file>
-        <file>Keys.js</file>
         <file>Value.qml</file>
     </qresource>
 </RCC>

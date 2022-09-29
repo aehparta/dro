@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.11
 import "."
-import 'Keys.js' as KeysJs
+import 'App.js' as Appjs
 
 
 ApplicationWindow {
@@ -23,25 +23,6 @@ ApplicationWindow {
         RowLayout {
             Item {
                 Layout.fillWidth: true
-            }
-
-            BaseButton {
-                text: 'Scan'
-                onClicked: () => {
-                instrumentation.scan();
-                console.log(instrumentation.controllers);
-                }
-            }
-
-            BaseButton {
-                text: 'Start all'
-                onClicked: () => {
-                    for (let i = 0; i < instrumentation.controllers.length; i++) {
-                        console.log('start', instrumentation.controllers[i]);
-                        instrumentation.controllers[i].speed = 115200;
-                        instrumentation.controllers[i].enabled = true;
-                    }
-                }
             }
 
             Repeater {
@@ -75,7 +56,7 @@ ApplicationWindow {
     Item {
         focus: true
         anchors.fill: parent
-        Keys.onPressed: (event) => KeysJs.common(event)
+        Keys.onPressed: (event) => Appjs.keys(event)
         Keys.forwardTo: [view.currentItem]
     }
 

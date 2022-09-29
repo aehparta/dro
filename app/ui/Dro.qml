@@ -1,8 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.0
 import "."
-import 'Dro.js' as DroJs
-import 'Keys.js' as KeysJs
+import 'Dro.js' as Drojs
 
 
 Rectangle {
@@ -36,6 +35,6 @@ Rectangle {
         }
     }
 
-    Keys.onPressed: (event) => KeysJs.dro(event)
+    Keys.onPressed: (event) => Drojs.keys(event)
     Keys.forwardTo: keyForwards
 }

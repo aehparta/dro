@@ -1,7 +1,6 @@
 import QtQuick 2.5
 import QtMultimedia 5.12
-import 'Cam.js' as CamJs
-import 'Keys.js' as KeysJs
+import 'Cam.js' as Camjs
 
 
 Rectangle {
@@ -23,6 +22,6 @@ Rectangle {
     //     onPaint: CamJs.update(getContext('2d'))
     // }
 
-    Keys.onPressed: (event) => KeysJs.cam(event)
+    Keys.onPressed: (event) => Camjs.keys(event)
 }
 

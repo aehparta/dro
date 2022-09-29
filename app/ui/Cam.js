@@ -1,13 +1,7 @@
 let x_zero = 0;
 let y_zero = 0;
 
-const keyPressed = (event) => {
-  console.log('key pressed');
-  if (event.key == Qt.Key_Left) {
-    console.log('move left');
-    event.accepted = true;
-  }
-};
+const keys = (event) => {};
 
 const update = (ctx) => {
   var w = ctx.canvas.canvasSize.width;

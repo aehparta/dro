@@ -1,8 +1,14 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.0
+import Qt.labs.settings 1.0
+import "."
+import 'Config.js' as Configjs
+
 
 Rectangle {
+    property int selectedController: -1
+
     color: '#040'
 
     Column {
@@ -11,38 +17,87 @@ Rectangle {
 
         Repeater {
             model: instrumentation.controllers
-            ColumnLayout {
-                Label {
-                    text: modelData.id
-                    color: modelData.enabled ? '#7f7' : '#0c0'
-                    font.pointSize: 16
-                }
-                Row {
-                    CheckBox {
-                        id: enabled
-                        checked: modelData.enabled
-                        checkable: false
-                        height: 32
-                        onClicked: modelData.enabled = !modelData.enabled;
+            Rectangle {
+                anchors.right: parent.right
+                anchors.left: parent.left
+                height: content.height + 20
+                color: index == selectedController ? '#353' : '#050'
+                border.color: index == selectedController ? '#ccc' : '#010'
+                border.width: 1
+                
+                ColumnLayout {
+                    id: content
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.left: parent.left
+                    anchors.topMargin: 10
+                    anchors.leftMargin: 10
+                    anchors.rightMargin: 10
+
+                    Label {
+                        text: modelData.id
+                        color: modelData.enabled ? '#7f7' : '#0c0'
+                        font.pointSize: 16
                     }
-                    ComboBox {
-                        model: [ 115200, 230400 ]
-                        currentIndex: model.indexOf(modelData.speed)
-                        height: 32
-                        font.pointSize: 18
-                        onActivated: modelData.speed = currentText
+                    Row {
+                        CheckBox {
+                            id: enabled
+                            checked: modelData.enabled
+                            checkable: false
+                            height: 32
+                            onClicked: modelData.enabled = !modelData.enabled;
+                        }
+                        ComboBox {
+                            model: [ 115200, 230400 ]
+                            currentIndex: model.indexOf(modelData.speed)
+                            enabled: !modelData.enabled
+                            height: 32
+                            font.pointSize: 18
+                            onActivated: modelData.speed = currentText
+                        }
                     }
-                }
-                Column {
-                    Repeater {
-                        model: modelData.instruments
-                        Label {
-                            color: '#7f7'
-                            text: modelData.id
+                    GridLayout {
+                        Repeater {
+                            model: modelData.instruments
+                            Label {
+                                Layout.row: index
+                                Layout.column: 0
+                                padding: 5
+                                leftPadding: 10
+                                rightPadding: 10
+                                color: '#7f7'
+                                text: 'Channel: ' + modelData.id
+                                font.pointSize: 16
+                                background: Rectangle {
+                                    color: '#060'
+                                    border.color: '#010'
+                                    border.width: 1
+                                }
+                            }
+                        }
+                        Repeater {
+                            model: modelData.instruments
+                            Label {
+                                Layout.row: index
+                                Layout.column: 1
+                                padding: 5
+                                leftPadding: 10
+                                rightPadding: 10
+                                color: '#7f7'
+                                text: 'Value: ' + modelData.value
+                                font.pointSize: 16
+                                background: Rectangle {
+                                    color: '#060'
+                                    border.color: '#010'
+                                    border.width: 1
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+    Keys.onPressed: (event) => Configjs.keys(event)
 }

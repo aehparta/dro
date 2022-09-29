@@ -12,7 +12,9 @@ Controller::Controller(QString id, Type type, QString device, QObject *parent) :
 	m_type = type;
 	m_device = device;
 	m_enabled = false;
-	m_speed = 0;
+	m_speed = settings.value("controller/" + m_id + "/speed", 0).toInt();
+
+	setEnabled(settings.value("controller/" + m_id + "/enabled").toBool());
 }
 
 bool Controller::operator==(const Controller &other)
@@ -34,6 +36,7 @@ void Controller::setEnabled(bool enabled)
 {
 	if (m_enabled != enabled) {
 		m_enabled = enabled ? start() : stop();
+		settings.setValue("controller/" + m_id + "/enabled", m_enabled);
 		emit enabledChanged();
 	}
 }
@@ -42,6 +45,7 @@ void Controller::setSpeed(int speed)
 {
 	if (m_speed != speed) {
 		m_speed = speed;
+		settings.setValue("controller/" + m_id + "/speed", m_speed);
 		emit speedChanged();
 	}
 }
