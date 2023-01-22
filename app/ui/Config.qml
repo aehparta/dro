@@ -12,41 +12,46 @@ Rectangle {
 
     color: '#040'
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: 10
+    Rectangle {
+        id: tabsBackground
+        color: '#030'
+        anchors.fill: tabs
+    }
 
-        RowLayout {
-            id: tabs
+    RowLayout {
+        id: tabs
 
+        BaseButton {
+            text: 'Controllers'
+            color: highlighted ? '#fff' : '#aaa'
+            font.pointSize: 16
+            highlighted: tabIndex == 0
+            onClicked: () => tabIndex = 0
+        }
+
+        Repeater {
+            model: settings.dros
             BaseButton {
-                text: 'Controllers'
+                text: modelData
                 color: highlighted ? '#fff' : '#aaa'
                 font.pointSize: 16
-                highlighted: tabIndex == 0
-                onClicked: () => tabIndex = 0
-            }
-
-            Repeater {
-                model: settings.dros
-                BaseButton {
-                    text: modelData
-                    color: highlighted ? '#fff' : '#aaa'
-                    font.pointSize: 16
-                    highlighted: tabIndex == index + 1
-                    onClicked: () => tabIndex = index + 1
-                }
-            }
-
-            BaseButton {
-                text: '+'
-                color: highlighted ? '#fff' : '#aaa'
-                font.pointSize: 16
-                font.bold: true
-                highlighted: tabIndex == settings.dros.length + 1
-                onClicked: () => settings.dros = settings.dros.concat([Date.now()])
+                highlighted: tabIndex == index + 1
+                onClicked: () => tabIndex = index + 1
             }
         }
+
+        BaseButton {
+            text: '+'
+            color: highlighted ? '#fff' : '#aaa'
+            font.pointSize: 16
+            font.bold: true
+            highlighted: tabIndex == settings.dros.length + 1
+            onClicked: () => settings.dros = settings.dros.concat([Date.now()])
+        }
+    }
+
+    ColumnLayout {
+        anchors.fill: parent
 
         ConfigControllers {
             visible: tabIndex == 0
