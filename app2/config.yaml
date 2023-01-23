@@ -1,0 +1,26 @@
+
+drivers:
+  - id: serialport1
+    driver: SerialPort
+    device: /dev/ttyUSB0
+    baud_rate: 115200
+  - id: serialport2
+    driver: SerialPort
+    device: /dev/ttyUSB1
+    baud_rate: 115200
+
+machines:
+  - name: Milling machine
+    channels:
+      x:
+        value: serialport1[0] / 1000
+      y:
+        value: serialport1[1] / 1000
+      z:
+        value: (serialport1[2] + serialport1[3]) / 1000
+  - name: Lathe
+    channels:
+      x:
+        value: serialport2[0] / 1000
+      y:
+        value: serialport2[1] / 1000
