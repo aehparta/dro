@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QList>
 #include <QSettings>
+#include <QTimer>
 #include "instrument.h"
 
 
@@ -18,6 +19,7 @@ class Controller : public QObject
 
 	enum Type {
 		SERIAL_PORT,
+		DEMO_CONTROLLER
 	};
 
   public:
@@ -42,7 +44,7 @@ class Controller : public QObject
 	void instrumentsChanged();
 
   private slots:
-	void serialPortReadyRead();
+	void read();
 
   private:
 	QString m_id;
@@ -51,9 +53,11 @@ class Controller : public QObject
 	bool m_enabled;
 	int m_speed;
 	QList<Instrument *> m_instruments;
+	bool m_running;
 
 	QSettings settings;
 	QSerialPort port;
+	QTimer timer;
 
 	bool start();
 	bool stop();

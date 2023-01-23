@@ -12,56 +12,57 @@ Rectangle {
 
     color: '#040'
 
-    Rectangle {
-        id: tabsBackground
-        color: '#030'
-        anchors.fill: tabs
-    }
+    // Rectangle {
+    //     id: tabsBackground
+    //     color: '#030'
+    //     anchors.fill: tabs
+    // }
 
-    RowLayout {
-        id: tabs
+    ScrollView {
+        anchors.fill: parent
+        clip: true
 
-        BaseButton {
-            text: 'Controllers'
-            color: highlighted ? '#fff' : '#aaa'
-            font.pointSize: 16
-            highlighted: tabIndex == 0
-            onClicked: () => tabIndex = 0
-        }
+        ColumnLayout {
+            anchors.fill: parent
 
-        Repeater {
-            model: settings.dros
-            BaseButton {
-                text: modelData
-                color: highlighted ? '#fff' : '#aaa'
-                font.pointSize: 16
-                highlighted: tabIndex == index + 1
-                onClicked: () => tabIndex = index + 1
+            RowLayout {
+                id: tabs
+
+                BaseButton {
+                    text: 'Controllers'
+                    color: highlighted ? '#fff' : '#aaa'
+                    font.pointSize: 16
+                    highlighted: tabIndex == 0
+                    onClicked: () => tabIndex = 0
+                }
+
+                Repeater {
+                    model: settings.dros
+                    BaseButton {
+                        text: modelData
+                        color: highlighted ? '#fff' : '#aaa'
+                        font.pointSize: 16
+                        highlighted: tabIndex == index + 1
+                        onClicked: () => tabIndex = index + 1
+                    }
+                }
+
+                BaseButton {
+                    text: '+'
+                    color: highlighted ? '#fff' : '#aaa'
+                    font.pointSize: 16
+                    font.bold: true
+                    highlighted: tabIndex == settings.dros.length + 1
+                    onClicked: () => settings.dros = settings.dros.concat([Date.now()])
+                }
+            }
+
+            ConfigControllers {
+                visible: tabIndex == 0
             }
         }
-
-        BaseButton {
-            text: '+'
-            color: highlighted ? '#fff' : '#aaa'
-            font.pointSize: 16
-            font.bold: true
-            highlighted: tabIndex == settings.dros.length + 1
-            onClicked: () => settings.dros = settings.dros.concat([Date.now()])
-        }
     }
-
-    ColumnLayout {
-        anchors.fill: parent
-
-        ConfigControllers {
-            visible: tabIndex == 0
-        }
-
-        Item {
-            Layout.fillHeight: true
-        }
-    }
-
+    
     Settings {
         id: settings
         property var dros: []

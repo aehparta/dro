@@ -46,6 +46,7 @@ ColumnLayout {
                     }
                 }
                 GridLayout {
+                    visible: modelData.enabled
                     Repeater {
                         model: modelData.instruments
                         Label {
