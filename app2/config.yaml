@@ -1,26 +1,40 @@
 
-drivers:
-  - id: serialport1
-    driver: SerialPort
-    device: /dev/ttyUSB0
-    baud_rate: 115200
-  - id: serialport2
-    driver: SerialPort
-    device: /dev/ttyUSB1
-    baud_rate: 115200
+encoders:
+  # - id: serialport1
+  #   driver: SerialPort
+  #   device: /dev/ttyUSB0
+  #   baud_rate: 115200
+  # - id: serialport2
+  #   driver: SerialPort
+  #   device: /dev/ttyUSB1
+  #   baud_rate: 115200
+  - id: dummy0
+    driver: Dummy
+  - id: dummy1
+    driver: Dummy
 
 machines:
-  - name: Milling machine
-    channels:
+  - name: Milling Demo
+    type: milling_machine
+    encoders:
       x:
-        value: serialport1[0] / 1000
+        value: dummy0[0] / 1000
       y:
-        value: serialport1[1] / 1000
+        value: dummy1[0] / 1000
       z:
-        value: (serialport1[2] + serialport1[3]) / 1000
-  - name: Lathe
-    channels:
-      x:
-        value: serialport2[0] / 1000
-      y:
-        value: serialport2[1] / 1000
+        value: random.randint(10, 100) / 10
+
+  # - name: Milling machine
+  #   channels:
+  #     x:
+  #       value: serialport1[0] / 1000
+  #     y:
+  #       value: serialport1[1] / 1000
+  #     z:
+  #       value: (serialport1[2] + serialport1[3]) / 1000
+  # - name: Lathe
+  #   channels:
+  #     x:
+  #       value: serialport2[0] / 1000
+  #     y:
+  #       value: serialport2[1] / 1000
