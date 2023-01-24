@@ -10,4 +10,5 @@ class Dummy(Interface):
             if 'value' in self.cfg:
                 value = eval(str(self.cfg['value']))
             self.send(0, value)
-            time.sleep(0.1)
+            delay = self.cfg['delay'] if 'delay' in self.cfg else 1
+            time.sleep(delay)

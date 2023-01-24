@@ -12,6 +12,7 @@ encoders:
     driver: Dummy
   - id: dummy1
     driver: Dummy
+    99: sdf
 
 machines:
   - name: Milling Demo

@@ -1,8 +1,10 @@
+from threading import Thread
 import time
 import yaml
 import random
 from queue import Queue, Empty
 
+import httpd
 from encoders.dummy import Dummy
 from encoders.serial_port import SerialPort
 
@@ -25,6 +27,9 @@ if __name__ == '__main__':
         driver.start()
         encoders[driver.id] = driver
 
+    t = Thread(target=httpd.run)
+    t.start()
+
     while True:
         try:
             (id, channel, value) = encoders_queue.get_nowait()
@@ -41,4 +46,5 @@ if __name__ == '__main__':
                     value = 'NaN'
                 line += f'{name}={value} '
             print(line, end='')
-        time.sleep(0.5)
+            # httpd.emit('encoder', {'id': machine['name'], 'channel': name, 'value': value})
+        time.sleep(1)
