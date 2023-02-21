@@ -1,0 +1,42 @@
+body {
+  background: #002020;
+  color: #00c0b0;
+  font-family: monospace, 'Lucida Console', 'Courier New';
+}
+
+input {
+  width: 100%;
+  background: transparent;
+  border: 0.01em solid transparent;
+}
+input:focus-visible {
+  border: 0.01em solid #00c0b0;
+  outline: 0;
+}
+
+.axis {
+  display: flex;
+  background: #004040;
+  font-size: 9vw;
+  margin-bottom: 0.02em;
+  line-height: normal;
+}
+
+.axis:last-child {
+  border-bottom: 0;
+}
+
+.axis-label {
+  font-size: 50%;
+  color: #c0f0e0;
+  background: #003030;
+  border-right: 0.1em solid #005050;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+.axis-value {
+  flex: 1;
+  color: #00e0d0;
+  text-align: end;
+}

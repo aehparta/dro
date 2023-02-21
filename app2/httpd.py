@@ -1,34 +1,46 @@
-import eventlet
+import aiohttp_jinja2
+import jinja2
 import socketio
+from config import cfg
+from aiohttp import web
+from threading import Event
 
 HTTP_HOST = ''
 HTTP_PORT = 8080
 
-sio = socketio.Server()
+__routes = web.RouteTableDef()
+__sio = socketio.AsyncServer(async_mode='aiohttp')
+__shutdown = Event()
 
 
-@sio.event
-def connect(sid, environ):
-    print('connect ', sid)
+# @__sio.event
+# def my_message(sid, data):
+#     print('message ', data)
 
 
-@sio.event
-def my_message(sid, data):
-    print('message ', data)
+@__routes.get('/')
+@aiohttp_jinja2.template("base.html")
+async def index(_: web.Request):
+    return {}
 
 
-@sio.event
-def disconnect(sid):
-    print('disconnect ', sid)
+async def run():
+    app = web.Application()
+    __sio.attach(app)
+    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('ui/templates'))
+
+    __routes.static('/', 'public')
+    app.add_routes(__routes)
+
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, HTTP_HOST, HTTP_PORT)
+    await site.start()
 
 
-def run():
-    socket = eventlet.listen((HTTP_HOST, HTTP_PORT))
-    app = socketio.WSGIApp(sio, static_files={
-        '/': {'filename': 'public/index.html'},
-        '/public': './public'
-    })
-    eventlet.wsgi.server(socket, app)
+def stop():
+    __shutdown.set()
 
-def emit(topic, data):
-    sio.emit(topic, data)
+
+async def emit(topic, data):
+    await __sio.emit(topic, data)

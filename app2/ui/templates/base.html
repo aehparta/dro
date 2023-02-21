@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DRO</title>
+    <link rel="icon" type="image/png" href="favicon.svg?v=1" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/site.css" />
+  </head>
+  <body>
+    <main>
+      <div id="app" class="container-fluid">
+        {% raw %}
+        <h1>Base template: {{ message }}</h1>
+        {% endraw %} 
+        {% include 'dro/main.html' %}
+      </div>
+    </main>
+    <script src="js/vue.global.prod.min.js"></script>
+    <script src="js/socket.io.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/site.js"></script>
+  </body>
+</html>

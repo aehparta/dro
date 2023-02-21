@@ -5,7 +5,7 @@ from .interface import Interface
 
 class Dummy(Interface):
     def run(self):
-        while True:
+        while not self._shutdown.is_set():
             value = random.randint(1, 100) * 100
             if 'value' in self.cfg:
                 value = eval(str(self.cfg['value']))
