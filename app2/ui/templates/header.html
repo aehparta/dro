@@ -1,0 +1,17 @@
+{% raw %}
+<div class="header">
+  <nav class="navbar navbar-expand-lg">
+    <ul class="nav">
+      <li v-for="item in config.ui.navigation" class="nav-item">
+        <button
+          class="nav-link"
+          :class="{ active: (page == item.id) }"
+          @click="action('navigation', item.id)"
+        >
+          {{ item.label }}
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endraw %}

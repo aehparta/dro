@@ -13,6 +13,10 @@ __sio = socketio.AsyncServer(async_mode='aiohttp')
 __shutdown = Event()
 
 
+@__sio.event
+async def connect(sid, environ):
+    await emit('config', cfg, sid)
+
 # @__sio.event
 # def my_message(sid, data):
 #     print('message ', data)
@@ -42,5 +46,5 @@ def stop():
     __shutdown.set()
 
 
-async def emit(topic, data):
-    await __sio.emit(topic, data)
+async def emit(topic, data, to = None):
+    await __sio.emit(topic, data, to)

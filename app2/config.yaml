@@ -8,16 +8,17 @@ encoders:
   #   driver: SerialPort
   #   device: /dev/ttyUSB1
   #   baud_rate: 115200
-  - id: dummy0
+  dummy0:
     driver: Dummy
-  - id: dummy1
+  dummy1:
     driver: Dummy
     99: sdf
 
 machines:
-  - name: Milling Demo
+  milling_machine:
+    name: Milling Demo
     type: milling_machine
-    encoders:
+    axes:
       x:
         value: dummy0[0] / 1000
       y:
@@ -39,3 +40,19 @@ machines:
   #       value: serialport2[0] / 1000
   #     y:
   #       value: serialport2[1] / 1000
+
+ui:
+  navigation:
+    - id: dro
+      label: DRO
+    - id: vision
+      label: Vision
+    - id: config
+      label: Config
+  keyboard:
+    f: global, fullscreen-toggle
+    F2: navigation, dro
+    F3: navigation, vision
+    F4: navigation, config
+
+

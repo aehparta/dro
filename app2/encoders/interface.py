@@ -5,8 +5,8 @@ SHUTDOWN_TIMEOUT = 3.0
 
 
 class Interface:
-    def __init__(self, cfg, queue: Queue):
-        self.id = cfg['id']
+    def __init__(self, id, cfg, queue: Queue):
+        self.id = id
         self.cfg = cfg
         self._queue = queue
         self._shutdown = Event()

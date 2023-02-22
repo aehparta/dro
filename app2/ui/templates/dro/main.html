@@ -1,18 +1,11 @@
 {% raw %}
+<h1>{{ key }}</h1>
 <div class="row">
-  <div class="col">Left_thingie_is_this</div>
+  <div class="col">Left_thingie_is_this.<br /></div>
   <div class="col">
-    <div class="axis">
-      <div class="axis-label">X</div>
-      <input class="axis-value" v-model="x" />
-    </div>
-    <div class="axis">
-      <div class="axis-label">Y</div>
-      <input class="axis-value" v-model="y" />
-    </div>
-    <div class="axis">
-      <div class="axis-label">Z</div>
-      <input class="axis-value" v-model="z" />
+    <div v-for="(value, label) in axes" class="axis">
+      <div class="axis-label">{{ label.toUpperCase() }}</div>
+      <input class="axis-value" v-model="value" />
     </div>
   </div>
 </div>

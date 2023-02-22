@@ -16,10 +16,10 @@ __shutdown = Event()
 
 
 async def run():
-    for encoder in cfg['encoders']:
+    for id, encoder in cfg['encoders'].items():
         klass = next(
             klass for klass in ENCODERS if klass.__name__ == encoder['driver'])
-        driver = klass(encoder, __encoders_queue)
+        driver = klass(id, encoder, __encoders_queue)
         driver.start()
         __encoders[driver.id] = driver
 
@@ -30,14 +30,14 @@ async def run():
         except Empty:
             pass
 
-        for machine in cfg['machines']:
-            for name, encoder in machine['encoders'].items():
+        for id, machine in cfg['machines'].items():
+            for axis_label, axis in machine['axes'].items():
                 try:
-                    value = eval(str(encoder['value']), None, __encoders)
+                    value = eval(str(axis['value']), None, __encoders)
                 except:
                     value = 'NaN'
-                await httpd.emit('encoder', {'id': machine['name'], 'channel': name, 'value': value})
-        await asyncio.sleep(0.001)
+                await httpd.emit('encoder', {'id': id, 'axis': axis_label, 'value': value})
+        await asyncio.sleep(0.05)
 
 
 def stop():
