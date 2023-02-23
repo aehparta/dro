@@ -1,7 +1,7 @@
 import aiohttp_jinja2
 import jinja2
 import socketio
-from config import cfg
+import config
 from aiohttp import web
 from threading import Event
 
@@ -15,11 +15,19 @@ __shutdown = Event()
 
 @__sio.event
 async def connect(sid, environ):
-    await emit('config', cfg, sid)
+    await emit('config', config.cfg, sid)
 
-# @__sio.event
-# def my_message(sid, data):
-#     print('message ', data)
+
+@__sio.event
+async def offset(sid, data):
+    try:
+        machine = data['machine']
+        axis = data['axis']
+        offset = data['offset']
+        config.cfg['machines'][machine]['axes'][axis]['offset'] = offset
+        config.save()
+    except:
+        pass
 
 
 @__routes.get('/')
@@ -46,5 +54,5 @@ def stop():
     __shutdown.set()
 
 
-async def emit(topic, data, to = None):
+async def emit(topic, data, to=None):
     await __sio.emit(topic, data, to)

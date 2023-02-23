@@ -1,58 +1,134 @@
-
 encoders:
-  # - id: serialport1
-  #   driver: SerialPort
-  #   device: /dev/ttyUSB0
-  #   baud_rate: 115200
-  # - id: serialport2
-  #   driver: SerialPort
-  #   device: /dev/ttyUSB1
-  #   baud_rate: 115200
   dummy0:
     driver: Dummy
   dummy1:
     driver: Dummy
-    99: sdf
-
 machines:
   milling_machine:
-    name: Milling Demo
-    type: milling_machine
     axes:
       x:
-        value: dummy0[0] / 1000
+        offset: 998.75
+        value: 1000
       y:
-        value: dummy1[0] / 1000
+        offset: 0
+        value: dummy0[0] / 1000
       z:
-        value: random.randint(10, 100) / 10
-
-  # - name: Milling machine
-  #   channels:
-  #     x:
-  #       value: serialport1[0] / 1000
-  #     y:
-  #       value: serialport1[1] / 1000
-  #     z:
-  #       value: (serialport1[2] + serialport1[3]) / 1000
-  # - name: Lathe
-  #   channels:
-  #     x:
-  #       value: serialport2[0] / 1000
-  #     y:
-  #       value: serialport2[1] / 1000
-
+        offset: null
+        value: -20
+    name: Milling Demo
+    type: milling_machine
 ui:
-  navigation:
-    - id: dro
-      label: DRO
-    - id: vision
-      label: Vision
-    - id: config
-      label: Config
   keyboard:
-    f: global, fullscreen-toggle
-    F2: navigation, dro
-    F3: navigation, vision
-    F4: navigation, config
-
-
+    Delete:
+      action:
+      - dro
+      - zero
+    Enter:
+      action:
+      - global
+      - accept
+    Escape:
+      action:
+      - global
+      - cancel
+    F11:
+      action:
+      - global
+      - fullscreen-toggle
+    F2:
+      action:
+      - navigation
+      - dro
+    F3:
+      action:
+      - navigation
+      - vision
+    F4:
+      action:
+      - navigation
+      - config
+    a:
+      action:
+      - dro
+      - select
+      - a
+      editing: false
+    alt+a:
+      action:
+      - dro
+      - zero
+      - a
+    alt+b:
+      action:
+      - dro
+      - zero
+      - b
+    alt+c:
+      action:
+      - dro
+      - zero
+      - c
+    alt+x:
+      action:
+      - dro
+      - zero
+      - x
+    alt+y:
+      action:
+      - dro
+      - zero
+      - y
+    alt+z:
+      action:
+      - dro
+      - zero
+      - z
+    b:
+      action:
+      - dro
+      - select
+      - b
+      editing: false
+    c:
+      action:
+      - dro
+      - select
+      - c
+      editing: false
+    ctrl+c:
+      action:
+      - global
+      - cancel
+    "shift+\xBD":
+      action:
+      - dro
+      - half
+    x:
+      action:
+      - dro
+      - select
+      - x
+      editing: false
+    y:
+      action:
+      - dro
+      - select
+      - y
+      editing: false
+    z:
+      action:
+      - dro
+      - select
+      - z
+      editing: false
+    "\xA7":
+      action:
+      - dro
+      - half
+  navigation:
+  - id: dro
+    label: DRO
+  - id: vision
+    label: Vision
+  - id: config
+    label: Config

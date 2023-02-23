@@ -12,7 +12,7 @@ input:focus-visible {
 .axis {
   display: flex;
   background: #004040;
-  font-size: 9vw;
+  font-size: 8.5vw;
   margin-bottom: 0.02em;
   line-height: normal;
 }

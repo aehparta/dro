@@ -3,9 +3,15 @@
 <div class="row">
   <div class="col">Left_thingie_is_this.<br /></div>
   <div class="col">
-    <div v-for="(value, label) in axes" class="axis">
-      <div class="axis-label">{{ label.toUpperCase() }}</div>
-      <input class="axis-value" v-model="value" />
+    <div v-for="(axis, id) in axes" class="axis">
+      <div class="axis-label" @click="action_dro('zero', id)">
+        {{ (axis.label || id).toUpperCase() }}
+      </div>
+      <input
+        class="axis-value"
+        :value="focus.id === id ? axis.rounded : axis.fixed"
+        :ref="id"
+      />
     </div>
   </div>
 </div>

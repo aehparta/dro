@@ -12,13 +12,14 @@
   </head>
   <body>
     {% include 'header.html' %}
-    <main class="container-fluid">
+    <main class="container-fluid" ref="main">
       <div v-if="page == 'dro'">{% include 'dro/main.html' %}</div>
       <div v-if="page == 'vision'">{% include 'vision/main.html' %}</div>
       <div v-if="page == 'config'">{% include 'config/main.html' %}</div>
     </main>
     <script src="js/vue.global.prod.min.js"></script>
     <script src="js/socket.io.min.js"></script>
+    <script src="js/lodash.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
   </body>

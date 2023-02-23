@@ -24,10 +24,10 @@ class Interface:
             self._thread = Thread(target=self.run)
             self._thread.start()
 
-    def stop(self):
+    def stop(self, timeout = SHUTDOWN_TIMEOUT):
         self._shutdown.set()
-        if self._thread and self._thread.is_alive:
-            self._thread.join(SHUTDOWN_TIMEOUT)
+        if timeout and self._thread and self._thread.is_alive:
+            self._thread.join(timeout)
 
     def __getitem__(self, key):
         return self.__dict__[key]
