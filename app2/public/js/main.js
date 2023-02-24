@@ -1,7 +1,5 @@
 const socket = io();
-const { createApp } = Vue;
-
-createApp({
+const app = Vue.createApp({
   data() {
     return {
       page: window.location.hash.substring(1),
@@ -39,8 +37,8 @@ createApp({
       'focusout',
       () => {
         console.log('lost focus to something', document.activeElement);
-        if (this.focus) {
-          this.action(this.page, 'change');
+        if (this.focus && this.action(this.page, 'change') === false) {
+          return;
         }
         this.focus = false;
       },
@@ -115,6 +113,7 @@ createApp({
             value,
             rounded,
             fixed,
+            offset,
           },
         };
       }
@@ -125,17 +124,15 @@ createApp({
       switch (page) {
         case 'navigation':
           window.location.hash = '#' + action;
-          break;
+          return true;
         case 'global':
-          this.action_global(action, ...rest);
-          break;
+          return this.action_global(action, ...rest);
         case 'dro':
-          this.action_dro(action, ...rest);
-          break;
-        default:
-          console.warn(`Unknown action: ${page}, ${action}`);
-          break;
+          return this.action_dro(action, ...rest);
       }
+
+      console.warn(`Unknown action: ${page}, ${action}`);
+      return false;
     },
     action_global(action) {
       switch (action) {
@@ -152,6 +149,7 @@ createApp({
             : document.documentElement.requestFullscreen();
           break;
       }
+      return true;
     },
     action_dro(action, axis) {
       axis = axis || (this.focus && this.focus.id);
@@ -169,8 +167,7 @@ createApp({
           });
           break;
         case 'half': {
-          let offset =
-            this.config.machines[this.machine_id].axes[axis].offset || 0;
+          let offset = this.axes[axis].offset;
           offset += (this.axes[axis].value - offset) / 2;
           socket.emit('offset', {
             machine: this.machine_id,
@@ -184,19 +181,34 @@ createApp({
           this.$refs[axis][0].focus();
           break;
         case 'change':
-          const value = Number(
-            eval(this.$refs[axis][0].value) /* note: using eval() on purpose */
-          );
-          let offset =
-            this.config.machines[this.machine_id].axes[axis].offset || 0;
-          offset += this.axes[axis].value - offset - value;
-          socket.emit('offset', {
-            machine: this.machine_id,
-            axis,
-            offset,
-          });
+          const input = this.$refs[axis][0].value;
+          try {
+            const vars = Object.entries(this.axes).reduce((acc, [id, data]) => {
+              acc[id] = data.value - data.offset;
+              return acc;
+            }, {});
+            const value = Number(calc(input, vars));
+            let offset = this.axes[axis].offset;
+            offset += this.axes[axis].value - offset - value;
+            socket.emit('offset', {
+              machine: this.machine_id,
+              axis,
+              offset,
+            });
+          } catch (error) {
+            console.warn(error);
+            this.$toast.error('Failed calculating new value');
+            this.axes[axis].rounded = input;
+            this.$refs[axis][0].focus();
+            return false;
+          }
           break;
       }
+
+      return true;
     },
   },
-}).mount('body');
+});
+
+app.use(VueToast.ToastPlugin);
+app.mount('body');
