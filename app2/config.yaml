@@ -13,7 +13,7 @@ machines:
         offset: 0
         value: dummy0[0] / 1000
       z:
-        offset: null
+        offset: -20
         value: -20
     name: Milling Demo
     type: milling_machine
@@ -25,16 +25,13 @@ ui:
       - zero
     Enter:
       action:
-      - global
       - accept
     Escape:
       action:
-      - global
       - cancel
     F11:
       action:
-      - global
-      - fullscreen-toggle
+      - fullscreen
     F2:
       action:
       - navigation
@@ -97,7 +94,6 @@ ui:
       editing: false
     ctrl+c:
       action:
-      - global
       - cancel
     "shift+\xBD":
       action:

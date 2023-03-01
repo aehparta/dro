@@ -49,7 +49,7 @@ async def run():
                     value = eval(str(axis['value']), None, __encoders)
                 except:
                     value = 'NaN'
-                await httpd.emit('encoder', {'machine': machine_id, 'axis': axis_id, 'value': value})
+                await httpd.emit(f'encoder.{machine_id}.{axis_id}', value)
 
         await asyncio.sleep(0.05)
 

@@ -16,6 +16,8 @@ __shutdown = Event()
 @__sio.event
 async def connect(sid, environ):
     await emit('config', config.cfg, sid)
+    await emit('materials', config.materials, sid)
+    await emit('tools', config.tools, sid)
 
 
 @__sio.event
@@ -25,7 +27,7 @@ async def offset(sid, data):
         axis = data['axis']
         offset = data['offset']
         config.cfg['machines'][machine]['axes'][axis]['offset'] = offset
-        config.save()
+        config.save_config()
     except:
         pass
 
@@ -39,8 +41,9 @@ async def index(_: web.Request):
 async def run():
     app = web.Application()
     __sio.attach(app)
-    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('ui/templates'))
+    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('ui'))
 
+    __routes.static('/ui', 'ui')
     __routes.static('/', 'public')
     app.add_routes(__routes)
 
