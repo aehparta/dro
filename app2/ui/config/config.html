@@ -1,3 +1,10 @@
 <div class="config">
-  <div>{% include 'config/materials.html' %}</div>
+  <div class="row">
+    <div class="col-4">
+      <Materials @select="selectMaterial" />
+    </div>
+    <div class="col">
+      <Material v-bind="material"  placeholder="Please select a material" />
+    </div>
+  </div>
 </div>

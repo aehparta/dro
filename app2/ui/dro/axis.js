@@ -1,6 +1,7 @@
 import { socket } from '../io.js';
 
 export default {
+  template: '#tmpl-dro-axis',
   props: {
     machine_id: String,
     id: String,
@@ -16,23 +17,33 @@ export default {
       focused: false,
     };
   },
-  created() {
-    socket.on(`encoder.${this.machine_id}.${this.id}`, (value) => {
+  mounted() {
+    socket.on(`encoder.${this.machine_id}.${this.id}`, this.setValue);
+    on(`dro.select.${this.id}`, () => this.$refs.input.focus());
+    on('dro.zero', this.zero);
+    on('dro.half', this.half);
+    on('cancel', this.cancel);
+  },
+  unmounted() {
+    socket.off(`encoder.${this.machine_id}.${this.id}`, this.setValue);
+    off(`dro.select.${this.id}`);
+    off('dro.zero', this.zero);
+    off('dro.half', this.half);
+    off('cancel', this.cancel);
+  },
+  methods: {
+    setValue(value) {
       if (this.focused) {
         return;
       }
       this.value = value;
       this.rounded = _.round(this.value - this.offset, this.decimals);
       this.fixed = this.rounded.toFixed(this.decimals);
-    });
-    on(['dro', 'select', this.id], () => this.$refs.input.focus());
-    on('accept', () => this.$refs.input.blur());
-    on('cancel', () => {
+    },
+    cancel() {
       this.focused = false;
       this.$refs.input.blur();
-    });
-  },
-  methods: {
+    },
     focus() {
       this.focused = true;
     },
@@ -42,7 +53,7 @@ export default {
         try {
           const vars = {};
           const value = Number(calc(input, vars));
-          const offset = this.offset + (this.value - offset - value);
+          const offset = this.offset + (this.value - this.offset - value);
           socket.emit('offset', {
             machine: this.machine_id,
             axis: this.id,
@@ -58,6 +69,17 @@ export default {
       }
       this.focused = false;
     },
+    zero() {
+      if (this.focused) {
+        this.$refs.input.value = '0';
+        this.$refs.input.blur();
+      }
+    },
+    half() {
+      if (this.focused) {
+        this.$refs.input.value = `${this.value - this.offset} / 2`;
+        this.$refs.input.blur();
+      }
+    },
   },
-  template: '#tmpl-dro-axis',
 };

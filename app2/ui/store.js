@@ -22,7 +22,11 @@ socket.on('tools', (tools) => {
 });
 
 socket.on('materials', (materials) => {
-  store.materials = materials;
+  store.materials = materials.map((material) =>
+    material?.parent
+      ? { ...materials.find((m) => m.id === material.parent), ...material }
+      : material
+  );
 });
 
 export const config = Vue.computed(() => store.config);

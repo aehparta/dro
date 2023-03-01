@@ -1,5 +1,6 @@
 import Navigation, { page } from './navigation.js';
 import DRO from './dro/dro.js';
+import Config from './config/config.js';
 import { ui } from './store.js';
 
 const templates = [
@@ -7,6 +8,18 @@ const templates = [
   'navigation.html',
   'dro/dro.html',
   'dro/axis.html',
+  'config/config.html',
+  'materials/materials.html',
+  'materials/material.html',
+];
+
+const stylesheets = [
+  'app.css',
+  'navigation.css',
+  'dro/dro.css',
+  'dro/axis.css',
+  'materials/materials.css',
+  'materials/material.css',
 ];
 
 const app = Vue.createApp({
@@ -14,122 +27,138 @@ const app = Vue.createApp({
   components: {
     Navigation,
     DRO,
+    Config,
   },
   data() {
     return {
-      page: page,
-      focus: false,
+      page,
       ui,
+      focus: { group: undefined, element: undefined },
     };
   },
   created() {
-    addEventListener(
-      'focusin',
-      () => {
-        const ref = Object.entries(this.$refs).find(([, el]) =>
-          [el, el[0]].includes(document.activeElement)
-        );
-        if (ref) {
-          this.focus = { id: ref[0] };
-        }
-      },
-      true
-    );
+    addEventListener('keydown', this.keyPress);
+    addEventListener('keyup', this.keyPress);
 
-    addEventListener(
-      'focusout',
-      () => {
-        console.log('lost focus to something', document.activeElement);
-        if (this.focus) {
-          this.action(page.value, 'change');
-        }
-        this.focus = false;
-      },
-      true
-    );
+    on('fullscreen', () => {
+      document.fullscreenElement
+        ? document.exitFullscreen()
+        : document.documentElement.requestFullscreen();
+    });
 
-    addEventListener('keydown', (event) => {
-      const key =
-        (event.ctrlKey ? 'ctrl+' : '') +
-        (event.altKey ? 'alt+' : '') +
-        (event.shiftKey ? 'shift+' : '') +
-        event.key;
-      console.log('keydown', key);
-
-      if (key in this.ui.keyboard) {
-        const shortcut = this.ui.keyboard[key];
-        if (shortcut.propagate !== true) {
-          event.stopPropagation();
-          event.preventDefault();
-        }
+    on('accept', () => {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+      if (this.focus.element) {
+        this.focus.element.click();
       }
     });
 
-    addEventListener('keyup', (event) => {
-      const key =
-        (event.ctrlKey ? 'ctrl+' : '') +
-        (event.altKey ? 'alt+' : '') +
-        (event.shiftKey ? 'shift+' : '') +
-        event.key;
-      console.log('keyup', key);
-
-      if (key in this.ui.keyboard) {
-        const shortcut = this.ui.keyboard[key];
-        if (shortcut.propagate !== true) {
-          event.stopPropagation();
-          event.preventDefault();
-        }
-        // this.action(...shortcut.action);
-        emit(shortcut.action, shortcut);
-      }
+    on('focusable.group', ({ dir }) => {
+      this.focusGroupSelect(dir);
+      this.focusElementSelect(0);
     });
+    on('focusable', ({ dir }) => {
+      this.focusGroupSelect(0);
+      this.focusElementSelect(dir);
+    });
+    addEventListener('focusin', this.focusClear);
+    on('cancel', this.focusClear);
   },
   methods: {
-    action(page, action, ...rest) {
-      switch (page) {
-        case 'navigation':
-          // navigation.methods.go(action);
-          break;
-        case 'global':
-          this.action_global(action, ...rest);
-          break;
-        case 'dro':
-          // dro.methods.action(action, ...rest);
-          break;
-        default:
-          console.warn(`Unknown action: ${page}, ${action}`);
-          break;
+    keyPress(event) {
+      const key =
+        (event.ctrlKey ? 'ctrl+' : '') +
+        (event.altKey ? 'alt+' : '') +
+        (event.shiftKey ? 'shift+' : '') +
+        event.key;
+
+      console.log(event.type, key);
+
+      if (key in this.ui.keyboard) {
+        for (const [name, data] of Object.entries(this.ui.keyboard[key])) {
+          const propagateToInput =
+            data?.whenEditing === false &&
+            document.activeElement?.tagName === 'INPUT';
+          /* conditionally stop event propagation */
+          if (data?.propagate !== true && !propagateToInput) {
+            event.stopPropagation();
+            event.preventDefault();
+          }
+          /* conditionally emit */
+          if (event.type === 'keydown' && !propagateToInput) {
+            emit(name, data);
+          }
+        }
       }
     },
-    action_global(action) {
-      switch (action) {
-        case 'cancel':
-          this.focus = false;
-        case 'accept':
-          if (document.activeElement) {
-            document.activeElement.blur();
-          }
-          break;
-        case 'fullscreen-toggle':
-          document.fullscreenElement
-            ? document.exitFullscreen()
-            : document.documentElement.requestFullscreen();
-          break;
+    focusGroupSelect(dir) {
+      const groups = Array.from(
+        document.body.getElementsByClassName('focusable-group')
+      ).filter((el) => el.offsetParent);
+
+      let index = 0;
+      if (groups.includes(this.focus.group)) {
+        index = groups.indexOf(this.focus.group) + dir;
+        if (index >= groups.length) {
+          index = 0;
+        } else if (index < 0) {
+          index = groups.length - 1;
+        }
       }
+
+      this.focus.group = groups[index];
+    },
+    focusElementSelect(dir) {
+      const elements = Array.from(
+        this.focus.group.getElementsByClassName('focusable')
+      ).filter((el) => el.offsetParent);
+
+      let index = 0;
+      if (elements.includes(this.focus.element)) {
+        index = elements.indexOf(this.focus.element) + dir;
+        if (index >= elements.length) {
+          index = 0;
+        } else if (index < 0) {
+          index = elements.length - 1;
+        }
+      }
+
+      if (this.focus.element) {
+        this.focus.element.classList.remove('focused');
+      }
+      this.focus.element = elements[index];
+      this.focus.element.classList.add('focused');
+    },
+    focusClear() {
+      if (this.focus.element) {
+        this.focus.element.classList.remove('focused');
+      }
+      // this.focus.group = undefined;
+      this.focus.element = undefined;
     },
   },
 });
+
+for (const stylesheet of stylesheets) {
+  const el = document.createElement('link');
+  el.rel = 'stylesheet';
+  el.href = `ui/${stylesheet}`;
+  document.head.append(el);
+}
 
 const promises = templates.map(async (template) => {
   const response = await fetch(`ui/${template}`);
   const data = await response.text();
-  const tmpl = document.createElement('script');
-  tmpl.type = 'text/x-template';
-  tmpl.id = `tmpl-${template.replace('.html', '').replace('/', '-')}`;
-  tmpl.innerHTML = data;
-  document.body.append(tmpl);
+  const el = document.createElement('script');
+  el.type = 'text/x-template';
+  el.id = `tmpl-${template.replace('.html', '').replace('/', '-')}`;
+  el.innerHTML = data;
+  document.body.append(el);
 });
 
 Promise.all(promises).then(() => {
+  app.use(VueToast.ToastPlugin);
   app.mount('#app');
 });

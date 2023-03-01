@@ -7,10 +7,10 @@ machines:
   milling_machine:
     axes:
       x:
-        offset: 1000
+        offset: 994
         value: 1000
       y:
-        offset: 9.8
+        offset: 0.2
         value: dummy0[0] / 1000
       z:
         offset: -20
@@ -19,108 +19,63 @@ machines:
     type: milling_machine
 ui:
   keyboard:
+    ArrowDown:
+      focusable:
+        dir: 1
+        whenEditing: false
+    ArrowLeft:
+      focusable.group:
+        dir: -1
+        whenEditing: false
+    ArrowRight:
+      focusable.group:
+        dir: 1
+        whenEditing: false
+    ArrowUp:
+      focusable:
+        dir: -1
+        whenEditing: false
     Delete:
-      action:
-      - dro
-      - zero
+      dro.zero: null
     Enter:
-      action:
-      - accept
+      accept: null
     Escape:
-      action:
-      - cancel
+      cancel: null
     F11:
-      action:
-      - fullscreen
+      fullscreen: null
     F2:
-      action:
-      - navigation
-      - dro
+      navigation:
+        page: dro
     F3:
-      action:
-      - navigation
-      - vision
+      navigation:
+        page: vision
     F4:
-      action:
-      - navigation
-      - config
+      navigation:
+        page: config
     a:
-      action:
-      - dro
-      - select
-      - a
-      editing: false
-    alt+a:
-      action:
-      - dro
-      - zero
-      - a
-    alt+b:
-      action:
-      - dro
-      - zero
-      - b
-    alt+c:
-      action:
-      - dro
-      - zero
-      - c
-    alt+x:
-      action:
-      - dro
-      - zero
-      - x
-    alt+y:
-      action:
-      - dro
-      - zero
-      - y
-    alt+z:
-      action:
-      - dro
-      - zero
-      - z
+      dro.select.a:
+        whenEditing: false
     b:
-      action:
-      - dro
-      - select
-      - b
-      editing: false
+      dro.select.b:
+        whenEditing: false
     c:
-      action:
-      - dro
-      - select
-      - c
-      editing: false
+      dro.select.c:
+        whenEditing: false
     ctrl+c:
-      action:
-      - cancel
+      cancel: null
     "shift+\xBD":
-      action:
-      - dro
-      - half
+      dro.half: null
     x:
-      action:
-      - dro
-      - select
-      - x
-      editing: false
+      dro.select.x:
+        whenEditing: false
     y:
-      action:
-      - dro
-      - select
-      - y
-      editing: false
+      dro.select.y:
+        whenEditing: false
     z:
-      action:
-      - dro
-      - select
-      - z
-      editing: false
+      dro.select.z:
+        whenEditing: false
     "\xA7":
-      action:
-      - dro
-      - half
+      dro.half: null
   navigation:
   - id: dro
     label: DRO

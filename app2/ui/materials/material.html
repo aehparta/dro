@@ -1,0 +1,9 @@
+<div class="material">
+  <div v-if="!id">{{ placeholder }}</div>
+  <div v-else>
+    <span class="color-badge" :style="{ background: color }"></span>
+    <label v-if="parent">{{ parent }} - {{ id }}</label>
+    <label v-else>{{ id }}</label>
+    <div class="description">{{ description }}</div>
+  </div>
+</div>

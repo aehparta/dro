@@ -8,3 +8,7 @@ body {
   background: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
+
+.focused {
+  outline: 1px dashed rgba(255, 255, 255, 0.5);
+}

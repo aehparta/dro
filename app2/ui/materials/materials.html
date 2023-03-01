@@ -1,0 +1,27 @@
+<div class="materials focusable-group">
+  <ul>
+    <li v-for="m0 in materials.filter(m => m.parent === undefined)">
+      <div
+        @click="select(m0)"
+        class="material-list-group selectable focusable"
+        :class="{selected: m0.id === material?.id}"
+      >
+        <span class="color-badge" :style="{ background: m0.color }"></span>
+        {{ m0.id }}
+        <span class="d-none d-xxl-inline"> - {{ m0.description }}</span>
+      </div>
+      <ul>
+        <li v-for="m1 in materials.filter(m => m.parent === m0.id)">
+          <div
+            @click="select(m1)"
+            class="material-list-item selectable focusable"
+            :class="{selected: m1.id === material?.id}"
+          >
+            <span class="color-badge" :style="{ background: m1.color }"></span>
+            {{ m1.id }}
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

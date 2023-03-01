@@ -1,5 +1,3 @@
-import aiohttp_jinja2
-import jinja2
 import socketio
 import config
 from aiohttp import web
@@ -33,16 +31,13 @@ async def offset(sid, data):
 
 
 @__routes.get('/')
-@aiohttp_jinja2.template("base.html")
 async def index(_: web.Request):
-    return {}
+    return web.FileResponse('./ui/base.html')
 
 
 async def run():
     app = web.Application()
     __sio.attach(app)
-    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('ui'))
-
     __routes.static('/ui', 'ui')
     __routes.static('/', 'public')
     app.add_routes(__routes)

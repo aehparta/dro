@@ -14,6 +14,7 @@ export default {
     addEventListener('hashchange', () => {
       page.value = window.location.hash.substring(1);
     });
+    on('navigation', (event) => this.go(event.page));
   },
   methods: {
     go(action) {

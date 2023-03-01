@@ -20,6 +20,16 @@ const on = (signal, callback) => {
   events_listeners[signal].push(callback);
 };
 
+const off = (signal, callback) => {
+  for (key in events_listeners) {
+    if (key === `${signal}`) {
+      events_listeners[key] = events_listeners[key].filter(
+        (cb) => callback && callback !== cb
+      );
+    }
+  }
+};
+
 const calc = (equation, ...vars) => {
   const env = vars
     .flatMap((o) =>

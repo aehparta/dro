@@ -1,13 +1,28 @@
-<div class="row">
-  <div class="col">Left_thingie_is_this.<br /></div>
-  <div class="col">
-    <Axis
-      v-for="(data, id) in machines[machine_id]?.axes"
-      :machine_id="machine_id"
-      :id="id"
-      :label="(data.label || id).toUpperCase()"
-      :offset="data.offset || 0"
-      :decimals="decimals"
-    />
+<div class="dro">
+  <div class="row">
+    <div class="col-3 focusable-group">
+      <Material
+        class="focusable"
+        v-bind="material"
+        @click="show = show === 'materials' ? 'axes' : 'materials'"
+        placeholder="Select material.."
+      />
+    </div>
+    <div class="col-3 focusable-group">
+      <span class="focusable">Select tool..</span>
+    </div>
+    <div v-if="show === 'axes'" class="col">
+      <Axis
+        v-for="(data, id) in machines[machine_id]?.axes"
+        :machine_id="machine_id"
+        :id="id"
+        :label="(data.label || id).toUpperCase()"
+        :offset="data.offset || 0"
+        :decimals="decimals"
+      />
+    </div>
+    <div v-if="show === 'materials'" class="col">
+      <Materials @select="selectMaterial" />
+    </div>
   </div>
 </div>

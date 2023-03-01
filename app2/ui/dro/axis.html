@@ -1,7 +1,6 @@
 <div class="axis">
-  <div class="axis-label" @click="action_dro('zero', id)">{{ label }}</div>
+  <label @click="zero()">{{ label }}</label>
   <input
-    class="axis-value"
     :value="focused ? rounded : fixed"
     ref="input"
     @focus="focus()"

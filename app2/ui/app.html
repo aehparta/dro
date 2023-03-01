@@ -1,6 +1,6 @@
 <Navigation />
 <main class="container-fluid" ref="main">
-  <DRO v-if="page == 'dro'" />
-  <div v-if="page == 'vision'">{% include 'vision/vision.html' %}</div>
-  <div v-if="page == 'config'">{% include 'config/config.html' %}</div>
+  <DRO v-show="page == 'dro'" />
+  <div v-show="page == 'vision'">{% include 'vision/vision.html' %}</div>
+  <Config v-show="page == 'config'" />
 </main>
