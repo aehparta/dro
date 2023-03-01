@@ -1,0 +1,21 @@
+.materials ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.materials .color-badge {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+.material-group {
+  font-size: 150%;
+  padding-left: 0.5em;
+}
+.material {
+  font-size: 120%;
+  padding-left: 1em;
+}
+.material .color-badge {
+    font-size: 50%;
+}

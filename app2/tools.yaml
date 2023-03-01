@@ -1,0 +1,13 @@
+C246:
+  diameters: [6]
+  materials:
+    P:
+      speed: 126
+      feed: 0.029
+    N;Aluminium: 
+      speed: 159
+      feed: 0.043
+    N;Cast aluminium:
+      speed: 72
+      feed: 0.029
+

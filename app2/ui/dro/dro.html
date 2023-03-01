@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col">Left_thingie_is_this.<br /></div>
+  <div class="col">
+    <Axis
+      v-for="(data, id) in machines[machine_id]?.axes"
+      :machine_id="machine_id"
+      :id="id"
+      :label="(data.label || id).toUpperCase()"
+      :offset="data.offset || 0"
+      :decimals="decimals"
+    />
+  </div>
+</div>

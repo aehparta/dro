@@ -1,0 +1,15 @@
+<div class="header">
+  <nav class="navbar navbar-expand-lg">
+    <ul class="nav">
+      <li v-for="item in ui.navigation" class="nav-item">
+        <button
+          class="nav-link"
+          :class="{ active: (page == item.id) }"
+          @click="go(item.id)"
+        >
+          {{ item.label }}
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>

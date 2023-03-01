@@ -1,0 +1,29 @@
+{% raw %}
+<div class="row">
+  <div class="col-4 materials">
+    <ul>
+      <li v-for="m0 in materials.filter(m => m.parent === undefined)">
+        <div
+          @click="action_config_material_select(m0)"
+          class="material-group selectable"
+        >
+          <div class="color-badge" :style="{ background: m0.color }"></div>
+          {{ m0.id }}<span class="d-none d-xxl-inline"> - {{ m0.description }}</span>
+        </div>
+        <ul>
+          <li v-for="m1 in materials.filter(m => m.parent === m0.id)">
+            <div
+              @click="action_config_material_select(m1)"
+              class="material selectable"
+            >
+              <div class="color-badge" :style="{ background: m0.color }"></div>
+              {{ m1.id }}
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="col">other</div>
+</div>
+{% endraw %}

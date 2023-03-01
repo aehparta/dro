@@ -1,0 +1,33 @@
+- id: P
+  color: '#6caee1'
+  description: Steel
+- id: M
+  color: '#f9ea30'
+  description: Stainless steel
+- id: K
+  color: '#c3161e'
+  description: Cast iron
+- id: N
+  color: '#b4d4c0'
+  description: Non-ferrous
+- id: S
+  color: '#ebc08a'
+  description: High-temperature alloys
+- id: H
+  color: '#a3a1a1'
+  description: Hardened metals
+- id: S235JR
+  description: Structural steel
+  parent: P
+- id: S355J2 C+C
+  description: Structural steel
+  parent: P
+- id: Aluminium
+  description: Generic aluminium
+  parent: N
+- id: Bronze
+  description: Generic bronze
+  parent: N
+- id: Brass
+  description: Generic brass
+  parent: N
