@@ -7,10 +7,10 @@ machines:
   milling_machine:
     axes:
       x:
-        offset: 998.75
+        offset: 1000
         value: 1000
       y:
-        offset: 0
+        offset: 9.8
         value: dummy0[0] / 1000
       z:
         offset: -20

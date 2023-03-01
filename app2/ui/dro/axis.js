@@ -38,7 +38,23 @@ export default {
     },
     blur() {
       if (this.focused) {
-        
+        const input = this.$refs.input.value;
+        try {
+          const vars = {};
+          const value = Number(calc(input, vars));
+          const offset = this.offset + (this.value - offset - value);
+          socket.emit('offset', {
+            machine: this.machine_id,
+            axis: this.id,
+            offset,
+          });
+        } catch (error) {
+          console.warn(error);
+          this.$toast.error('Failed calculating new value');
+          this.rounded = input;
+          this.$refs.input.focus();
+          return;
+        }
       }
       this.focused = false;
     },
