@@ -8,9 +8,11 @@ const templates = [
   'navigation.html',
   'dro/dro.html',
   'dro/axis.html',
+  'dro/offset.html',
   'config/config.html',
   'materials/materials.html',
   'materials/material.html',
+  'sidebar/sidebar.html',
 ];
 
 const stylesheets = [
@@ -18,8 +20,10 @@ const stylesheets = [
   'navigation.css',
   'dro/dro.css',
   'dro/axis.css',
+  'dro/offset.css',
   'materials/materials.css',
   'materials/material.css',
+  'sidebar/sidebar.css',
 ];
 
 const app = Vue.createApp({
@@ -53,6 +57,10 @@ const app = Vue.createApp({
       if (this.focus.element) {
         this.focus.element.click();
       }
+    });
+
+    on('view.reverse', () => {
+      this.ui.view.reverse = !this.ui.view.reverse;
     });
 
     on('focusable.group', ({ dir }) => {

@@ -3,12 +3,17 @@ body {
   color: #00c0b0;
   font-family: monospace, 'Lucida Console', 'Courier New';
 }
+
 .selectable:hover,
 .clickable:hover {
   background: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 
+.selected {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .focused {
-  outline: 1px dashed rgba(255, 255, 255, 0.5);
+  outline: 2px dashed rgba(255, 255, 255, 0.5);
 }

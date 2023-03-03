@@ -1,17 +1,45 @@
 <div class="dro">
-  <div class="row">
-    <div class="col-3 focusable-group">
-      <Material
-        class="focusable"
-        v-bind="material"
-        @click="show = show === 'materials' ? 'axes' : 'materials'"
-        placeholder="Select material.."
-      />
+  <div
+    class="row gx-2"
+    :style="{ flexDirection: ui.view.reverse ? 'row-reverse' : 'row' }"
+  >
+    <div class="col">
+      <div
+        class="row gx-2 h-100"
+        :style="{ flexDirection: ui.view.reverse ? 'row-reverse' : 'row' }"
+      >
+        <Sidebar class="col-3 focusable-group">
+          <Material
+            class="focusable"
+            v-bind="material"
+            @click="show = show === 'materials' ? 'default' : 'materials'"
+          >
+            <i class="fa fa-splotch"></i>
+            Select material
+          </Material>
+          <div
+            class="focusable"
+            @click="show = show === 'tools' ? 'default' : 'tools'"
+          >
+            <i class="fa fa-tools"></i>
+            Add tool
+          </div>
+          <div class="focusable">
+            <i class="fa fa-bullseye"></i>
+            Add offset
+          </div>
+        </Sidebar>
+        <div class="col">
+          <div class="row" v-if="show === 'default'">
+            <div class="col-6 focusable-group">
+              <Offset v-for="offset in offsets" :id="offset.id" />
+            </div>
+          </div>
+          <Materials v-if="show === 'materials'" @select="selectMaterial" />
+        </div>
+      </div>
     </div>
-    <div class="col-3 focusable-group">
-      <span class="focusable">Select tool..</span>
-    </div>
-    <div v-if="show === 'axes'" class="col">
+    <div class="col axes">
       <Axis
         v-for="(data, id) in machines[machine_id]?.axes"
         :machine_id="machine_id"
@@ -20,9 +48,6 @@
         :offset="data.offset || 0"
         :decimals="decimals"
       />
-    </div>
-    <div v-if="show === 'materials'" class="col">
-      <Materials @select="selectMaterial" />
     </div>
   </div>
 </div>

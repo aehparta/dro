@@ -2,14 +2,12 @@
   list-style-type: none;
   padding-left: 0;
 }
-.materials .selected {
-  background: rgba(255, 255, 255, 0.2);
-}
 .materials .color-badge {
   display: inline-block;
   width: 1em;
   height: 1em;
   vertical-align: middle;
+  border-radius: 0.1em;
 }
 .material-list-group {
   font-size: 150%;

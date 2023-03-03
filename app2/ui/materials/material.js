@@ -5,7 +5,6 @@ export default {
     description: String,
     color: String,
     parent: String,
-    placeholder: String,
   },
   data() {
     return {};

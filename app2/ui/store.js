@@ -4,7 +4,11 @@ const store = Vue.reactive({
   config: {
     encoders: [],
     machines: [],
-    ui: { navigation: [{ id: 'dro', label: 'DRO' }], keyboard: {} },
+    ui: {
+      navigation: [{ id: 'dro', label: 'DRO' }],
+      keyboard: {},
+      view: { reverse: false },
+    },
   },
   tools: [],
   materials: [],
