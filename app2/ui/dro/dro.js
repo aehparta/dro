@@ -10,10 +10,12 @@ export default {
   components: { Axis, Materials, Material, Sidebar, Offset },
   data() {
     return {
-      machine_id: 'milling_machine',
+      project: undefined,
+      machine_id: undefined,
       machines,
       ui,
       decimals: 3,
+      material_id: undefined,
       material: undefined,
       show: 'default',
       offsets: [
@@ -26,19 +28,34 @@ export default {
       ],
     };
   },
+  created() {
+    this.selectDefault(this.machines);
+  },
   mounted() {
     on('cancel', this.cancel);
   },
   unmounted() {
     off('cancel', this.cancel);
   },
+  watch: {
+    machines(machines) {
+      this.selectDefault(machines);
+    },
+  },
   methods: {
     cancel() {
       this.show = 'default';
     },
-    selectMaterial(material) {
+    selectMaterial(id, material) {
+      this.material_id = id;
       this.material = material;
       this.show = 'default';
+    },
+    selectDefault(machines, from) {
+      const keys = Object.keys(machines);
+      if (!this.machine_id && keys.length > 0) {
+        this.machine_id = keys[0];
+      }
     },
   },
 };

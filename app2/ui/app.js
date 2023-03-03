@@ -1,7 +1,7 @@
 import Navigation, { page } from './navigation.js';
 import DRO from './dro/dro.js';
 import Config from './config/config.js';
-import { ui } from './store.js';
+import Store, { ui } from './store.js';
 
 const templates = [
   'app.html',
@@ -32,6 +32,7 @@ const app = Vue.createApp({
     Navigation,
     DRO,
     Config,
+    Store,
   },
   data() {
     return {
@@ -143,8 +144,9 @@ const app = Vue.createApp({
       if (this.focus.element) {
         this.focus.element.classList.remove('focused');
       }
-      // this.focus.group = undefined;
       this.focus.element = undefined;
+
+      this.ui.other = Math.random();
     },
   },
 });

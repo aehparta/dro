@@ -1,7 +1,7 @@
 from threading import Event
 import asyncio
 import httpd
-import config
+from config import config
 from queue import Queue, Empty
 from encoders.dummy import Dummy
 from encoders.serial_port import SerialPort
@@ -20,7 +20,7 @@ async def run():
         encoders_to_shutdown = [*__encoders]
 
         # start added encoders
-        for id, encoder in config.cfg['encoders'].items():
+        for id, encoder in config['encoders'].items():
             if id in encoders_to_shutdown:
                 encoders_to_shutdown.remove(id)
             if id in __encoders:
@@ -43,7 +43,7 @@ async def run():
         except Empty:
             pass
 
-        for machine_id, machine in config.cfg['machines'].items():
+        for machine_id, machine in config['machines'].items():
             for axis_id, axis in machine['axes'].items():
                 try:
                     value = eval(str(axis['value']), None, __encoders)

@@ -11,6 +11,7 @@
         <Sidebar class="col-3 focusable-group">
           <Material
             class="focusable"
+            :id="material_id"
             v-bind="material"
             @click="show = show === 'materials' ? 'default' : 'materials'"
           >

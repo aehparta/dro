@@ -1,4 +1,5 @@
 import { socket } from '../io.js';
+import { projects } from '../store.js';
 
 export default {
   template: '#tmpl-dro-axis',

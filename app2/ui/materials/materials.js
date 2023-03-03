@@ -11,9 +11,9 @@ export default {
   },
   created() {},
   methods: {
-    select(material) {
-      this.material = material;
-      this.$emit('select', material);
+    select(id) {
+      this.material = this.materials[id];
+      this.$emit('select', id, this.material);
     },
   },
 };

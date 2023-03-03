@@ -4,7 +4,11 @@
       <Materials @select="selectMaterial" />
     </div>
     <div class="col">
-      <Material v-bind="material"  placeholder="Please select a material" />
+      <Material
+        :id="material_id"
+        v-bind="material"
+        placeholder="Please select a material"
+      />
     </div>
   </div>
 </div>

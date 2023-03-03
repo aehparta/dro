@@ -9,12 +9,14 @@ export default {
   },
   data() {
     return {
+      material_id: undefined,
       material: undefined,
     };
   },
   created() {},
   methods: {
-    selectMaterial(material) {
+    selectMaterial(id, material) {
+      this.material_id = id;
       this.material = material;
     },
   },
