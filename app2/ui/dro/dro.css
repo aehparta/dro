@@ -2,3 +2,13 @@
   border-right: 2px solid #006060;
   border-left: 2px solid #006060;
 }
+
+.dro .spacer {
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  border-bottom: 2px solid #004040;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+  background: transparent;
+}

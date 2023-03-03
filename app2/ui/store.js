@@ -1,47 +1,72 @@
 import { socket } from './io.js';
 
 export const store = Vue.reactive({
-  encoders: {},
-  machines: {},
   ui: {
     navigation: [{ id: 'dro', label: 'DRO' }],
     keyboard: {},
     view: { reverse: false },
   },
+  projects: {},
+  encoders: {},
+  machines: {},
   tools: {},
   materials: {},
-  projects: {},
 });
 
-const save = {
-  encoders: true,
-  machines: true,
-  ui: true,
-};
+export const ui = Vue.computed(() => store.ui);
+export const projects = Vue.computed(() => store.projects);
+export const encoders = Vue.computed(() => store.encoders);
+export const machines = Vue.computed(() => store.machines);
+export const tools = Vue.computed(() => store.tools);
+export const materials = Vue.computed(() => store.materials);
 
-socket.on('encoders', (encoders) => {
-  save.encoders = false;
-  store.encoders = encoders;
-});
+const watching = Object.keys(store).reduce((acc, value) => {
+  acc[value] = { watch: Vue.computed(() => store[value]), save: true };
+  return acc;
+}, {});
 
-socket.on('machines', (machines) => {
-  save.machines = false;
-  store.machines = machines;
-});
+/* listen to changes in store to emit save */
+for (const [key, value] of Object.entries(watching)) {
+  Vue.watch(
+    value.watch,
+    (v) => {
+      value.save && console.log('save', key);
+      value.save ? socket.emit('save', key, v) : (value.save = true);
+    },
+    { deep: true }
+  );
+}
 
 socket.on('ui', (ui) => {
-  save.ui = false;
-  store.ui = ui;
+  watching.ui.save = false;
+  store.ui = ui || {};
   if (!window.location.hash) {
     window.location.hash = '#' + ui.navigation[0].id;
   }
 });
 
+socket.on('projects', (projects) => {
+  watching.projects.save = false;
+  store.projects = projects || {};
+});
+
+socket.on('encoders', (encoders) => {
+  watching.encoders.save = false;
+  store.encoders = encoders || {};
+});
+
+socket.on('machines', (machines) => {
+  watching.machines.save = false;
+  store.machines = machines || {};
+});
+
 socket.on('tools', (tools) => {
-  store.tools = tools;
+  watching.tools.save = false;
+  store.tools = tools || {};
 });
 
 socket.on('materials', (materials) => {
+  watching.materials.save = false;
   store.materials = {};
   for (const [name, material] of Object.entries(materials)) {
     store.materials[name] = {
@@ -50,35 +75,3 @@ socket.on('materials', (materials) => {
     };
   }
 });
-
-socket.on('projects', (projects) => {
-  store.projects = projects;
-});
-
-export const encoders = Vue.computed(() => store.encoders);
-export const machines = Vue.computed(() => store.machines);
-export const ui = Vue.computed(() => store.ui);
-export const tools = Vue.computed(() => store.tools);
-export const materials = Vue.computed(() => store.materials);
-export const projects = Vue.computed(() => store.projects);
-
-export default {
-  data() {
-    return {
-      encoders,
-      machines,
-      ui,
-      tools,
-      materials,
-      projects,
-    };
-  },
-  watch: {
-    ui: {
-      handler: (v) => {
-        save.ui ? socket.emit('save', 'ui', v) : (save.ui = true);
-      },
-      deep: true,
-    },
-  },
-};

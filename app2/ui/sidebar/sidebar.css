@@ -5,20 +5,4 @@
 
 .sidebar > * {
   cursor: pointer;
-  background: #004040;
-  min-height: 3em;
-  padding: 0.5em;
-  padding-left: 1em;
-  margin-bottom: 0.2rem;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.sidebar .material:not(.not-selected) {
-  font-size: 75%;
-}
-
-.sidebar .fa {
-  margin-right: 0.5em;
 }

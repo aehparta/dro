@@ -6,9 +6,4 @@ export default {
     color: String,
     parent: String,
   },
-  data() {
-    return {};
-  },
-  created() {},
-  methods: {},
 };

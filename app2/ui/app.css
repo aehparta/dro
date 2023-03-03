@@ -17,3 +17,18 @@ body {
 .focused {
   outline: 2px dashed rgba(255, 255, 255, 0.5);
 }
+
+.list > * {
+  background: #004040;
+  min-height: 3em;
+  padding: 0.5em;
+  padding-left: 1em;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.list .icon {
+  margin-right: 0.5em;
+}

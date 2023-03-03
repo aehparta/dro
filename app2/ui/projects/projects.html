@@ -1,0 +1,10 @@
+<div class="projects list">
+  <Project
+    v-for="(project, id) in projects"
+    :id="id"
+    v-bind="project"
+    class="selectable focusable"
+    @select="select"
+  />
+  <Project class="selectable focusable" @create="create" />
+</div>

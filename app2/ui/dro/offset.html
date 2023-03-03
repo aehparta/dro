@@ -1,3 +1,5 @@
-<div class="offset focusable selectable">
-    {{ id }}
+<div class="offset" :class="{active: active, selected: selected }">
+  <Icon id="crosshairs" />
+  {{ id }}
+  <span v-if="!active">(unused)</span>
 </div>

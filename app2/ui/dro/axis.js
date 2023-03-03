@@ -1,5 +1,4 @@
 import { socket } from '../io.js';
-import { projects } from '../store.js';
 
 export default {
   template: '#tmpl-dro-axis',
@@ -55,11 +54,7 @@ export default {
           const vars = {};
           const value = Number(calc(input, vars));
           const offset = this.offset + (this.value - this.offset - value);
-          socket.emit('offset', {
-            machine: this.machine_id,
-            axis: this.id,
-            offset,
-          });
+          this.$emit('offset', this.machine_id, this.id, offset);
         } catch (error) {
           console.warn(error);
           this.$toast.error('Failed calculating new value');

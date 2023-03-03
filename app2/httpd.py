@@ -1,5 +1,6 @@
+import asyncio
 import socketio
-from config import config, emit_all_to, save
+import config
 from aiohttp import web
 from threading import Event
 
@@ -13,7 +14,7 @@ __shutdown = Event()
 
 @__sio.event
 async def connect(sid, environ):
-    await emit_all_to(sid)
+    await config.emit_all_to(sid)
 
 
 @__sio.event
@@ -22,7 +23,7 @@ async def offset(sid, data):
         machine = data['machine']
         axis = data['axis']
         offset = data['offset']
-        config['machines'][machine]['axes'][axis]['offset'] = offset
+        config.config['machines'][machine]['axes'][axis]['offset'] = offset
         save('machines')
     except:
         pass
@@ -30,7 +31,7 @@ async def offset(sid, data):
 
 @__sio.event
 async def save(sid, section, data):
-    save(section, data)
+    config.save(section, data)
 
 
 @__routes.get('/')

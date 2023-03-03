@@ -16,6 +16,7 @@ keyboard:
       dir: -1
       whenEditing: false
   Delete:
+    delete: null
     dro.zero: null
   Enter:
     accept: null
@@ -60,11 +61,12 @@ keyboard:
   "\xA7":
     dro.half: null
 navigation:
-  - id: dro
-    label: DRO
-  - id: vision
-    label: Vision
-  - id: config
-    label: Config
+- id: dro
+  label: DRO
+- id: vision
+  label: Vision
+- id: config
+  label: Config
+other: 0.21238903909292106
 view:
   reverse: false

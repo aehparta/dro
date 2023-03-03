@@ -1,0 +1,9 @@
+<div class="machines list">
+  <Machine
+    v-for="(machine, id) in machines"
+    :id="id"
+    v-bind="machine"
+    class="selectable focusable"
+    @select="select"
+  />
+</div>

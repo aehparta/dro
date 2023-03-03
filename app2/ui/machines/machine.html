@@ -1,0 +1,8 @@
+<div v-if="id" class="machine" @click="$emit('select', id)">
+  <Icon id="tools" :color="iconColor()" />
+  <label>{{ id }}</label>
+  <div class="type">{{ type }}</div>
+</div>
+<div v-else class="machine" @click="$emit('create')">
+  <slot> <Icon id="plus" />Create new machine </slot>
+</div>

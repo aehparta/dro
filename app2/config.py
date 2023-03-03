@@ -8,12 +8,12 @@ __shutdown = Event()
 
 
 config = {
+    'ui': {},
+    'projects': {},
     'encoders': {},
     'machines': {},
-    'ui': {},
     'materials': [],
-    'tools': [],
-    'projects': {}
+    'tools': []
 }
 
 

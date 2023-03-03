@@ -1,6 +1,8 @@
-.offset {
-  font-size: 200%;
-  padding: 0.3em;
-  background: #004040;
-  margin-bottom: 0.2rem;
+.offset:not(.active) {
+  color: #007070;
+}
+
+.offset.selected {
+  color: #f0e050;
+  background: #006060;
 }

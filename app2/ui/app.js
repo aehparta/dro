@@ -1,7 +1,8 @@
 import Navigation, { page } from './navigation.js';
 import DRO from './dro/dro.js';
 import Config from './config/config.js';
-import Store, { ui } from './store.js';
+import { ui } from './store.js';
+import Icon from './icon.js';
 
 const templates = [
   'app.html',
@@ -13,6 +14,10 @@ const templates = [
   'materials/materials.html',
   'materials/material.html',
   'sidebar/sidebar.html',
+  'projects/projects.html',
+  'projects/project.html',
+  'machines/machines.html',
+  'machines/machine.html',
 ];
 
 const stylesheets = [
@@ -24,6 +29,10 @@ const stylesheets = [
   'materials/materials.css',
   'materials/material.css',
   'sidebar/sidebar.css',
+  'projects/projects.css',
+  'projects/project.css',
+  'machines/machines.css',
+  'machines/machine.css',
 ];
 
 const app = Vue.createApp({
@@ -32,7 +41,6 @@ const app = Vue.createApp({
     Navigation,
     DRO,
     Config,
-    Store,
   },
   data() {
     return {
@@ -170,5 +178,6 @@ const promises = templates.map(async (template) => {
 
 Promise.all(promises).then(() => {
   app.use(VueToast.ToastPlugin);
+  app.component('Icon', Icon);
   app.mount('#app');
 });
