@@ -1,7 +1,9 @@
-<div v-if="id" class="material">
+<div v-if="id" class="material" @click="$emit('select', id)">
   <span class="color-badge" :style="{ background: color }"></span>
   <label v-if="parent">{{ parent }} - {{ id }}</label>
   <label v-else>{{ id }}</label>
   <div class="description">{{ description }}</div>
 </div>
-<div v-else class="material not-selected"><slot></slot></div>
+<div v-else class="material not-selected" @click="$emit('create')">
+  <slot><Icon id="plus" />Create new material</slot>
+</div>

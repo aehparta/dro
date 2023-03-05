@@ -54,7 +54,7 @@ export default {
           const vars = {};
           const value = Number(calc(input, vars));
           const offset = this.offset + (this.value - this.offset - value);
-          this.$emit('offset', this.machine_id, this.id, offset);
+          this.$emit('offset', offset);
         } catch (error) {
           console.warn(error);
           this.$toast.error('Failed calculating new value');

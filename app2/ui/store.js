@@ -6,16 +6,14 @@ export const store = Vue.reactive({
     keyboard: {},
     view: { reverse: false },
   },
-  projects: {},
-  encoders: {},
-  machines: {},
-  tools: {},
-  materials: {},
+  projects: [],
+  machines: [],
+  tools: [],
+  materials: [],
 });
 
 export const ui = Vue.computed(() => store.ui);
 export const projects = Vue.computed(() => store.projects);
-export const encoders = Vue.computed(() => store.encoders);
 export const machines = Vue.computed(() => store.machines);
 export const tools = Vue.computed(() => store.tools);
 export const materials = Vue.computed(() => store.materials);
@@ -47,31 +45,23 @@ socket.on('ui', (ui) => {
 
 socket.on('projects', (projects) => {
   watching.projects.save = false;
-  store.projects = projects || {};
-});
-
-socket.on('encoders', (encoders) => {
-  watching.encoders.save = false;
-  store.encoders = encoders || {};
+  store.projects = projects || [];
 });
 
 socket.on('machines', (machines) => {
   watching.machines.save = false;
-  store.machines = machines || {};
+  store.machines = machines || [];
 });
 
 socket.on('tools', (tools) => {
   watching.tools.save = false;
-  store.tools = tools || {};
+  store.tools = tools || [];
 });
 
 socket.on('materials', (materials) => {
   watching.materials.save = false;
-  store.materials = {};
-  for (const [name, material] of Object.entries(materials)) {
-    store.materials[name] = {
-      ...(material?.parent ? materials[material.parent] : {}),
-      ...material,
-    };
-  }
+  store.materials = materials.map((material) => ({
+    ...(materials.find((p) => p.id == material.parent) || {}),
+    ...material,
+  }));
 });

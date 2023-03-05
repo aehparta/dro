@@ -1,0 +1,8 @@
+<div class="tools list row">
+  <Tool
+    v-for="tool in tools"
+    v-bind="tool"
+    class="col selectable focusable"
+    @select="$emit('select', tool)"
+  />
+</div>

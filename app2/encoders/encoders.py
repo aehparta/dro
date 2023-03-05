@@ -43,13 +43,13 @@ async def run():
         except Empty:
             pass
 
-        for machine_id, machine in config['machines'].items():
+        for machine in config['machines']:
             for axis_id, axis in machine['axes'].items():
                 try:
                     value = eval(str(axis['value']), None, __encoders)
                 except:
                     value = 'NaN'
-                await httpd.emit(f'encoder.{machine_id}.{axis_id}', value)
+                await httpd.emit(f'encoder.{machine["id"]}.{axis_id}', value)
 
         await asyncio.sleep(0.05)
 

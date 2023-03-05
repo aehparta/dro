@@ -6,14 +6,6 @@ export default {
   data() {
     return {
       materials,
-      material: undefined,
     };
-  },
-  created() {},
-  methods: {
-    select(id) {
-      this.material = this.materials[id];
-      this.$emit('select', id, this.material);
-    },
   },
 };

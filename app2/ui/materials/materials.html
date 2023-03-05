@@ -1,26 +1,26 @@
 <div class="materials">
   <ul>
-    <li v-for="(m0, id0) in materials">
+    <li v-for="m0 in materials">
       <div
         v-if="!m0.parent"
-        @click="select(id0)"
+        @click="$emit('select', m0)"
         class="material-list-group selectable focusable"
         :class="{selected: m0 === material}"
       >
         <span class="color-badge" :style="{ background: m0.color }"></span>
-        {{ id0 }}
+        {{ m0.id }}
         <span class="d-none d-xxl-inline"> - {{ m0.description }}</span>
       </div>
       <ul>
-        <li v-for="(m1, id1) in materials">
+        <li v-for="m1 in materials">
           <div
-            v-if="m1.parent === id0"
-            @click="select(id1)"
+            v-if="m1.parent === m0.id"
+            @click="$emit('select', m1)"
             class="material-list-item selectable focusable"
             :class="{selected: m1 === material}"
           >
-            <span class="color-badge" :style="{ background: m1.color }"></span>
-            {{ id1 }}
+            <span class="color-badge" :style="{ background: m0.color }"></span>
+            {{ m1.id }}
           </div>
         </li>
       </ul>

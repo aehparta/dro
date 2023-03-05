@@ -1,4 +1,4 @@
-'1: KF 25 L':
+- id: '1: KF 25 L'
   axes:
     x:
       value: 1000
@@ -6,15 +6,16 @@
       value: dummy0[0] / 1000
     z:
       value: -20
+      offset_group: tool
   type: milling machine
-'2: KF 25 L':
+- id: '2: KF 25 L'
   axes:
     x:
       value: 1000
     y:
       value: -20
   type: router
-'Hobby 400':
+- id: Hobby 400
   axes:
     x:
       value: 4

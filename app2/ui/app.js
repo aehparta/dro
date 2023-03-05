@@ -18,6 +18,8 @@ const templates = [
   'projects/project.html',
   'machines/machines.html',
   'machines/machine.html',
+  'tools/tools.html',
+  'tools/tool.html',
 ];
 
 const stylesheets = [
@@ -26,6 +28,7 @@ const stylesheets = [
   'dro/dro.css',
   'dro/axis.css',
   'dro/offset.css',
+  'config/config.css',
   'materials/materials.css',
   'materials/material.css',
   'sidebar/sidebar.css',
@@ -33,6 +36,8 @@ const stylesheets = [
   'projects/project.css',
   'machines/machines.css',
   'machines/machine.css',
+  'tools/tools.css',
+  'tools/tool.css',
 ];
 
 const app = Vue.createApp({

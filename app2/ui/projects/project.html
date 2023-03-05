@@ -1,6 +1,7 @@
 <div v-if="id" class="project" @click="$emit('select', id)">
-  <Icon id="tasks" />{{ id }}
+  <Icon id="tasks" />
+  {{ id }}
 </div>
-<div v-else class="project" @click="$emit('create')">
+<div v-else class="project not-selected" @click="$emit('create')">
   <slot> <Icon id="plus" />Create new project </slot>
 </div>

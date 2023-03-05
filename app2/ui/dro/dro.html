@@ -11,83 +11,86 @@
         <Sidebar class="col-3 focusable-group">
           <Project
             class="selectable focusable"
-            :id="project_id"
             v-bind="project"
             @click="toggle('projects')"
           >
             <Icon id="tasks" />
             Select project
           </Project>
-          <Machine
-            v-if="project"
-            class="selectable focusable"
-            :id="machine_id"
-            v-bind="machine"
-            @click="toggle('machines')"
-          >
-            <Icon id="tools" />
-            Select machine
-          </Machine>
           <Material
             v-if="project"
             class="selectable focusable"
-            :id="material_id"
             v-bind="material"
             @click="toggle('materials')"
           >
             <Icon id="splotch" />
             Select material
           </Material>
-          <div
+          <Machine
             v-if="project"
             class="selectable focusable"
+            v-bind="machine"
+            @click="toggle('machines')"
+          >
+            <Icon id="tools" />
+            Select machine
+          </Machine>
+          <Tool
+            v-if="machine"
+            class="selectable focusable"
+            v-bind="tool"
             @click="toggle('tools')"
           >
             <Icon id="fan" />
             Select tool
-          </div>
+          </Tool>
           <div class="spacer"></div>
           <Offset
             v-if="project"
-            v-for="id in Object.keys(offset_ids)"
+            v-for="(value, id) in offsets"
             :id="id"
-            :selected="id === offset_id"
-            v-bind="offsets?.[id]"
+            :selected="value === offset"
+            v-bind="value"
             class="selectable focusable"
-            @click="selectOffset(id)"
+            @click="offset = id"
           />
         </Sidebar>
         <div class="col">
           <div class="row" v-if="show === 'default'">
-            <div class="col-6 focusable-group"></div>
+            <div class="col-6 focusable-group">Default</div>
           </div>
           <Projects
             v-if="show === 'projects'"
-            @select="selectProject"
-            class="focusable-group"
-          />
-          <Machines
-            v-if="show === 'machines'"
-            @select="selectMachine"
+            @select="(v) => { project = v; show = 'default' }"
             class="focusable-group"
           />
           <Materials
             v-if="show === 'materials'"
-            @select="selectMaterial"
+            @select="(v) => { material = v; show = 'default' }"
             class="focusable-group"
+          />
+          <Machines
+            v-if="show === 'machines'"
+            @select="(v) => { machine = v; show = 'default' }"
+            class="focusable-group"
+          />
+          <Tools
+            v-if="show === 'tools'"
+            @select="(v) => { tool = v; show = 'default' }"
+            class="focusable-group row-cols-2 mx-0"
           />
         </div>
       </div>
     </div>
     <div class="col axes">
       <Axis
-        v-for="(data, id) in machines[machine_id]?.axes"
-        :machine_id="machine_id"
+        v-for="(data, id) in machine?.axes"
+        :machine_id="machine.id"
         :id="id"
         :label="(data.label || id).toUpperCase()"
-        :offset="offsets?.[offset_id]?.[id] || 0"
+        :offset="offset?.[id] || 0"
         :decimals="decimals"
-        @offset="setOffset"
+        @offset="(v) => offset = [id, v]"
       />
     </div>
   </div>

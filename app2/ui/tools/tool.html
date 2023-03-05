@@ -1,0 +1,22 @@
+<div v-if="id" class="tool" @click="$emit('select', id)">
+  <Icon id="fan" :color="iconColor()" />
+  <label>{{ id }}</label>
+  <div class="description">
+    <span>{{ type }}</span>
+    <span v-if="d">,
+      <span class="diameter">
+        <span class="icon">Ø</span>
+        <span>{{ d }}</span>
+      </span>
+    </span>
+    <span v-if="model">, {{ model }}</span>
+    <span v-if="use">, {{ use }}</span>
+    <span v-if="manufacturer">, {{ manufacturer }}</span>
+  </div>
+</div>
+<div v-else class="tool not-selected" @click="$emit('create')">
+  <slot>
+    <Icon id="plus" />
+    <label>Create new tool</label>
+  </slot>
+</div>

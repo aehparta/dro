@@ -3,6 +3,9 @@
   <label>{{ id }}</label>
   <div class="type">{{ type }}</div>
 </div>
-<div v-else class="machine" @click="$emit('create')">
-  <slot> <Icon id="plus" />Create new machine </slot>
+<div v-else class="machine not-selected" @click="$emit('create')">
+  <slot>
+    <Icon id="plus" />
+    <label>Create new machine</label>
+  </slot>
 </div>

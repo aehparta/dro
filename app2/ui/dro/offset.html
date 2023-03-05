@@ -1,5 +1,5 @@
-<div class="offset" :class="{active: active, selected: selected }">
+<div class="offset" :class="{active: isActive(), selected }">
   <Icon id="crosshairs" />
   {{ id }}
-  <span v-if="!active">(unused)</span>
+  <span v-if="!isActive()">(unused)</span>
 </div>

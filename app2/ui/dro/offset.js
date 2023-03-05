@@ -10,15 +10,16 @@ export default {
     b: Number,
     c: Number,
   },
-  data() {
-    return {
-      active:
+  methods: {
+    isActive() {
+      return (
         this.x !== undefined ||
         this.y !== undefined ||
         this.z !== undefined ||
         this.a !== undefined ||
         this.b !== undefined ||
-        this.c !== undefined,
-    };
+        this.c !== undefined
+      );
+    },
   },
 };

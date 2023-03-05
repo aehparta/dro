@@ -1,13 +1,76 @@
-C246:
-  diameters: [6]
+- id: C2466.0
+  type: end mill
+  d: 6
+  manufacturer: Dormer
   materials:
     P:
-      speed: 126
-      feed: 0.029
-    N;Aluminium: 
-      speed: 159
-      feed: 0.043
-    N;Cast aluminium:
-      speed: 72
-      feed: 0.029
-
+      vc: 126
+      fn: 0.029
+    N - Aluminium:
+      vc: 159
+      fn: 0.043
+    N - Cast aluminium:
+      vc: 72
+      fn: 0.029
+- id: C2476.0
+  type: end mill
+  d: 6
+  manufacturer: Dormer
+  materials:
+    P:
+      vc: 59
+      fn: 0.01
+- id: C24716.0
+  type: end mill
+  d: 16
+  manufacturer: Dormer
+  materials:
+    P:
+      vc: 59
+      fn: 0.029
+- id: CCMT060208-UF 5015
+  type: insert
+  model: CCMT0602
+  use: finishing
+  manufacturer: Sandvik
+  materials:
+    P:
+      ap: 0.4
+      ap_range: [0.2, 1.5]
+      vc: 410
+      vc_range: [305, 495]
+      fn: 0.12
+      fn_range: [0.06, 0.29]
+    K:
+      ap: 0.4
+      ap_range: [0.2, 1.5]
+      vc: 260
+      vc_range: [205, 285]
+      fn: 0.12
+      fn_range: [0.06, 0.29]
+- id: APMT1604PDER-H2
+  type: insert
+  model: APMT1604
+  use: roughing
+- id: Boring head indexable
+  type: boring head
+  insert: CCMT0602
+- id: Fly cutter indexable
+  type: fly cutter
+  insert: CCMT0602
+- id: Face mill BAP400R-50
+  type: face mill
+  d: 50
+  insert: APMT1604
+- id: End mill indexable 10
+  type: end mill
+  d: 10
+  insert: APMT1135
+- id: End mill indexable 12
+  type: end mill
+  d: 12
+  insert: APMT1135
+- id: End mill indexable 16
+  type: end mill
+  d: 16
+  insert: APMT1135

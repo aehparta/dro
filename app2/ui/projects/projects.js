@@ -10,12 +10,9 @@ export default {
   methods: {
     create() {
       let i = 1;
-      for (; this.projects?.[`Project ${i}`]; i++);
-      this.projects[`Project ${i}`] = {};
-      this.select(`Project ${i}`);
-    },
-    select(id) {
-      this.$emit('select', id);
+      for (; this.projects.find((p) => p.id === `Project ${i}`); i++);
+      this.projects.push({ id: `Project ${i}` });
+      this.$emit('select', `Project ${i}`);
     },
   },
 };

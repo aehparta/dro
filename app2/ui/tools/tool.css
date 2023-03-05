@@ -1,0 +1,16 @@
+.tool .description {
+  font-size: 80%;
+  width: 100%;
+  margin-left: 2em;
+}
+
+.tool .diameter {
+  color: #f0a0a0;
+  font-weight: 900;
+  font-size: 110%;
+}
+
+.tool .diameter .icon {
+  color: #c07070;
+  margin: 0;
+}
