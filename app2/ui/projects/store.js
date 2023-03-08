@@ -9,6 +9,12 @@ export const project = Vue.computed({
   },
 });
 
+export const decimals = Vue.computed({
+  get: () =>
+    project.value?.decimals === undefined ? 3 : project.value?.decimals,
+  set: (value) => (project.value.decimals = value),
+});
+
 export const material = Vue.computed({
   get: () => materials.value.find((v) => v.id === project.value?.material_id),
   set: (value) => (project.value.material_id = value?.id || value),
@@ -21,7 +27,7 @@ export const machine = Vue.computed({
 
 const by_machine = (key, value) => {
   key = key instanceof Array ? key : key.split('.');
-  key.unshift(machine.value.id);
+  key.unshift(machine.value?.id);
   key.unshift('by_machine');
   return value === undefined
     ? _.get(project.value, key)
@@ -34,19 +40,41 @@ export const tool = Vue.computed({
 });
 
 export const offsets = Vue.computed({
-  get: () =>
-    _.merge(
-      {
-        G54: {},
-        G55: {},
-        G56: {},
-        G57: {},
-        G58: {},
-        G59: {},
-      },
-      by_machine('offsets.default'),
-      by_machine(['offsets', 'tool', tool.value.id])
-    ),
+  get: () => {
+    const o = {
+      G54: { unset: true },
+      G55: { unset: true },
+      G56: { unset: true },
+      G57: { unset: true },
+      G58: { unset: true },
+      G59: { unset: true },
+      ..._.cloneDeep(by_machine('offsets.work')),
+    };
+    const tool_offsets = Object.entries(
+      by_machine(['offsets', 'tool', tool.value?.id]) || {}
+    );
+
+    for (const offset_id of Object.keys(o)) {
+      for (const axis_id of Object.keys(o[offset_id])) {
+        const value = _.get(o, [offset_id, axis_id]);
+        _.set(o, [offset_id, `${axis_id}_work`], value);
+      }
+    }
+
+    for (const [axis_id, tool_offset_value] of tool_offsets) {
+      for (const offset_id of Object.keys(o)) {
+        const value = _.get(o, [offset_id, axis_id], 0);
+        _.set(o, [offset_id, axis_id], value + tool_offset_value);
+        _.set(o, [offset_id, `${axis_id}_tool`], tool_offset_value);
+      }
+    }
+
+    if (!by_machine('offset_id')) {
+      by_machine('offset_id', 'G54');
+    }
+
+    return o;
+  },
 });
 
 export const offset = Vue.computed({
@@ -57,16 +85,11 @@ export const offset = Vue.computed({
   set: (data) => {
     if (data instanceof Array) {
       const [axis_id, value] = data;
-      const group = machine.value.axes[axis_id]?.offset_group || 'default';
-
-      const path = ['offsets', group];
-      if (group === 'tool') {
-        path.push(tool.value.id);
-      }
-      path.push(by_machine('offset_id'));
-      path.push(axis_id);
-
-      by_machine(path, value);
+      const offset_id = by_machine('offset_id');
+      const tool_offset_value =
+        by_machine(['offsets', 'tool', tool.value?.id, axis_id]) || 0;
+      const path = ['offsets', 'work', offset_id, axis_id];
+      by_machine(path, value - tool_offset_value);
     } else {
       by_machine('offset_id', data);
     }

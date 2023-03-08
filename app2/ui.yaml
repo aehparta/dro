@@ -1,19 +1,19 @@
 keyboard:
   ArrowDown:
     focusable:
-      dir: 1
+      dir: down
       whenEditing: false
   ArrowLeft:
-    focusable.group:
-      dir: -1
+    focusable:
+      dir: left
       whenEditing: false
   ArrowRight:
-    focusable.group:
-      dir: 1
+    focusable:
+      dir: right
       whenEditing: false
   ArrowUp:
     focusable:
-      dir: -1
+      dir: up
       whenEditing: false
   Delete:
     delete: null
@@ -67,6 +67,6 @@ navigation:
   label: Vision
 - id: config
   label: Config
-other: 0.08367070905639284
+other: 0.8533051992335983
 view:
   reverse: false

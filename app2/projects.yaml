@@ -1,24 +1,43 @@
 - by_machine:
     '1: KF 25 L':
-      offset_id: G56
+      offset_id: G54
       offsets:
-        default:
-          G54:
-            x: 946
-          G56:
-            x: 944
         tool:
           C24716.0:
-            G54:
-              z: -20
+            z: -200
           CCMT060208-UF 5015:
-            G54:
-              z: -20
-      tool_id: C24716.0
+            z: -20
+        work:
+          G54:
+            x: 945
+            y: 0
+            z: 180
+          G55:
+            x: 1000
+            z: 180
+          G56:
+            x: 944
+            z: 180
+          G57:
+            x: 1000
+          G58:
+            x: 1000
+            z: 0
+      tool_id: CCMT060208-UF 5015
     '2: KF 25 L':
       tool_id: APMT1604PDER-H2
     Hobby 400:
       tool_id: End mill indexable 12
   id: Project 1
+  machine_id: '1: KF 25 L'
+  material_id: S355J2 C+C
+- by_machine:
+    '1: KF 25 L':
+      offset_id: G54
+      offsets:
+        work:
+          G54:
+            x: 1000
+  id: Project 2
   machine_id: '1: KF 25 L'
   material_id: S355J2 C+C

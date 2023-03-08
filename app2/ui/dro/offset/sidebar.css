@@ -1,7 +1,3 @@
-.offset:not(.active) {
-  color: #007070;
-}
-
 .offset.selected {
   color: #f0e050;
   background: #006060;

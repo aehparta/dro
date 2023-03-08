@@ -1,4 +1,5 @@
 import { socket } from '../io.js';
+import { decimals } from '../projects/store.js';
 
 export default {
   template: '#tmpl-dro-axis',
@@ -7,7 +8,6 @@ export default {
     id: String,
     label: String,
     offset: Number,
-    decimals: Number,
   },
   data() {
     return {
@@ -15,6 +15,7 @@ export default {
       rounded: NaN,
       fixed: NaN,
       focused: false,
+      decimals,
     };
   },
   mounted() {
@@ -42,7 +43,6 @@ export default {
     },
     cancel() {
       this.focused = false;
-      this.$refs.input.blur();
     },
     focus() {
       this.focused = true;

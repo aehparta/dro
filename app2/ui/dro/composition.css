@@ -1,0 +1,25 @@
+.composition {
+  font-size: 120%;
+  white-space: nowrap;
+  padding: 0.4rem;
+  background: rgba(0, 255, 255, 0.3);
+}
+
+.composition table {
+  opacity: 0.85;
+}
+
+.composition .range {
+  float: left;
+  position: absolute;
+  font-size: 75%;
+  opacity: 0.8;
+}
+
+.composition .static {
+  color: #d0d0ff !important;
+}
+
+.composition .warning {
+  background: rgba(255, 128, 0, 0.25);
+}

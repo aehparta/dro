@@ -1,0 +1,12 @@
+<div v-if="show" id="dialog">
+  <div class="body" data-bs-theme="dark">
+    <div v-if="title" class="header">
+      {{ title }}
+      <button type="button" class="btn-close float-end" @click="close"></button>
+    </div>
+    <div class="content">
+      <slot>Empty dialog</slot>
+    </div>
+    <!-- <div class="footer"></div> -->
+  </div>
+</div>

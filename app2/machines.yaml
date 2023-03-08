@@ -6,8 +6,9 @@
       value: dummy0[0] / 1000
     z:
       value: -20
-      offset_group: tool
+      tool: true
   type: milling machine
+  rpm_max: 2250
 - id: '2: KF 25 L'
   axes:
     x:

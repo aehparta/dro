@@ -17,7 +17,8 @@ import Tools from '../tools/tools.js';
 import Tool from '../tools/tool.js';
 import Sidebar from '../sidebar/sidebar.js';
 import Axis from './axis.js';
-import Offset from './offset.js';
+import Composition from './composition.js';
+import OffsetSidebar from './offset/sidebar.js';
 
 export default {
   template: '#tmpl-dro-dro',
@@ -32,7 +33,8 @@ export default {
     Tool,
     Sidebar,
     Axis,
-    Offset,
+    Composition,
+    OffsetSidebar,
   },
   data() {
     return {
@@ -47,7 +49,6 @@ export default {
       offsets,
       offset,
       ui,
-      decimals: 3,
       show: 'default',
     };
   },

@@ -6,8 +6,8 @@ from threading import Event
 
 __shutdown = Event()
 
-
-config = {
+base = {}
+sections = {
     'ui': {},
     'projects': {},
     'encoders': {},
@@ -18,34 +18,40 @@ config = {
 
 
 async def emit_all_to(sid):
-    for section, data in config.items():
+    for section, data in sections.items():
         await httpd.emit(section, data, sid)
 
 
 async def load(section):
     with open(f'{section}.yaml', 'r') as f:
-        config[section] = yaml.safe_load(f)
-        await httpd.emit(section, config[section])
+        sections[section] = yaml.safe_load(f)
+        await httpd.emit(section, sections[section])
 
 
 async def load_all():
-    for section in config.keys():
+    for section in sections.keys():
         await load(section)
 
 
 def save(section, data=None):
     with open(f'{section}.yaml', 'w') as f:
         if data is None:
-            data = config[section]
+            data = sections[section]
         yaml.dump(data, f)
 
 
 async def run():
+    # load base config
+    with open('config.yaml', 'r') as f:
+        base = yaml.safe_load(f)
+        if not isinstance(base, dict):
+            base = {}
+
     modified = {}
 
     while not __shutdown.is_set():
-        for section in config.keys():
-            mtime = modified[section] if section in modified else 0
+        for section in sections.keys():
+            mtime = modified.get(section, 0)
             st = os.stat(f'{section}.yaml')
             if st.st_mtime > mtime:
                 await load(section)

@@ -1,6 +1,7 @@
 export default {
   template: '#tmpl-tools-tool',
   props: {
+    show: String,
     id: String,
     type: String,
     d: Number,

@@ -15,17 +15,3 @@
   padding-right: 0.3em;
   cursor: pointer;
 }
-
-.axis input {
-  width: 100%;
-  background: transparent;
-  border: 0.01em solid transparent;
-  flex: 1;
-  color: #00e0d0;
-  text-align: end;
-}
-
-.axis input:focus-visible {
-  border: 0.01em solid #00c0b0;
-  outline: 0;
-}

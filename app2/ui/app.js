@@ -1,44 +1,10 @@
+import { socket } from './io.js';
 import Navigation, { page } from './navigation.js';
 import DRO from './dro/dro.js';
 import Config from './config/config.js';
 import { ui } from './store.js';
 import Icon from './icon.js';
-
-const templates = [
-  'app.html',
-  'navigation.html',
-  'dro/dro.html',
-  'dro/axis.html',
-  'dro/offset.html',
-  'config/config.html',
-  'materials/materials.html',
-  'materials/material.html',
-  'sidebar/sidebar.html',
-  'projects/projects.html',
-  'projects/project.html',
-  'machines/machines.html',
-  'machines/machine.html',
-  'tools/tools.html',
-  'tools/tool.html',
-];
-
-const stylesheets = [
-  'app.css',
-  'navigation.css',
-  'dro/dro.css',
-  'dro/axis.css',
-  'dro/offset.css',
-  'config/config.css',
-  'materials/materials.css',
-  'materials/material.css',
-  'sidebar/sidebar.css',
-  'projects/projects.css',
-  'projects/project.css',
-  'machines/machines.css',
-  'machines/machine.css',
-  'tools/tools.css',
-  'tools/tool.css',
-];
+import Dialog from './dialog/dialog.js';
 
 const app = Vue.createApp({
   template: '#tmpl-app',
@@ -68,8 +34,10 @@ const app = Vue.createApp({
       if (document.activeElement) {
         document.activeElement.blur();
       }
-      if (this.focus.element) {
-        this.focus.element.click();
+      if (document.body.classList.contains('focusing')) {
+        this.focus.element?.tagName === 'INPUT'
+          ? this.focus.element?.focus() + this.focus.element?.select()
+          : this.focus.element?.click();
       }
     });
 
@@ -77,16 +45,30 @@ const app = Vue.createApp({
       this.ui.view.reverse = !this.ui.view.reverse;
     });
 
-    on('focusable.group', ({ dir }) => {
-      this.focusGroupSelect(dir);
-      this.focusElementSelect(0);
-    });
-    on('focusable', ({ dir }) => {
-      this.focusGroupSelect(0);
-      this.focusElementSelect(dir);
-    });
+    on('focusable.group', ({ dir }) => this.focusTravel(dir));
+    on('focusable', ({ dir }) => this.focusTravel(dir));
     addEventListener('focusin', this.focusClear);
-    on('cancel', this.focusClear);
+    on('cancel', () => {
+      this.focusClear();
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    });
+
+    socket.on('reload', (file) => {
+      if (file.endsWith('.css')) {
+        for (const element of document.head.children) {
+          if (
+            element?.attributes?.href?.value?.startsWith('css/site.all.css')
+          ) {
+            element.attributes.href.value = 'css/site.all.css';
+            break;
+          }
+        }
+      } else {
+        location.reload();
+      }
+    });
   },
   methods: {
     keyPress(event) {
@@ -115,74 +97,61 @@ const app = Vue.createApp({
         }
       }
     },
-    focusGroupSelect(dir) {
-      const groups = Array.from(
-        document.body.getElementsByClassName('focusable-group')
+    focusTravel(dir) {
+      const focusables = Array.from(
+        (
+          document.getElementById('dialog') || document.body
+        ).getElementsByClassName('focusable')
       ).filter((el) => el.offsetParent);
 
-      let index = 0;
-      if (groups.includes(this.focus.group)) {
-        index = groups.indexOf(this.focus.group) + dir;
-        if (index >= groups.length) {
-          index = 0;
-        } else if (index < 0) {
-          index = groups.length - 1;
+      if (focusables.length < 1) {
+        return;
+      }
+
+      this.focus.element?.classList.remove('focused');
+      if (!this.focus.element?.offsetParent) {
+        this.focus.element = focusables[0];
+      } else if (document.body.classList.contains('focusing')) {
+        const rc0 = this.focus.element.getBoundingClientRect();
+        const i = focusables.indexOf(this.focus.element);
+
+        let lx = dir === 'right' ? Infinity : -Infinity;
+        let ly = Infinity;
+
+        const elements = ['up', 'left'].includes(dir)
+          ? [...focusables.slice(i), ...focusables.slice(0, i)].reverse()
+          : [...focusables.slice(i + 1), ...focusables.slice(0, i + 1)];
+
+        for (const element of elements) {
+          const rc1 = element.getBoundingClientRect();
+          const dx = rc1.x - rc0.x;
+          const dy = Math.abs(rc1.y - rc0.y);
+
+          if (['up', 'down'].includes(dir) && Math.abs(dx) < 10) {
+            this.focus.element = element;
+            break;
+          } else if (dir === 'right' && dx > 10 && dx < lx && dy < ly) {
+            this.focus.element = element;
+            lx = dx + 10;
+            ly = dy;
+          } else if (dir === 'left' && dx < -10 && dx > lx && dy < ly) {
+            this.focus.element = element;
+            lx = dx - 10;
+            ly = dy;
+          }
         }
       }
 
-      this.focus.group = groups[index];
-    },
-    focusElementSelect(dir) {
-      const elements = Array.from(
-        this.focus.group.getElementsByClassName('focusable')
-      ).filter((el) => el.offsetParent);
-
-      let index = 0;
-      if (elements.includes(this.focus.element)) {
-        index = elements.indexOf(this.focus.element) + dir;
-        if (index >= elements.length) {
-          index = 0;
-        } else if (index < 0) {
-          index = elements.length - 1;
-        }
-      }
-
-      if (this.focus.element) {
-        this.focus.element.classList.remove('focused');
-      }
-      this.focus.element = elements[index];
       this.focus.element.classList.add('focused');
+      document.body.classList.add('focusing');
     },
     focusClear() {
-      if (this.focus.element) {
-        this.focus.element.classList.remove('focused');
-      }
-      this.focus.element = undefined;
-
-      this.ui.other = Math.random();
+      document.body.classList.remove('focusing');
     },
   },
 });
 
-for (const stylesheet of stylesheets) {
-  const el = document.createElement('link');
-  el.rel = 'stylesheet';
-  el.href = `ui/${stylesheet}`;
-  document.head.append(el);
-}
-
-const promises = templates.map(async (template) => {
-  const response = await fetch(`ui/${template}`);
-  const data = await response.text();
-  const el = document.createElement('script');
-  el.type = 'text/x-template';
-  el.id = `tmpl-${template.replace('.html', '').replace('/', '-')}`;
-  el.innerHTML = data;
-  document.body.append(el);
-});
-
-Promise.all(promises).then(() => {
-  app.use(VueToast.ToastPlugin);
-  app.component('Icon', Icon);
-  app.mount('#app');
-});
+app.use(VueToast.ToastPlugin);
+app.component('Icon', Icon);
+app.component('Dialog', Dialog);
+app.mount('#app');
