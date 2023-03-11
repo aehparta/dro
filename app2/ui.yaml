@@ -67,6 +67,5 @@ navigation:
   label: Vision
 - id: config
   label: Config
-other: 0.8533051992335983
 view:
   reverse: false

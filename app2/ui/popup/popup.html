@@ -1,11 +1,11 @@
-<div v-if="show" id="dialog">
+<div v-if="show" id="popup">
   <div class="body" data-bs-theme="dark">
     <div v-if="title" class="header">
       {{ title }}
       <button type="button" class="btn-close float-end" @click="close"></button>
     </div>
     <div class="content">
-      <slot>Empty dialog</slot>
+      <slot>Empty popup</slot>
     </div>
     <!-- <div class="footer"></div> -->
   </div>

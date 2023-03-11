@@ -1,5 +1,5 @@
 export default {
-  template: '#tmpl-dialog-dialog',
+  template: '#tmpl-popup-popup',
   props: {
     title: String,
   },

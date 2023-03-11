@@ -1,8 +1,9 @@
 <div class="tools row g-2">
-  <div v-for="tool in tools" class="col-3">
+  <div v-for="tool in tools.filter(t => filter(t))" class="col-3">
     <Tool
       v-bind="tool"
-      class="selectable focusable"
+      class="selectable focusable p-3"
+      :class="{ selected: tool === selected }"
       @select="$emit('select', tool)"
     />
   </div>

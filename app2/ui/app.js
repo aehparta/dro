@@ -4,7 +4,7 @@ import DRO from './dro/dro.js';
 import Config from './config/config.js';
 import { ui } from './store.js';
 import Icon from './icon.js';
-import Dialog from './dialog/dialog.js';
+import Popup from './popup/popup.js';
 
 const app = Vue.createApp({
   template: '#tmpl-app',
@@ -100,7 +100,7 @@ const app = Vue.createApp({
     focusTravel(dir) {
       const focusables = Array.from(
         (
-          document.getElementById('dialog') || document.body
+          document.getElementById('popup') || document.body
         ).getElementsByClassName('focusable')
       ).filter((el) => el.offsetParent);
 
@@ -153,5 +153,5 @@ const app = Vue.createApp({
 
 app.use(VueToast.ToastPlugin);
 app.component('Icon', Icon);
-app.component('Dialog', Dialog);
+app.component('Popup', Popup);
 app.mount('#app');

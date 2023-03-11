@@ -1,8 +1,7 @@
 .composition {
   font-size: 120%;
   white-space: nowrap;
-  padding: 0.4rem;
-  background: rgba(0, 255, 255, 0.3);
+  background: #006060;
 }
 
 .composition table {

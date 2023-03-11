@@ -1,4 +1,4 @@
-#dialog {
+#popup {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -12,24 +12,24 @@
   align-items: center;
 }
 
-#dialog .body {
-  min-width: 20vw;
-  max-width: 80vw;
+#popup .body {
+  min-width: 60vw;
+  max-width: 90vw;
   background: #004040;
 }
 
-#dialog .header,
-#dialog .footer {
+#popup .header,
+#popup .footer {
   padding: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-#dialog .footer {
+#popup .footer {
   display: flex;
   justify-content: flex-end;
 }
 
-#dialog .content {
+#popup .content {
   padding: 1rem;
 }

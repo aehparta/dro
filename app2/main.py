@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import signal
 import asyncio
 import httpd
@@ -21,4 +23,5 @@ def sigint(sig, frame):
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint)
+    config.load_base()
     asyncio.run(main())

@@ -1,6 +1,6 @@
 - by_machine:
     '1: KF 25 L':
-      offset_id: G54
+      offset_id: G55
       offsets:
         tool:
           C24716.0:
@@ -11,7 +11,7 @@
           G54:
             x: 945
             y: 0
-            z: 180
+            z: -20
           G55:
             x: 1000
             z: 180
@@ -23,7 +23,7 @@
           G58:
             x: 1000
             z: 0
-      tool_id: CCMT060208-UF 5015
+      tool_id: Fly cutter indexable
     '2: KF 25 L':
       tool_id: APMT1604PDER-H2
     Hobby 400:

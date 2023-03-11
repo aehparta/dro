@@ -1,83 +1,73 @@
 <div class="dro">
   <div
-    class="row gx-2"
+    class="row gx-2 py-0 px-2"
     :style="{ flexDirection: ui.view.reverse ? 'row-reverse' : 'row' }"
   >
-    <div class="col">
-      <div
-        class="row gx-2 h-100"
-        :style="{ flexDirection: ui.view.reverse ? 'row-reverse' : 'row' }"
+    <Sidebar class="col-2">
+      <Project
+        class="selectable focusable px-2 py-3"
+        v-bind="project"
+        @click="toggle('projects')"
       >
-        <Sidebar class="col-3">
-          <div class="row">
-            <Project
-              class="selectable focusable"
-              v-bind="project"
-              @click="toggle('projects')"
-            >
-              <Icon id="tasks" />
-              Select project
-            </Project>
-            <Material
-              v-if="project"
-              class="selectable focusable"
-              v-bind="material"
-              @click="toggle('materials')"
-            >
-              <Icon id="splotch" />
-              Select material
-            </Material>
-            <Machine
-              v-if="project"
-              class="selectable focusable"
-              v-bind="machine"
-              @click="toggle('machines')"
-            >
-              <Icon id="tools" />
-              Select machine
-            </Machine>
-            <Tool
-              v-if="machine"
-              class="selectable focusable"
-              v-bind="tool"
-              @click="$refs.tools.open()"
-            >
-              <Icon id="fan" />
-              Select tool
-            </Tool>
-            <div class="spacer"></div>
-            <OffsetSidebar
-              v-if="project"
-              v-for="(value, id) in offsets"
-              :id="id"
-              :selected="value === offset"
-              v-bind="value"
-              class="selectable focusable"
-              @click="offset = id"
-            />
-          </div>
-        </Sidebar>
-        <div class="col">
-          <Composition v-if="show === 'default'" />
-          <Projects
-            v-if="show === 'projects'"
-            @select="(v) => { project = v; show = 'default' }"
-          />
-          <Materials
-            v-if="show === 'materials'"
-            @select="(v) => { material = v; show = 'default' }"
-          />
-          <Machines
-            v-if="show === 'machines'"
-            @select="(v) => { machine = v; show = 'default' }"
-          />
-          <dialog ref="tools" title="Select tool">
-            <Tools @select="(v) => { tool = v; $refs.tools.close() }" />
-          </dialog>
-        </div>
-      </div>
+        <Icon id="tasks" />
+        Select project
+      </Project>
+      <Material
+        v-if="project"
+        class="selectable focusable p-2"
+        v-bind="material"
+        @click="toggle('materials')"
+      >
+        <Icon id="splotch" />
+        Select material
+      </Material>
+      <Machine
+        v-if="project"
+        class="selectable focusable p-2"
+        v-bind="machine"
+        @click="toggle('machines')"
+      >
+        <Icon id="tools" />
+        Select machine
+      </Machine>
+      <Tool
+        v-if="machine"
+        class="selectable focusable p-2"
+        v-bind="tool"
+        @click="$refs.tools.open()"
+      >
+        <Icon id="fan" />
+        Select tool
+      </Tool>
+      <div class="spacer-h"></div>
+      <OffsetSidebar
+        v-if="project"
+        v-for="(value, id) in offsets"
+        :id="id"
+        :selected="value === offset"
+        v-bind="value"
+        class="selectable focusable p-2"
+        @click="offset = id"
+      />
+    </Sidebar>
+    <div class="spacer-v"></div>
+    <div class="col">
+      <Composition v-if="show === 'default'" />
+      <Projects
+        v-if="show === 'projects'"
+        @select="(v) => { project = v; show = 'default' }"
+      />
+      <Materials
+        v-if="show === 'materials'"
+        @select="(v) => { material = v; show = 'default' }"
+      />
+      <Machines
+        v-if="show === 'machines'"
+        @select="(v) => { machine = v; show = 'default' }"
+      />
     </div>
-    <div class="col axes">
+    <div class="spacer-v"></div>
+    <div class="axes col">
       <Axis
         v-for="(data, id) in machine?.axes"
         :machine_id="machine.id"
@@ -89,3 +79,6 @@
     </div>
   </div>
 </div>
+<Popup ref="tools" title="Select tool">
+  <Tools :selected="tool" @select="(v) => { tool = v; $refs.tools.close() }" />
+</Popup>

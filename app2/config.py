@@ -23,10 +23,12 @@ async def emit_all_to(sid):
 
 
 async def load(section):
-    with open(f'{section}.yaml', 'r') as f:
-        sections[section] = yaml.safe_load(f)
-        await httpd.emit(section, sections[section])
-
+    try:
+        with open(f'{section}.yaml', 'r') as f:
+            sections[section] = yaml.safe_load(f)
+            await httpd.emit(section, sections[section])
+    except:
+        pass
 
 async def load_all():
     for section in sections.keys():
@@ -40,13 +42,19 @@ def save(section, data=None):
         yaml.dump(data, f)
 
 
-async def run():
-    # load base config
-    with open('config.yaml', 'r') as f:
-        base = yaml.safe_load(f)
-        if not isinstance(base, dict):
-            base = {}
+def load_base():
+    """ Load base config """
+    try:
+        with open('config.yaml', 'r') as f:
+            global base
+            base = yaml.safe_load(f)
+            if not isinstance(base, dict):
+                base = {}
+    except:
+        pass
 
+
+async def run():
     modified = {}
 
     while not __shutdown.is_set():
