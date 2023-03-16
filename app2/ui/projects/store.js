@@ -25,7 +25,7 @@ export const machine = Vue.computed({
   set: (value) => (project.value.machine_id = value?.id || value),
 });
 
-const by_machine = (key, value) => {
+export const by_machine = (key, value) => {
   key = key instanceof Array ? key : key.split('.');
   key.unshift(machine.value?.id);
   key.unshift('by_machine');
@@ -94,16 +94,4 @@ export const offset = Vue.computed({
       by_machine('offset_id', data);
     }
   },
-});
-
-const by_tool = (key, value) => {
-  key = key instanceof Array ? key : key.split('.');
-  key.unshift(tool.value?.id);
-  key.unshift('by_tool');
-  return by_machine(key, value);
-};
-
-export const insert = Vue.computed({
-  get: () => tools.value.find((v) => v.id === by_tool('insert')),
-  set: (value) => by_tool('insert', value?.id || value),
 });

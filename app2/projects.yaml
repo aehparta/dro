@@ -2,6 +2,7 @@
     '1: KF 25 L':
       by_tool:
         Boring head indexable:
+          d: 300
           insert: CCMT060208-UF 5015
         Face mill BAP400R-50:
           insert: APMT1604PDER-H2
@@ -32,7 +33,7 @@
             z: 0
           G59:
             y: 0
-      tool_id: Face mill BAP400R-50
+      tool_id: Boring head indexable
     '2: KF 25 L':
       offset_id: G54
       tool_id: APMT1604PDER-H2

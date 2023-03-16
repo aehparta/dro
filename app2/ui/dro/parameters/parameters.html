@@ -1,0 +1,91 @@
+<div class="parameters">
+  <table
+    class="table table-dark table-striped table-bordered table-sm text-end align-middle"
+  >
+    <thead>
+      <tr>
+        <th scope="col" colspan="2">
+          {{ material.parent ? material.id : material.description }}<br />
+          {{ tool.id }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Tool type</th>
+        <td><div class="static">{{ tool.type }}</div></td>
+      </tr>
+      <tr v-if="tool.insert">
+        <th scope="row">Insert</th>
+        <td class="selectable focusable" @click="$refs.inserts.open()">
+          <span v-if="insert">{{ insert.id }}</span>
+          <span v-else>Select insert</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><em>RPM</em></th>
+        <td>
+          <div
+            class="static"
+            :class="{ warning: ((1000.0 * vc) / (Math.PI * d) || 0) > (machine.rpm_max || Infinity) }"
+          >
+            {{ ((1000.0 * vc) / (Math.PI * d) || 0).toFixed(0) }}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><em>Ø</em></th>
+        <td>
+          <div v-if="tool.d" class="static">{{ d }}</div>
+          <input v-else v-model="d" type="number" class="focusable" />
+        </td>
+      </tr>
+      <tr v-if="ap !== undefined">
+        <th scope="row"><em>A</em><sub>p</sub></th>
+        <td>
+          <div v-if="ap_range" class="range">{{ ap_range.join('-') }}</div>
+          <input
+            v-model="ap"
+            type="number"
+            step="0.1"
+            class="focusable"
+            :class="{ warning: ap_range?.[0] > ap || ap > ap_range?.[1]}"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><em>V</em><sub>c</sub></th>
+        <td>
+          <div v-if="vc_range" class="range">{{ vc_range.join('-') }}</div>
+          <input
+            v-model="vc"
+            type="number"
+            step="5"
+            class="focusable"
+            :class="{ warning: vc_range?.[0] > vc || vc > vc_range?.[1]}"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><em>F</em><sub>n</sub></th>
+        <td>
+          <div v-if="fn_range" class="range">{{ fn_range.join('-') }}</div>
+          <input
+            v-model="fn"
+            type="number"
+            step="0.01"
+            class="focusable"
+            :class="{ warning: fn_range?.[0] > fn || fn > fn_range?.[1]}"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<Popup ref="inserts" title="Select insert">
+  <Tools
+    :selected="insert"
+    @select="v => { insert = v; $refs.inserts.close() }"
+    :filter="v => v.model === tool.insert"
+  />
+</Popup>
