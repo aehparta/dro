@@ -1,7 +1,7 @@
 .axis {
   display: flex;
   background: #004040;
-  font-size: 7vw;
+  font-size: 900%;
   margin-bottom: 0.3rem;
   line-height: normal;
 }

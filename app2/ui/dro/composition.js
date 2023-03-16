@@ -1,4 +1,4 @@
-import { material, machine, tool } from '../projects/store.js';
+import { material, machine, tool, insert } from '../projects/store.js';
 import OffsetInfo from './offset/info.js';
 import Tool from '../tools/tool.js';
 import Tools from '../tools/tools.js';
@@ -11,7 +11,7 @@ export default {
       material,
       machine,
       tool,
-      insert: undefined,
+      insert,
       d: 0,
       ap: 0,
       ap_range: undefined,

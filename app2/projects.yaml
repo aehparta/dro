@@ -1,6 +1,13 @@
 - by_machine:
     '1: KF 25 L':
-      offset_id: G55
+      by_tool:
+        Boring head indexable:
+          insert: CCMT060208-UF 5015
+        Face mill BAP400R-50:
+          insert: APMT1604PDER-H2
+        Fly cutter indexable:
+          insert: CCMT060208-UF 5015
+      offset_id: G54
       offsets:
         tool:
           C24716.0:
@@ -23,10 +30,14 @@
           G58:
             x: 1000
             z: 0
-      tool_id: Fly cutter indexable
+          G59:
+            y: 0
+      tool_id: Face mill BAP400R-50
     '2: KF 25 L':
+      offset_id: G54
       tool_id: APMT1604PDER-H2
     Hobby 400:
+      offset_id: G54
       tool_id: End mill indexable 12
   id: Project 1
   machine_id: '1: KF 25 L'
@@ -38,6 +49,9 @@
         work:
           G54:
             x: 1000
+    Hobby 400:
+      offset_id: G54
+      tool_id: CCMT060208-UF 5015
   id: Project 2
-  machine_id: '1: KF 25 L'
-  material_id: S355J2 C+C
+  machine_id: Hobby 400
+  material_id: Aluminium
