@@ -1,8 +1,10 @@
 import { material, machine, tool } from '../../projects/store.js';
 import { insert } from './store.js';
+import Tools from '../../tools/tools.js'
 
 export default {
   template: '#tmpl-dro-parameters-parameters',
+  components: { Tools },
   data() {
     return {
       material,

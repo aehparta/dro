@@ -9,7 +9,9 @@
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 2rem;
+  font-size: 0.8vw;
 }
 
 #popup .body {

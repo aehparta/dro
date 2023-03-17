@@ -1,5 +1,4 @@
-from queue import Queue
-from threading import Event, Thread
+from multiprocessing import Event, Queue, Process
 
 SHUTDOWN_TIMEOUT = 3.0
 
@@ -10,7 +9,7 @@ class Interface:
         self.cfg = cfg
         self._queue = queue
         self._shutdown = Event()
-        self._thread = None
+        self._process = None
 
     def run(self):
         # Implement
@@ -20,14 +19,14 @@ class Interface:
         self._queue.put((self.id, channel, value))
 
     def start(self):
-        if not self._thread or not self._thread.is_alive:
-            self._thread = Thread(target=self.run)
-            self._thread.start()
+        if not self._process or not self._process.is_alive():
+            self._process = Process(target=self.run)
+            self._process.start()
 
     def stop(self, timeout = SHUTDOWN_TIMEOUT):
         self._shutdown.set()
-        if timeout and self._thread and self._thread.is_alive:
-            self._thread.join(timeout)
+        if timeout and self._process and self._process.is_alive():
+            self._process.join(timeout)
 
     def __getitem__(self, key):
         return self.__dict__[key]

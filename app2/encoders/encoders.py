@@ -1,10 +1,11 @@
-from threading import Event
+from multiprocessing import Event, Queue
 import asyncio
 import httpd
 from config import sections
-from queue import Queue, Empty
+from queue import Empty
 from encoders.dummy import Dummy
 from encoders.serial_port import SerialPort
+import os
 
 ENCODERS = [
     Dummy, SerialPort
@@ -25,7 +26,7 @@ async def run():
                 encoders_to_shutdown.remove(id)
             if id in __encoders:
                 continue
-
+            
             klass = next(
                 klass for klass in ENCODERS if klass.__name__ == encoder['driver'])
             driver = klass(id, encoder, __encoders_queue)
@@ -34,7 +35,7 @@ async def run():
 
         # shutdown removed encoders
         for id in encoders_to_shutdown:
-            __encoders[id].stop(0)
+            __encoders[id].stop()
             del __encoders[id]
 
         try:
@@ -53,8 +54,9 @@ async def run():
 
         await asyncio.sleep(0.05)
 
-
-def stop():
     for encoder in __encoders.values():
         encoder.stop()
+
+
+def stop():
     __shutdown.set()

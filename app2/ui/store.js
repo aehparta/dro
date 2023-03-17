@@ -55,7 +55,7 @@ socket.on('machines', (machines) => {
 
 socket.on('tools', (tools) => {
   watching.tools.save = false;
-  store.tools = tools || [];
+  store.tools = (tools || []).sort((a, b) => a.id.localeCompare(b.id));
 });
 
 socket.on('materials', (materials) => {

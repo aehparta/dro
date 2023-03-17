@@ -1,6 +1,7 @@
 import random
 import time
 from .interface import Interface
+import os
 
 
 class Dummy(Interface):
