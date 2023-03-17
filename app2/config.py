@@ -6,6 +6,8 @@ from threading import Event
 
 __shutdown = Event()
 
+config_path = 'config'
+
 base = {}
 sections = {
     'ui': {},
@@ -24,7 +26,7 @@ async def emit_all_to(sid):
 
 async def load(section):
     try:
-        with open(f'{section}.yaml', 'r') as f:
+        with open(f'{config_path}/{section}.yaml', 'r') as f:
             sections[section] = yaml.safe_load(f)
             await httpd.emit(section, sections[section])
     except:
@@ -36,7 +38,7 @@ async def load_all():
 
 
 def save(section, data=None):
-    with open(f'{section}.yaml', 'w') as f:
+    with open(f'{config_path}/{section}.yaml', 'w') as f:
         if data is None:
             data = sections[section]
         yaml.dump(data, f)
@@ -45,7 +47,7 @@ def save(section, data=None):
 def load_base():
     """ Load base config """
     try:
-        with open('config.yaml', 'r') as f:
+        with open(f'{config_path}/config.yaml', 'r') as f:
             global base
             base = yaml.safe_load(f)
             if not isinstance(base, dict):
@@ -60,7 +62,7 @@ async def run():
     while not __shutdown.is_set():
         for section in sections.keys():
             mtime = modified.get(section, 0)
-            st = os.stat(f'{section}.yaml')
+            st = os.stat(f'{config_path}/{section}.yaml')
             if st.st_mtime > mtime:
                 await load(section)
                 modified[section] = st.st_mtime
