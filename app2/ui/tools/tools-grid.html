@@ -1,6 +1,6 @@
 <div class="tools-grid row g-2">
   <label v-if="group" class="col-12 align-bottom text-capitalize fw-bold">{{ group }}</label>
-  <div v-for="tool in tools.filter(t => filter(t))" class="col-3">
+  <div v-for="tool in tools.filter(t => filter(t))" :class="[cols]">
     <Tool
       v-bind="tool"
       class="selectable focusable px-3 py-2"

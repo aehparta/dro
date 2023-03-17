@@ -84,6 +84,8 @@
 </div>
 <Popup ref="inserts" title="Select insert">
   <Tools
+    view="grid"
+    type="insert"
     :selected="insert"
     @select="v => { insert = v; $refs.inserts.close() }"
     :filter="v => v.model === tool.insert"

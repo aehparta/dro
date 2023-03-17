@@ -3,6 +3,7 @@ import ToolsGrid from './tools-grid.js';
 
 export default {
   template: '#tmpl-tools-tools',
+  components: { ToolsGrid },
   props: {
     selected: Object,
     type: String,
@@ -16,9 +17,9 @@ export default {
     return {
       tools,
       groups: [],
-      components: {
-        list: undefined,
-        grid: ToolsGrid,
+      cols: {
+        list: 'col-12',
+        grid: 'col-3',
       },
     };
   },

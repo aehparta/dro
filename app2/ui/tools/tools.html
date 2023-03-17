@@ -1,13 +1,21 @@
 <div class="tools">
-  <div v-for="group in groups">
+  <div v-if="!type" v-for="group in groups">
     <div class="row">
-      <component
-        v-bind:is="components[view]"
+      <ToolsGrid
+        :cols="cols[view]"
         :group="group"
         :selected="selected"
-        :filter="(v) => v.type === group || group === 'other' && !groups.includes(v.type)"
+        :filter="(v) => filter(v) && (v.type === group || group === 'other' && !groups.includes(v.type))"
         @select="(v) => $emit('select', v)"
       />
     </div>
+  </div>
+  <div v-else>
+      <ToolsGrid
+        :cols="cols[view]"
+        :selected="selected"
+        :filter="(v) => v.type === type && filter(v)"
+        @select="(v) => $emit('select', v)"
+      />
   </div>
 </div>
