@@ -3,13 +3,13 @@
       by_tool:
         Boring head indexable:
           d: 300
-          insert: CCMT060202-PF 4325
+          insert: CCMT060208-UF 5015
         End mill indexable 16:
           insert: APMT1135PDFR-G2 H01
         Face mill BAP400R-50:
           insert: APMT1604PDER-H2
         Fly cutter indexable:
-          insert: CCMT060204-PF 4325
+          insert: CCMT060208-UF 5015
       offset_id: G54
       offsets:
         tool:
@@ -35,7 +35,7 @@
             z: 0
           G59:
             y: 0
-      tool_id: Fly cutter indexable
+      tool_id: Boring head indexable
     '2: KF 25 L':
       offset_id: G54
       tool_id: APMT1604PDER-H2

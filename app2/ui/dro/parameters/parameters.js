@@ -39,7 +39,7 @@ export default {
     setValues() {
       const m_id = material.value?.id;
       const m_parent = material.value?.parent;
-      const t = this.insert || tool.value;
+      const t = insert.value || tool.value;
       const values =
         t?.materials?.[`${m_parent} - ${m_id}`] ||
         t?.materials?.[m_parent] ||
