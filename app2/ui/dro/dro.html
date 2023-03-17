@@ -80,5 +80,5 @@
   </div>
 </div>
 <Popup ref="tools" title="Select tool">
-  <Tools :selected="tool" @select="(v) => { tool = v; $refs.tools.close() }" />
+  <Tools view="grid" :selected="tool" @select="(v) => { tool = v; $refs.tools.close() }" />
 </Popup>

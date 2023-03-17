@@ -1,8 +1,9 @@
 <div class="tools-grid row g-2">
+  <label v-if="group" class="col-12 align-bottom text-capitalize fw-bold">{{ group }}</label>
   <div v-for="tool in tools.filter(t => filter(t))" class="col-3">
     <Tool
       v-bind="tool"
-      class="selectable focusable p-3"
+      class="selectable focusable px-3 py-2"
       :class="{ selected: tool === selected }"
       @select="$emit('select', tool)"
     />

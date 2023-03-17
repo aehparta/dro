@@ -1,3 +1,13 @@
 <div class="tools">
-  <ToolsGrid :selected="selected" @select="(v) => $emit('select', v)" />
+  <div v-for="group in groups">
+    <div class="row">
+      <component
+        v-bind:is="components[view]"
+        :group="group"
+        :selected="selected"
+        :filter="(v) => v.type === group || group === 'other' && !groups.includes(v.type)"
+        @select="(v) => $emit('select', v)"
+      />
+    </div>
+  </div>
 </div>

@@ -5,6 +5,7 @@ export default {
   template: '#tmpl-tools-tools-grid',
   components: { Tool },
   props: {
+    group: String,
     selected: Object,
     filter: {
       type: Function,
