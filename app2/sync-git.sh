@@ -17,6 +17,12 @@ error() {
     exit 1
 }
 
+error_if() {
+    if [ "$?" != "0" ]; then
+        error "$@"
+    fi
+}
+
 git --version > /dev/null
 if [ "$?" != "0" ]; then
     error "git command is missing"
@@ -45,8 +51,8 @@ if [ ! -d ".git" ]; then
     git init --initial-branch="$BACKUP_GIT_BRANCH"
     git remote add origin "$BACKUP_GIT_URL"
     git fetch origin
-    git checkout "$BACKUP_GIT_BRANCH"
 fi
+git checkout "$BACKUP_GIT_BRANCH"
 git branch --set-upstream-to="origin/$BACKUP_GIT_BRANCH" "$BACKUP_GIT_BRANCH"
 
 # pull
@@ -56,5 +62,8 @@ git pull origin "$BACKUP_GIT_BRANCH"
 for file in $BACKUP_FILES; do
     git add "$file"
 done
+
 git commit -m "config backup"
 git push origin "$BACKUP_GIT_BRANCH"
+error_if "Backup git push failed, check git sync"
+
