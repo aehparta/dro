@@ -6,7 +6,7 @@ export default {
   template: '#tmpl-navigation',
   data() {
     return {
-      page: page,
+      page,
       ui,
     };
   },

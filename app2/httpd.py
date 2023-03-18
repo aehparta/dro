@@ -1,9 +1,15 @@
+import os
 import socketio
 import config
 from aiohttp import web
 from pathlib import Path
 from threading import Event
 from string import Template
+
+HTTP_FILES_PATH = os.getenv(
+    'HTTP_FILES_PATH',
+    os.path.dirname(__file__)
+)
 
 __routes = web.RouteTableDef()
 __sio = socketio.AsyncServer(async_mode='aiohttp')
@@ -36,15 +42,16 @@ async def save(sid, section, data):
 async def index(_: web.Request):
     t = Template('<script type="text/x-template" id="$id">$content</script>')
     templates = []
-    for file in Path('ui').rglob('*.html'):
-        if str(file) == 'ui/base.html':
+    for file in Path(f'{HTTP_FILES_PATH}/ui').rglob('*.html'):
+        if str(file) == f'{HTTP_FILES_PATH}/ui/base.html':
             continue
         with open(file) as f:
-            id = str(file).removeprefix('ui/').removesuffix('.html')
+            id = str(file).removeprefix(
+                f'{HTTP_FILES_PATH}/ui/').removesuffix('.html')
             id = id.replace('/', '-')
             templates.append(t.substitute(id=f'tmpl-{id}', content=f.read()))
 
-    with open('ui/base.html') as f:
+    with open(f'{HTTP_FILES_PATH}/ui/base.html') as f:
         t = Template(f.read())
         content = t.substitute(templates='\n'.join(templates))
 
@@ -56,7 +63,7 @@ async def index(_: web.Request):
 @__routes.get('/css/site.all.css')
 async def css(_: web.Request):
     content = ''
-    for file in Path('ui').rglob('*.css'):
+    for file in Path(f'{HTTP_FILES_PATH}/ui').rglob('*.css'):
         with open(file) as f:
             content += f.read()
     response = web.Response(body=content, content_type='text/css')
@@ -67,8 +74,8 @@ async def css(_: web.Request):
 async def run():
     app = web.Application()
     __sio.attach(app)
-    __routes.static('/ui', 'ui')
-    __routes.static('/', 'public')
+    __routes.static('/ui', f'{HTTP_FILES_PATH}/ui')
+    __routes.static('/', f'{HTTP_FILES_PATH}/public')
     app.add_routes(__routes)
 
     runner = web.AppRunner(app)

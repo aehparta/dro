@@ -2,7 +2,11 @@ import { socket } from './io.js';
 
 export const store = Vue.reactive({
   ui: {
-    navigation: [{ id: 'dro', label: 'DRO' }],
+    navigation: [
+      { id: 'dro', label: 'DRO' },
+      { id: 'vision', label: 'Vision' },
+      { id: 'config', label: 'Config' },
+    ],
     keyboard: {},
     view: { reverse: false },
   },
@@ -37,9 +41,11 @@ for (const [key, value] of Object.entries(watching)) {
 
 socket.on('ui', (ui) => {
   watching.ui.save = false;
-  store.ui = ui || {};
-  if (!window.location.hash) {
-    window.location.hash = '#' + ui.navigation[0].id;
+  if (!_.isEmpty(ui)) {
+    store.ui = ui;
+    if (!window.location.hash) {
+      window.location.hash = '#' + ui.navigation[0].id;
+    }
   }
 });
 
