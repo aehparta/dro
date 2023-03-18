@@ -1,7 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILES_PATH="config"
-BACKUP_FILES="
+: ${BACKUP_FILES:="
 config.yaml
 encoders.yaml
 machines.yaml
@@ -9,8 +8,7 @@ materials.yaml
 projects.yaml
 tools.yaml
 ui.yaml
-"
-BACKUP_GIT_BRANCH="config"
+"}
 
 error() {
     echo "$@" 1>&2
@@ -28,15 +26,15 @@ if [ "$?" != "0" ]; then
     error "git command is missing"
 fi
 
-if [ ! -f ".env" ]; then
-    error ".env file is missing"
+# check for variables
+if [ "$URL" == "" ]; then
+    error "git url is not set"
 fi
-
-source .env
-
-# check for git variables
-if [ "$BACKUP_GIT_URL" == "" ]; then
-    error "backupt to git url is not set"
+if [ "$BRANCH" == "" ]; then
+    error "git backup branch is not set"
+fi
+if [ "$CONFIG_FILES_PATH" == "" ]; then
+    error "config files path is not set"
 fi
 
 # create config files directory (nothing done if it exists)
@@ -48,15 +46,15 @@ cd "$CONFIG_FILES_PATH"
 
 # init repository
 if [ ! -d ".git" ]; then
-    git init --initial-branch="$BACKUP_GIT_BRANCH"
-    git remote add origin "$BACKUP_GIT_URL"
+    git init --initial-branch="$BRANCH"
+    git remote add origin "$URL"
     git fetch origin
 fi
-git checkout "$BACKUP_GIT_BRANCH"
-git branch --set-upstream-to="origin/$BACKUP_GIT_BRANCH" "$BACKUP_GIT_BRANCH"
+git checkout "$BRANCH"
+git branch --set-upstream-to="origin/$BRANCH" "$BRANCH"
 
 # pull
-git pull origin "$BACKUP_GIT_BRANCH"
+git pull origin "$BRANCH"
 
 # add and push
 for file in $BACKUP_FILES; do
@@ -64,6 +62,6 @@ for file in $BACKUP_FILES; do
 done
 
 git commit -m "config backup"
-git push origin "$BACKUP_GIT_BRANCH"
+git push origin "$BRANCH"
 error_if "Backup git push failed, check git sync"
 

@@ -22,6 +22,9 @@ def log(priority, tag, data):
     from config import base
 
     cfg = base.get('log', {})
+    if not isinstance(cfg, dict):
+        cfg = {}
+
     t = datetime.utcnow().isoformat()
     msg = f'{tag}: {data}'
 
