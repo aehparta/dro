@@ -1,19 +1,18 @@
-from multiprocessing import Event, Queue
 import asyncio
 import httpd
 from config import sections
 from queue import Empty
 from encoders.dummy import Dummy
 from encoders.serial_port import SerialPort
-import os
+from multiprocessing import Event, Queue
 
 ENCODERS = [
     Dummy, SerialPort
 ]
 
-__encoders = {}
-__encoders_queue = Queue()
 __shutdown = Event()
+__encoders = {}
+__queue = Queue()
 
 
 async def run():
@@ -26,10 +25,10 @@ async def run():
                 encoders_to_shutdown.remove(id)
             if id in __encoders:
                 continue
-            
+
             klass = next(
                 klass for klass in ENCODERS if klass.__name__ == encoder['driver'])
-            driver = klass(id, encoder, __encoders_queue)
+            driver = klass(id, encoder, __queue)
             driver.start()
             __encoders[id] = driver
 
@@ -39,8 +38,13 @@ async def run():
             del __encoders[id]
 
         try:
-            (id, channel, value) = __encoders_queue.get_nowait()
-            __encoders[id][int(channel)] = value
+            data = __queue.get_nowait()
+            id = data['id']
+            channel = data['channel']
+            value = data['value']
+            if isinstance(channel, str) and channel.isdigit():
+                channel = int(channel)
+            __encoders[id][channel] = value
         except Empty:
             pass
 

@@ -20,11 +20,12 @@ base = {}
 secrets = {}
 sections = {
     'encoders': {},
+    'cameras': {},
     'ui': {},
     'projects': [],
     'machines': [],
     'materials': [],
-    'tools': []
+    'tools': [],
 }
 
 
@@ -64,6 +65,7 @@ def load_base():
                 base = {}
     except:
         pass
+
 
 def load_secrets():
     """ Load secrets config """
@@ -139,7 +141,8 @@ def __run_backup_sync():
             if username and password and url.scheme == 'https':
                 username = quote(username)
                 password = quote(password)
-                url = url._replace(netloc=f'{username}:{password}@{url.netloc}')
+                url = url._replace(
+                    netloc=f'{username}:{password}@{url.netloc}')
 
             env = {
                 'URL': urlunsplit(url),
@@ -156,4 +159,3 @@ def __run_backup_sync():
                 log(LOG_INFO, 'backup-sync-git', 'OK')
         except Exception as e:
             log(LOG_ERR, 'backup-sync-git', e)
-

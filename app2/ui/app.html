@@ -1,6 +1,6 @@
 <Navigation />
 <main class="container-fluid px-2" ref="main">
-  <DRO v-show="page == 'dro'" />
-  <div v-show="page == 'vision'">{% include 'vision/vision.html' %}</div>
-  <Config v-show="page == 'config'" />
+  <div v-show="page == 'dro'"><Dro /></div>
+  <div v-show="page == 'vision'"><Vision /></div>
+  <div v-show="page == 'config'"><Config /></div>
 </main>

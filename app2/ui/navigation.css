@@ -5,12 +5,13 @@
 .nav-link:focus {
   color: #00c0c0;
   border: 0;
+  border-right: 1px solid #006060;
   background: transparent;
 }
 .nav-link.active {
-  color: #00f0f0;
+  color: #00f0f0 !important;
   background: #006060;
 }
 .nav-link:hover {
-  color: #007070;
+  color: inherit;
 }

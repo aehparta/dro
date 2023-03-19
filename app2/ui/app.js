@@ -1,6 +1,7 @@
 import { socket } from './io.js';
 import Navigation, { page } from './navigation.js';
-import DRO from './dro/dro.js';
+import Dro from './dro/dro.js';
+import Vision from './vision/vision.js';
 import Config from './config/config.js';
 import { ui } from './store.js';
 import Icon from './icon.js';
@@ -10,7 +11,8 @@ const app = Vue.createApp({
   template: '#tmpl-app',
   components: {
     Navigation,
-    DRO,
+    Dro,
+    Vision,
     Config,
   },
   data() {

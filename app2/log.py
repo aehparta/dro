@@ -18,7 +18,7 @@ PRIORITY_TO_STR = {
 }
 
 
-def log(priority, tag, data):
+def log(priority: int, tag: str, data):
     from config import base
 
     cfg = base.get('log', {})

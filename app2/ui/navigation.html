@@ -3,10 +3,11 @@
     <ul class="nav">
       <li v-for="item in ui.navigation" class="nav-item">
         <button
-          class="nav-link"
+          class="nav-link selectable"
           :class="{ active: (page == item.id) }"
           @click="go(item.id)"
         >
+          <Icon :id="item.icon" />
           {{ item.label }}
         </button>
       </li>
