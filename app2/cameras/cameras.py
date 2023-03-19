@@ -1,4 +1,6 @@
 import asyncio
+import re
+import subprocess
 import httpd
 from multiprocessing import Event, Queue
 from pathlib import Path
@@ -6,20 +8,36 @@ from queue import Empty
 from .camera import Camera
 from config import sections
 
+SCAN_CAMERAS_INTERVAL = 3
+
+camera_subscribers = {}
 __shutdown = Event()
 __cameras = {}
 __queue = Queue()
+__pattern = re.compile(r'^(.*):$\s+(\/dev\/video[0-9]+)$', re.M)
+__cameras_found = []
 
 
 async def run():
+    await asyncio.gather(__run(), __scan_cameras())
+
+
+def stop():
+    __shutdown.set()
+
+
+async def __run():
     while not __shutdown.is_set():
         cameras_to_shutdown = [*__cameras]
-        for id in Path('/dev').glob('video*'):
-            id = str(id)
+
+        for (label, id) in __cameras_found.copy():
             cfg = sections['cameras'].get(id, {})
 
             if not cfg.get('enabled', True):
                 continue
+            if id not in camera_subscribers.values():
+                continue
+
             if id in cameras_to_shutdown:
                 if not __cameras[id].has_changed(cfg):
                     cameras_to_shutdown.remove(id)
@@ -35,7 +53,7 @@ async def run():
 
         try:
             while data := __queue.get_nowait():
-                await httpd.emit('camera', data)
+                await httpd.emit(f'camera-{data["id"]}', data)
         except Empty:
             pass
 
@@ -45,5 +63,17 @@ async def run():
         camera.stop()
 
 
-def stop():
-    __shutdown.set()
+async def __scan_cameras():
+    while not __shutdown.is_set():
+        r = subprocess.run(['v4l2-ctl', '--list-devices'], capture_output=True)
+        stdout = r.stdout.decode('utf-8')
+
+        global __cameras_found
+        __cameras_found = re.findall(__pattern, stdout)
+
+        cams = []
+        for cam in __cameras_found:
+            cams.append({'id': cam[1], 'label': cam[0]})
+        await httpd.emit('cameras', cams)
+
+        await asyncio.sleep(SCAN_CAMERAS_INTERVAL)

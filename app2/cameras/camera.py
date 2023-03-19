@@ -27,8 +27,10 @@ class Camera(Process):
                 ok, frame = cam.read()
 
                 if ok:
-                    if self._cfg.get('mirror'):
+                    if self._cfg.get('flip-x'):
                         frame = cv2.flip(frame, 1)
+                    if self._cfg.get('flip-y'):
+                        frame = cv2.flip(frame, 0)
                     _, data = cv2.imencode(".jpg", frame)
                     jpeg = data.tobytes()
                     self.send(image=jpeg)

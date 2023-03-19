@@ -3,7 +3,7 @@ import { ui } from './store.js';
 export const page = Vue.ref(window.location.hash.substring(1));
 
 export default {
-  template: '#tmpl-navigation',
+  template: '#tmpl-header',
   data() {
     return {
       page,

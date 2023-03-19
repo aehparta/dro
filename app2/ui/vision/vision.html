@@ -1,7 +1,13 @@
-<div class="vision">
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center align-items-center">
-      <img ref="video" />
-    </div>
+<div class="vision" ref="container">
+  <div class="controls">
+    <button
+      v-for="camera in cameras"
+      class="btn btn-secondary"
+      @click="camera_id = camera.id"
+    >
+      {{ camera.id }} - {{ camera.label }}
+    </button>
   </div>
+  <img ref="video" />
+  <canvas ref="canvas"></canvas>
 </div>

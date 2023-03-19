@@ -5,20 +5,38 @@ from aiohttp import web
 from pathlib import Path
 from threading import Event
 from string import Template
+from cameras.cameras import camera_subscribers
 
 HTTP_FILES_PATH = os.getenv(
     'HTTP_FILES_PATH',
     os.path.dirname(__file__)
 )
 
-__routes = web.RouteTableDef()
 __sio = socketio.AsyncServer(async_mode='aiohttp')
+__routes = web.RouteTableDef()
 __shutdown = Event()
 
 
 @__sio.event
 async def connect(sid, environ):
     await config.emit_all_to(sid)
+
+
+@__sio.event
+async def disconnect(sid):
+    if sid in camera_subscribers:
+        del camera_subscribers[sid]
+
+
+@__sio.event
+async def camera_subscribe(sid, camera_id):
+    camera_subscribers[sid] = camera_id
+
+
+@__sio.event
+async def camera_unsubscribe(sid, camera_id):
+    if sid in camera_subscribers:
+        del camera_subscribers[sid]
 
 
 @__sio.event

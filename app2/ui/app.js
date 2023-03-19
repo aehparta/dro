@@ -1,5 +1,5 @@
 import { socket } from './io.js';
-import Navigation, { page } from './navigation.js';
+import Header, { page } from './header.js';
 import Dro from './dro/dro.js';
 import Vision from './vision/vision.js';
 import Config from './config/config.js';
@@ -10,7 +10,7 @@ import Popup from './popup/popup.js';
 const app = Vue.createApp({
   template: '#tmpl-app',
   components: {
-    Navigation,
+    Header,
     Dro,
     Vision,
     Config,

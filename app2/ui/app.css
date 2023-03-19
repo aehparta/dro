@@ -39,16 +39,16 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.header,
-.footer {
+#header,
+#footer {
   background: #002a2a;
   font-size: 150%;
 }
-.header {
+#header {
   border-bottom: 2px solid #006060;
   margin-bottom: 0.3rem;
 }
-.footer {
+#footer {
   border-top: 2px solid #006060;
   margin-top: 0.3rem;
 }
