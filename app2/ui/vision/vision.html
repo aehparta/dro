@@ -2,10 +2,10 @@
   <div class="controls">
     <button
       v-for="camera in cameras"
-      class="btn btn-secondary"
+      :class="{ selected: camera_id === camera.id }"
       @click="camera_id = camera.id"
     >
-      {{ camera.id }} - {{ camera.label }}
+      {{ camera.shortcut || '?' }}: {{ camera.label }}
     </button>
   </div>
   <img ref="video" />

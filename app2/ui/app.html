@@ -1,6 +1,6 @@
 <Header />
 <main class="container-fluid px-2" ref="main">
   <div v-show="page == 'dro'"><Dro /></div>
-  <div v-if="page == 'vision'"><Vision /></div>
-  <div v-if="page == 'config'"><Config /></div>
+  <div v-show="page == 'vision'"><Vision /></div>
+  <div v-show="page == 'config'"><Config /></div>
 </main>

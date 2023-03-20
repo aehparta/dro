@@ -26,5 +26,18 @@
 }
 .vision .controls button {
   display: block;
-  margin-bottom: 0.5em;
+  padding: 0.2em;
+  padding-left: 0.7em;
+  margin: 0.2em;
+  max-width: 20vw;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #fff;
+  text-shadow: 1px 1px 0.1em #000000;
+  background: rgba(255, 255, 255, 0.3);
+  border: 0;
+}
+.vision .controls .selected {
+  outline: 1px solid rgba(255, 255, 255, 0.7);
 }

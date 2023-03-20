@@ -1,4 +1,6 @@
 import { socket } from '../io.js';
+import { ui } from '../store.js';
+import { page } from '../header.js';
 
 export default {
   template: '#tmpl-vision-vision',
@@ -8,54 +10,78 @@ export default {
       h: undefined,
       camera_id: undefined,
       cameras: [],
+      ui,
+      page,
     };
   },
   mounted() {
-    if (this.camera_id) {
-      this.open(this.camera_id);
-    }
-
     socket.on('cameras', (data) => {
-      if (!_.isEqual(this.cameras, data)) {
-        this.cameras = data;
+      if (!_.isEqual(this.cameras, data) && _.isArray(data)) {
+        this.cameras = data
+          .sort((a, b) => a.label.localeCompare(b.label))
+          .map((v, i) => {
+            v.shortcut = Object.entries(this.ui.keyboard).find(
+              ([_, data]) => data?.['vision.select.camera']?.index === i
+            )?.[0];
+            return v;
+          });
       }
     });
-
-    window.addEventListener('resize', this.update);
-    this.update();
   },
   unmounted() {
     socket.off('cameras');
-    socket.off(`camera-${this.camera_id}`);
-    socket.emit('camera_unsubscribe', this.camera_id);
-    window.removeEventListener('resize', this.update);
   },
   watch: {
     camera_id(new_id, old_id) {
       this.open(new_id, old_id);
     },
+    page(page) {
+      page === 'vision' ? this.view() : this.hide();
+    },
   },
   methods: {
+    view() {
+      on('vision.select.camera', ({ index }) => {
+        if (this.cameras[index]) {
+          this.camera_id = this.cameras[index].id;
+        }
+      });
+      this.open(this.camera_id);
+      this.update();
+      window.addEventListener('resize', this.update);
+    },
+    hide() {
+      off('vision.select.camera');
+      this.open(undefined, this.camera_id);
+      window.removeEventListener('resize', this.update);
+    },
     open(new_id, old_id) {
+      if (new_id === old_id) {
+        return;
+      }
+
       if (old_id) {
         socket.off(`camera-${old_id}`);
         socket.emit('camera_unsubscribe', old_id);
       }
-      console.log('open', new_id);
-      socket.on(`camera-${new_id}`, ({ image }) => {
-        const buffer_to_base64 = (buffer) => {
-          var binary = '';
-          var bytes = new Uint8Array(buffer);
-          var len = bytes.byteLength;
-          for (var i = 0; i < len; i++) {
-            binary += String.fromCharCode(bytes[i]);
-          }
-          return window.btoa(binary);
-        };
-        this.$refs.video.src =
-          'data:image/jpeg;base64, ' + buffer_to_base64(image);
-      });
-      socket.emit('camera_subscribe', new_id);
+
+      if (new_id) {
+        socket.on(`camera-${new_id}`, ({ image }) => {
+          const buffer_to_base64 = (buffer) => {
+            var binary = '';
+            var bytes = new Uint8Array(buffer);
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+          };
+          this.$refs.video.src =
+            'data:image/jpeg;base64, ' + buffer_to_base64(image);
+          this.updateHud();
+        });
+        socket.emit('camera_subscribe', new_id);
+      }
     },
     update() {
       const header = document.getElementById('header');
@@ -70,48 +96,40 @@ export default {
       this.updateHud();
     },
     updateHud() {
+      const vw = this.$refs.video.width;
+      const vh = this.$refs.video.height;
       const ctx = this.$refs.canvas.getContext('2d');
 
       const off_x = this.w / 2;
       const off_y = this.h / 2;
-      const crosshair_cap = 5;
-      const crosshair_size = 200;
-      const crosshair_radius = 50;
+      const ch_cap = 5;
+      const ch_x = vw / 2 - ch_cap * 2;
+      const ch_y = vh / 2 - ch_cap * 2;
 
       ctx.clearRect(0, 0, this.w, this.h);
       ctx.save();
 
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
-      ctx.lineWidth = crosshair_radius;
-      ctx.beginPath();
-      ctx.arc(off_x, off_y, crosshair_radius, 0, 2 * Math.PI);
-      ctx.stroke();
-
-      ctx.strokeStyle = 'rgba(255, 255, 0, 0.5)';
+      ctx.strokeStyle = 'rgba(0, 0, 255, 0.7)';
       ctx.lineWidth = 1.5;
 
       ctx.beginPath();
-      ctx.moveTo(off_x - crosshair_cap, off_y);
-      ctx.lineTo(off_x - crosshair_size, off_y);
+      ctx.moveTo(off_x - ch_cap, off_y);
+      ctx.lineTo(off_x - ch_x, off_y);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.moveTo(off_x + crosshair_cap, off_y);
-      ctx.lineTo(off_x + crosshair_size, off_y);
+      ctx.moveTo(off_x + ch_cap, off_y);
+      ctx.lineTo(off_x + ch_x, off_y);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.moveTo(off_x, off_y - crosshair_cap);
-      ctx.lineTo(off_x, off_y - crosshair_size);
+      ctx.moveTo(off_x, off_y - ch_cap);
+      ctx.lineTo(off_x, off_y - ch_y);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.moveTo(off_x, off_y + crosshair_cap);
-      ctx.lineTo(off_x, off_y + crosshair_size);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(off_x, off_y, crosshair_radius, 0, 2 * Math.PI);
+      ctx.moveTo(off_x, off_y + ch_cap);
+      ctx.lineTo(off_x, off_y + ch_y);
       ctx.stroke();
 
       ctx.restore();

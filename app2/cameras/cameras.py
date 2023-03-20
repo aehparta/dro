@@ -8,7 +8,7 @@ from queue import Empty
 from .camera import Camera
 from config import sections
 
-SCAN_CAMERAS_INTERVAL = 3
+SCAN_CAMERAS_INTERVAL = 2
 
 camera_subscribers = {}
 __shutdown = Event()
@@ -30,7 +30,7 @@ async def __run():
     while not __shutdown.is_set():
         cameras_to_shutdown = [*__cameras]
 
-        for (label, id) in __cameras_found.copy():
+        for (_, id) in __cameras_found.copy():
             cfg = sections['cameras'].get(id, {})
 
             if not cfg.get('enabled', True):
