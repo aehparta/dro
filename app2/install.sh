@@ -7,6 +7,9 @@ USER=`whoami`
 GROUP=`id -gn "$USER"`
 SERVICE_FILE=/lib/systemd/system/dro.service
 
+# install dependencies
+sudo apt install v4l-utils python3-socketio python3-aiohttp python3-watchdog python3-opencv
+
 # give python access to port 80
 PYTHON_BIN=`which python3`
 PYTHON_BIN=`realpath "$PYTHON_BIN"`
