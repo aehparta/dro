@@ -1,0 +1,14 @@
+[Unit] 
+Description=DRO daemon
+
+[Service] 
+Restart=always
+RestartSec=10
+ExecStart=WORKING_DIR/main.py
+WorkingDirectory=WORKING_DIR
+KillSignal=SIGINT 
+User=USER
+Group=GROUP
+
+[Install] 
+WantedBy=multi-user.target
