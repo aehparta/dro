@@ -16,5 +16,5 @@ pip3 install python-socketio aiohttp watchdog
 Or using apt:
 
 ```sh
-apt install python3-socketio python3-aiohttp python3-watchdog
+apt install python3-socketio python3-aiohttp python3-watchdog python3-opencv
 ```
