@@ -10,7 +10,7 @@
 Install using pip:
 
 ```sh
-pip3 install python-socketio aiohttp watchdog
+pip3 install python-socketio aiohttp watchdog opencv
 ```
 
 Or using apt:
