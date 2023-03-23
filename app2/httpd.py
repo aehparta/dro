@@ -1,9 +1,9 @@
 import os
+import signal
 import socketio
 import config
 from aiohttp import web
 from pathlib import Path
-from threading import Event
 from string import Template
 from cameras.cameras import camera_subscribers
 
@@ -14,7 +14,6 @@ HTTP_FILES_PATH = os.getenv(
 
 __sio = socketio.AsyncServer(async_mode='aiohttp')
 __routes = web.RouteTableDef()
-__shutdown = Event()
 
 
 @__sio.event
@@ -102,11 +101,16 @@ async def run():
     host = config.base.get('host', '')
     port = config.base.get('port', 8080)
     site = web.TCPSite(runner, host, port)
-    await site.start()
+    try:
+        await site.start()
+    except Exception as e:
+        print(f'Failed to start http daemon, reason: {e}')
+        signal.raise_signal(signal.SIGINT)
 
 
 def stop():
-    __shutdown.set()
+    # nothing to be done, lets still keep this
+    pass
 
 
 async def emit(topic, data=None, to=None):

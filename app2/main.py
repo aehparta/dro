@@ -2,7 +2,6 @@
 
 import signal
 import asyncio
-import sys
 import httpd
 import config
 import watch

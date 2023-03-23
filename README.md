@@ -2,6 +2,14 @@
 
 ## Application
 
+When needs rights to port 80
+
+One way:
+
+```sh
+sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/python3.10
+```
+
 ### Python dependencies
 
 * httpd

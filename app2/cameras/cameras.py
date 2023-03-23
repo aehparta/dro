@@ -3,12 +3,13 @@ import re
 import subprocess
 import httpd
 from multiprocessing import Event, Queue
-from pathlib import Path
 from queue import Empty
 from .camera import Camera
 from config import sections
+from log import log, LOG_ERR
 
 SCAN_CAMERAS_INTERVAL = 2
+SCAN_CAMERAS_INTERVAL_ON_ERROR = 300
 
 camera_subscribers = {}
 __shutdown = Event()
@@ -65,15 +66,20 @@ async def __run():
 
 async def __scan_cameras():
     while not __shutdown.is_set():
-        r = subprocess.run(['v4l2-ctl', '--list-devices'], capture_output=True)
-        stdout = r.stdout.decode('utf-8')
+        try:
+            r = subprocess.run(
+                ['v4l2-ctl', '--list-devices'], capture_output=True)
+            stdout = r.stdout.decode('utf-8')
 
-        global __cameras_found
-        __cameras_found = re.findall(__pattern, stdout)
+            global __cameras_found
+            __cameras_found = re.findall(__pattern, stdout)
 
-        cams = []
-        for cam in __cameras_found:
-            cams.append({'id': cam[1], 'label': cam[0]})
-        await httpd.emit('cameras', cams)
+            cams = []
+            for cam in __cameras_found:
+                cams.append({'id': cam[1], 'label': cam[0]})
+            await httpd.emit('cameras', cams)
 
-        await asyncio.sleep(SCAN_CAMERAS_INTERVAL)
+            await asyncio.sleep(SCAN_CAMERAS_INTERVAL)
+        except Exception as e:
+            log(LOG_ERR, "cameras", f'failed to scan cameras, reason: {e}')
+            await asyncio.sleep(SCAN_CAMERAS_INTERVAL_ON_ERROR)
