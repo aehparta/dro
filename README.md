@@ -18,11 +18,11 @@ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/python3.10
 Install using pip:
 
 ```sh
-pip3 install python-socketio aiohttp watchdog
+pip3 install python-socketio aiohttp watchdog opencv-python
 ```
 
 Or using apt:
 
 ```sh
-apt install python3-socketio python3-aiohttp python3-watchdog
+apt install python3-socketio python3-aiohttp python3-watchdog python3-opencv
 ```
