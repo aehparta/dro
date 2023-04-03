@@ -1,2 +1,4 @@
 usb-hid-keymap.h
-
+*.bin
+*.hex
+*.o
