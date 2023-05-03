@@ -10,10 +10,22 @@ One way:
 sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/python3.10
 ```
 
+#### Dependencies
+
+* v4l-utils (`v4l2-ctl` command)
+
+Install using apt:
+
+```sh
+apt install v4l-utils
+```
+
 ### Python dependencies
 
-* httpd
+* aiohttp
 * socketio
+* watchdog
+* opencv
 
 Install using pip:
 
