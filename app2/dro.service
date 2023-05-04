@@ -3,7 +3,7 @@ Description=DRO daemon
 
 [Service] 
 Restart=always
-RestartSec=10
+RestartSec=5
 ExecStart=WORKING_DIR/main.py
 WorkingDirectory=WORKING_DIR
 KillSignal=SIGINT 

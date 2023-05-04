@@ -1,0 +1,92 @@
+keyboard:
+  ArrowDown:
+    focusable:
+      dir: down
+      whenEditing: false
+  ArrowLeft:
+    focusable:
+      dir: left
+      whenEditing: false
+  ArrowRight:
+    focusable:
+      dir: right
+      whenEditing: false
+  ArrowUp:
+    focusable:
+      dir: up
+      whenEditing: false
+  Delete:
+    delete: null
+    dro.zero: null
+  Enter:
+    accept: null
+  Escape:
+    cancel: null
+  F11:
+    fullscreen: null
+  F2:
+    navigation:
+      page: dro
+  F3:
+    navigation:
+      page: vision
+  F4:
+    navigation:
+      page: config
+  a:
+    dro.select.a:
+      whenEditing: false
+    vision.select.camera:
+      index: 3
+      whenEditing: false
+  b:
+    dro.select.b:
+      whenEditing: false
+    vision.select.camera:
+      index: 4
+      whenEditing: false
+  c:
+    dro.select.c:
+      whenEditing: false
+    vision.select.camera:
+      index: 5
+      whenEditing: false
+  ctrl+c:
+    cancel: null
+  r:
+    view.reverse:
+      whenEditing: false
+  "shift+\xBD":
+    dro.half: null
+  x:
+    dro.select.x:
+      whenEditing: false
+    vision.select.camera:
+      index: 0
+      whenEditing: false
+  y:
+    dro.select.y:
+      whenEditing: false
+    vision.select.camera:
+      index: 1
+      whenEditing: false
+  z:
+    dro.select.z:
+      whenEditing: false
+    vision.select.camera:
+      index: 2
+      whenEditing: false
+  "\xA7":
+    dro.half: null
+navigation:
+- id: dro
+  label: DRO
+  icon: tint
+- id: vision
+  label: Vision
+  icon: camera
+- id: config
+  label: Config
+  icon: cogs
+view:
+  reverse: false
