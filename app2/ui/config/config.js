@@ -1,23 +1,20 @@
-import Materials from '../materials/materials.js';
-import Material from '../materials/material.js';
+import Backup from './backup.js';
+import { route } from '../header.js';
 
 export default {
   template: '#tmpl-config-config',
   components: {
-    Materials,
-    Material,
+    Backup,
   },
   data() {
     return {
-      material_id: undefined,
-      material: undefined,
+      route,
     };
   },
   created() {},
   methods: {
-    selectMaterial(id, material) {
-      this.material_id = id;
-      this.material = material;
+    go(action) {
+      window.location.hash = '#config/' + action;
     },
   },
 };

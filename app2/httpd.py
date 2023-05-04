@@ -39,20 +39,13 @@ async def camera_unsubscribe(sid, camera_id):
 
 
 @__sio.event
-async def offset(sid, data):
-    try:
-        machine = data['machine']
-        axis = data['axis']
-        offset = data['offset']
-        config.sections['machines'][machine]['axes'][axis]['offset'] = offset
-        save('machines')
-    except:
-        pass
+async def save(sid, section, data):
+    config.save(section, data)
 
 
 @__sio.event
-async def save(sid, section, data):
-    config.save(section, data)
+async def secrets(sid, data):
+    config.save_secrets(data)
 
 
 @__routes.get('/')
@@ -98,8 +91,8 @@ async def run():
     runner = web.AppRunner(app)
     await runner.setup()
 
-    host = config.base.get('host', '')
-    port = config.base.get('port', 8080)
+    host = config.sections['config'].get('host', '')
+    port = config.sections['config'].get('port', 8080)
     site = web.TCPSite(runner, host, port)
     try:
         await site.start()

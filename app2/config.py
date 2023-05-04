@@ -5,8 +5,8 @@ import time
 import yaml
 import httpd
 from threading import Event
-from syslog import LOG_ERR, LOG_INFO
 from urllib.parse import urlsplit, urlunsplit, quote
+from deepmerge import always_merger
 
 __shutdown = Event()
 
@@ -16,9 +16,8 @@ CONFIG_FILES_PATH = os.getenv(
 )
 BACKUP_SYNC_INTERVAL = os.getenv('BACKUP_SYNC_INTERVAL', 600)
 
-base = {}
-secrets = {}
 sections = {
+    'config': {},
     'encoders': {},
     'cameras': {},
     'ui': {},
@@ -27,6 +26,7 @@ sections = {
     'materials': [],
     'tools': [],
 }
+secrets = {}
 
 
 async def emit_all_to(sid):
@@ -46,25 +46,7 @@ async def load(section):
 async def load_all():
     for section in sections.keys():
         await load(section)
-
-
-def save(section, data=None):
-    with open(f'{CONFIG_FILES_PATH}/{section}.yaml', 'w') as f:
-        if data is None:
-            data = sections[section]
-        yaml.dump(data, f)
-
-
-def load_base():
-    """ Load base config """
-    try:
-        with open(f'{CONFIG_FILES_PATH}/config.yaml', 'r') as f:
-            global base
-            base = yaml.safe_load(f)
-            if not isinstance(base, dict):
-                base = {}
-    except:
-        pass
+    load_secrets()
 
 
 def load_secrets():
@@ -79,29 +61,31 @@ def load_secrets():
         pass
 
 
+def save_secrets(data):
+    """ Save secrets config """
+    with open(f'{CONFIG_FILES_PATH}/secrets.yaml', 'w') as f:
+        data = always_merger.merge(secrets, data)
+        yaml.dump(data, f)
+
+
+def save(section, data=None):
+    if section in sections:
+        with open(f'{CONFIG_FILES_PATH}/{section}.yaml', 'w') as f:
+            if data is None:
+                data = sections[section]
+            yaml.dump(data, f)
+
+
 async def run():
+    try:
+        os.stat(f'{CONFIG_FILES_PATH}')
+    except:
+        os.mkdir(f'{CONFIG_FILES_PATH}')
+
     modified = {}
     backup_timestamp = time.monotonic()
 
     while not __shutdown.is_set():
-        mtime = modified.get('base', 0)
-        try:
-            st = os.stat(f'{CONFIG_FILES_PATH}/config.yaml')
-            if st.st_mtime > mtime:
-                load_base()
-                modified['base'] = st.st_mtime
-        except:
-            pass
-
-        mtime = modified.get('secrets', 0)
-        try:
-            st = os.stat(f'{CONFIG_FILES_PATH}/secrets.yaml')
-            if st.st_mtime > mtime:
-                load_secrets()
-                modified['secrets'] = st.st_mtime
-        except:
-            pass
-
         for section in sections.keys():
             mtime = modified.get(section, 0)
             try:
@@ -111,6 +95,15 @@ async def run():
                     modified[section] = st.st_mtime
             except:
                 pass
+
+        mtime = modified.get('secrets', 0)
+        try:
+            st = os.stat(f'{CONFIG_FILES_PATH}/secrets.yaml')
+            if st.st_mtime > mtime:
+                load_secrets()
+                modified['secrets'] = st.st_mtime
+        except:
+            pass
 
         if (backup_timestamp + BACKUP_SYNC_INTERVAL) < time.monotonic():
             backup_timestamp = time.monotonic()
@@ -124,7 +117,7 @@ def stop():
 
 
 def __run_backup_sync():
-    from log import log
+    from log import log, LOG_ERR, LOG_INFO
 
     cfg = secrets.get('backup', {})
     if not isinstance(cfg, dict):
@@ -142,7 +135,8 @@ def __run_backup_sync():
                 username = quote(username)
                 password = quote(password)
                 url = url._replace(
-                    netloc=f'{username}:{password}@{url.netloc}')
+                    netloc=f'{username}:{password}@{url.netloc}'
+                )
 
             env = {
                 'URL': urlunsplit(url),

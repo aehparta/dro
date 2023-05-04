@@ -12,6 +12,7 @@ from cameras import cameras
 
 
 async def main():
+    await config.load_all()
     await asyncio.gather(config.run(),
                          encoders.run(),
                          httpd.run(),
@@ -29,5 +30,4 @@ def sigint(sig, frame):
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint)
-    config.load_base()
     asyncio.run(main())

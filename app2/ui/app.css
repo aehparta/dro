@@ -17,11 +17,21 @@ input {
   border: 0px solid transparent;
   flex: 1;
   color: #00e0d0;
-  text-align: end;
+}
+
+input.form-control, input.form-control:focus {
+  background: rgba(0, 192, 192, 0.1);
+  border: 1px solid #006060;
+  color: #00e0d0;
+  text-align: start;
+}
+
+input.form-control:focus {
+  background: rgba(0, 192, 192, 0.2);
 }
 
 input:hover {
-  background: rgba(0, 192, 192, 0.1);
+  background: rgba(0, 192, 192, 0.2);
 }
 
 input:focus-visible {
@@ -37,20 +47,6 @@ input::-webkit-inner-spin-button {
 
 input[type='number'] {
   -moz-appearance: textfield;
-}
-
-#header,
-#footer {
-  background: #002a2a;
-  font-size: 150%;
-}
-#header {
-  border-bottom: 2px solid #006060;
-  margin-bottom: 0.3rem;
-}
-#footer {
-  border-top: 2px solid #006060;
-  margin-top: 0.3rem;
 }
 
 .selectable,

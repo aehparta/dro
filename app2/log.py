@@ -19,9 +19,9 @@ PRIORITY_TO_STR = {
 
 
 def log(priority: int, tag: str, data):
-    from config import base
+    from config import sections
 
-    cfg = base.get('log', {})
+    cfg = sections['config'].get('log', {})
     if not isinstance(cfg, dict):
         cfg = {}
 

@@ -1,14 +1,41 @@
 <div class="config">
   <div class="row">
-    <div class="col-4">
-      <Materials @select="selectMaterial" />
-    </div>
-    <div class="col">
-      <Material
-        :id="material_id"
-        v-bind="material"
-        placeholder="Please select a material"
-      />
+    <nav class="navbar navbar-expand-lg col-12">
+      <ul class="nav">
+        <li class="nav-item">
+          <button
+            class="nav-link selectable"
+            :class="{ active: route[1] === 'tools' }"
+            @click="go('tools')"
+          >
+            <Icon id="fan" />
+            Tools
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link selectable"
+            :class="{ active: route[1] === 'machines' }"
+            @click="go('machines')"
+          >
+            <Icon id="tools" />
+            Machines & Encoders
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link selectable"
+            :class="{ active: route[1] === 'backup' }"
+            @click="go('backup')"
+          >
+            <Icon id="cloud-upload-alt" />
+            Backup
+          </button>
+        </li>
+      </ul>
+    </nav>
+    <div class="col-12">
+      <Backup />
     </div>
   </div>
 </div>

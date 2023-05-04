@@ -1,0 +1,45 @@
+<div class="backup">
+  <h1>Git</h1>
+  <div class="form-floating mb-3">
+    <input
+      id="backup-git-url"
+      class="form-control"
+      placeholder="none"
+      :value="config?.backup?.git?.url"
+      @blur="set('backup.git.url', $event.target.value)"
+    />
+    <label for="backup-git-url" class="form-label">Remote URL</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      id="backup-git-branch"
+      class="form-control"
+      placeholder="none"
+      :value="config?.backup?.git?.branch"
+      @blur="set('backup.git.branch', $event.target.value)"
+    />
+    <label for="backup-git-branch" class="form-label">Branch</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      id="backup-git-username"
+      class="form-control"
+      placeholder="none"
+      :value="config?.backup?.git?.username"
+      @blur="set('backup.git.username', $event.target.value)"
+    />
+    <label for="backup-git-username" class="form-label">Username</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      id="backup-git-password"
+      class="form-control"
+      placeholder="none"
+      ref="password"
+      @blur="setSecret('backup.git.password', $event.target.value)"
+    />
+    <label for="backup-git-password" class="form-label"
+      >Password or token</label
+    >
+  </div>
+</div>

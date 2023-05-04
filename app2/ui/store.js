@@ -1,11 +1,12 @@
 import { socket } from './io.js';
 
 export const store = Vue.reactive({
+  config: {},
   ui: {
     navigation: [
-      { id: 'dro', label: 'DRO' },
-      { id: 'vision', label: 'Vision' },
-      { id: 'config', label: 'Config' },
+      { id: 'dro', label: 'DRO', icon: 'tint' },
+      { id: 'vision', label: 'Vision', icon: 'camera' },
+      { id: 'config', label: 'Config', icon: 'cogs' },
     ],
     keyboard: {},
     view: { reverse: false },
@@ -16,11 +17,17 @@ export const store = Vue.reactive({
   materials: [],
 });
 
+export const config = Vue.computed(() => store.config);
 export const ui = Vue.computed(() => store.ui);
 export const projects = Vue.computed(() => store.projects);
 export const machines = Vue.computed(() => store.machines);
 export const tools = Vue.computed(() => store.tools);
 export const materials = Vue.computed(() => store.materials);
+export const set_secret = (key, value) => {
+  const secrets = {};
+  _.set(secrets, key, value);
+  socket.emit('secrets', secrets);
+};
 
 const watching = Object.keys(store).reduce((acc, value) => {
   acc[value] = { watch: Vue.computed(() => store[value]), save: true };
@@ -38,6 +45,11 @@ for (const [key, value] of Object.entries(watching)) {
     { deep: true }
   );
 }
+
+socket.on('config', (config) => {
+  watching.config.save = false;
+  store.config = config || {};
+});
 
 socket.on('ui', (ui) => {
   watching.ui.save = false;
