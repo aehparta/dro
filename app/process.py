@@ -2,7 +2,7 @@ import multiprocessing
 import os
 import signal
 import time
-from log import log, LOG_DEBUG, LOG_NOTICE
+from log import log, LOG_DEBUG, LOG_NOTICE, LOG_ERR
 
 SHUTDOWN_TIMEOUT = 3.0
 
@@ -23,7 +23,10 @@ class Process:
     def __run(self):
         signal.signal(signal.SIGINT, signal.SIG_IGN)
         self.log(LOG_DEBUG, f'started, pid: {os.getpid()}')
-        self.run()
+        try:
+            self.run()
+        except Exception as e:
+            self.log(LOG_ERR, e)
         self.log(LOG_DEBUG, f'stopped, pid: {os.getpid()}')
 
     def start(self):

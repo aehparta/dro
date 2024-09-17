@@ -38,14 +38,15 @@ async def run():
             del __encoders[id]
 
         try:
-            data = __queue.get_nowait()
-            id = data['id']
-            channel = data['channel']
-            value = data['value']
-            if isinstance(channel, str) and channel.isdigit():
-                channel = int(channel)
-            __encoders[id][channel] = value
-        except Empty:
+            while not __queue.empty():
+                data = __queue.get()
+                id = data['id']
+                channel = data['channel']
+                value = data['value']
+                if isinstance(channel, str) and channel.isdigit():
+                    channel = int(channel)
+                __encoders[id][channel] = value
+        except:
             pass
 
         for machine in sections['machines']:
